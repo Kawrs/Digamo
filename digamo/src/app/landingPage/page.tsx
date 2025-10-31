@@ -6,12 +6,24 @@ import SamplesSection from "../../../components/landing-page/SamplesSections";
 
 export default function landingPage() {
   return (
-    <div className="min-h-screen w-screen flex flex-col overflow-x-hidden">
+    <div className="min-h-screen w-screen flex flex-col overflow-x-hidden scroll-smooth">
       <HeaderNav />
-      <HeroSection />
-      <FeatureSection />
-      <StepSection />
-      <SamplesSection />
+
+      <section id="hero">
+        <HeroSection />
+      </section>
+
+      <section id="features">
+        <FeatureSection />
+      </section>
+
+      <section id="steps">
+        <StepSection />
+      </section>
+
+      <section id="samples">
+        <SamplesSection />
+      </section>
     </div>
   );
 }

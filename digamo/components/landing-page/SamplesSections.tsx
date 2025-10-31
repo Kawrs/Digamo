@@ -46,7 +46,7 @@ function SamplesSection() {
                   alt="scrambled egg"
                 />
                 <div className="p-5">
-                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 text-white">
                     {desc.title}
                   </h5>
                   <div className="flex flex-row flex-wrap gap-2 mt-4 justify-center items-center">

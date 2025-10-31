@@ -19,12 +19,14 @@
   --color-gray: oklch(0.39 0 0);
 }
 
+/* optional: light mode color scheme
 @media (prefers-color-scheme: light) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
 }
+*/
 
 body {
   background: var(--background);
@@ -36,6 +38,7 @@ html,
 body {
   height: 100%;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 /* landing page */
