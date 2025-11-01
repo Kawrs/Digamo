@@ -15,8 +15,8 @@ function HeroSection() {
         </div>
         <div className="subtitles py-4 lg:py-5">
           <h2 className="text-black text-base sm:text-lg lg:text-xl tracking-wide leading-relaxed font-montserrat">
-            No more wondering "what's for dinner?" Just tell us what you have,
-            and we&apos;ll create personalized recipes that match your
+            No more wondering "what&apos;s for dinner?" Just tell us what you
+            have, and we&apos;ll create personalized recipes that match your
             ingredients.
           </h2>
         </div>
