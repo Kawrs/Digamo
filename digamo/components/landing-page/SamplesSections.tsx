@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 function SamplesSection() {
@@ -51,7 +52,13 @@ function SamplesSection() {
               }}
               className="max-w-sm border border-gray-200 rounded-lg shadow-sm bg-red hover:scale-[1.02] transition-transform duration-300"
             >
-              <img className="rounded-t-lg" src={desc.img} alt={desc.title} />
+              <Image
+                className="rounded-t-lg w-full h-auto"
+                src={desc.img}
+                alt={desc.title}
+                width={400}
+                height={300}
+              />
               <div className="p-5">
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
                   {desc.title}
