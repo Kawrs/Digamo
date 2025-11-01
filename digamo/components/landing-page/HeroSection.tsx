@@ -16,7 +16,8 @@ function HeroSection() {
         <div className="subtitles py-4 lg:py-5">
           <h2 className="text-black text-base sm:text-lg lg:text-xl tracking-wide leading-relaxed font-montserrat">
             No more wondering "what's for dinner?" Just tell us what you have,
-            and we'll create personalized recipes that match your ingredients.
+            and we&apos;ll create personalized recipes that match your
+            ingredients.
           </h2>
         </div>
         <button className="py-3 px-8 sm:px-10 text-lg sm:text-xl font-montserrat font-bold bg-coral rounded-lg hover:bg-orange cursor-pointer transition-colors text-white tracking-wide shadow-lg hover:shadow-xl hover:scale-[1.02] duration-300">

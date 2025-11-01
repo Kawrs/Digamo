@@ -29,7 +29,6 @@ function FeaturesSection() {
 
   return (
     <div className="features min-h-screen flex flex-col w-full bg-white py-20 md:py-24 lg:py-32 justify-center items-center">
-      {/* Heading */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -37,7 +36,7 @@ function FeaturesSection() {
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
         className="titles justify-center text-center space-y-6 px-6 md:px-8 max-w-4xl mx-auto mb-16 md:mb-20"
       >
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-montserrat leading-tight">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-montserrat leading-tight">
           Everything You Need To Cook Smarter
         </h1>
         <h2 className="text-lg tracking-wide font-montserrat text-gray-700">
@@ -45,7 +44,6 @@ function FeaturesSection() {
         </h2>
       </motion.div>
 
-      {/* Feature Cards */}
       <div className="w-full flex justify-center px-6 md:px-12 lg:px-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full max-w-7xl">
           {features.map((feature, index) => {

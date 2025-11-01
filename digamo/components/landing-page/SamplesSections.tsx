@@ -26,9 +26,9 @@ function SamplesSection() {
   ];
 
   return (
-    <div className="steps-section min-h-screen flex flex-col w-full bg-gray-50 py-10 md:py-14 lg:py-16 justify-center items-center">
+    <div className="samples min-h-screen flex flex-col w-full py-10 md:py-14 lg:py-16 justify-center items-center">
       <div className="titles justify-center text-center space-y-4 px-6 md:px-8 max-w-4xl mx-auto mb-10 md:mb-12">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-montserrat leading-tight">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-montserrat leading-tight">
           Recipe Examples
         </h1>
         <h2 className="text-lg tracking-wide font-montserrat">
@@ -51,7 +51,11 @@ function SamplesSection() {
               }}
               className="max-w-sm border border-gray-200 rounded-lg shadow-sm bg-red hover:scale-[1.02] transition-transform duration-300"
             >
-              <img className="rounded-t-lg" src={desc.img} alt={desc.title} />
+              <img
+                className="rounded-t-lg h-76 w-full"
+                src={desc.img}
+                alt={desc.title}
+              />
               <div className="p-5">
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
                   {desc.title}
