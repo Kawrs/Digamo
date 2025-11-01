@@ -3,10 +3,11 @@ import HeroSection from "../../../components/landing-page/HeroSection";
 import FeatureSection from "../../../components/landing-page/FeaturesSection";
 import StepSection from "../../../components/landing-page/StepSection";
 import SamplesSection from "../../../components/landing-page/SamplesSections";
+import FooterSection from "../../../components/landing-page/FooterSection";
 
 export default function landingPage() {
   return (
-    <div className="min-h-screen w-screen flex flex-col overflow-x-hidden scroll-smooth">
+    <div className="min-h-screen w-screen flex flex-col overflow-x-hidden">
       <HeaderNav />
 
       <section id="hero">
@@ -23,6 +24,10 @@ export default function landingPage() {
 
       <section id="samples">
         <SamplesSection />
+      </section>
+
+      <section id="footer">
+        <FooterSection />
       </section>
     </div>
   );
