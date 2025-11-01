@@ -1,3 +1,6 @@
+"use client";
+import { motion } from "framer-motion";
+
 function SamplesSection() {
   const desc = [
     {
@@ -32,37 +35,40 @@ function SamplesSection() {
           See what others are cooking with ingredients they already had
         </h2>
       </div>
+
       <div className="samples w-full flex justify-center px-6 md:px-12 lg:px-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 w-full max-w-7xl ">
-          {desc.map((desc) => {
-            return (
-              <div
-                key={desc.title}
-                className="max-w-sm border border-gray-200 rounded-lg shadow-sm bg-red hover:scale-[1.02] transition-all duration-300"
-              >
-                <img
-                  className="rounded-t-lg"
-                  src={desc.img}
-                  alt="scrambled egg"
-                />
-                <div className="p-5">
-                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 text-white">
-                    {desc.title}
-                  </h5>
-                  <div className="flex flex-row flex-wrap gap-2 mt-4 justify-center items-center">
-                    {desc.ingredients.map((ingredients) => (
-                      <span
-                        key={ingredients}
-                        className="bg-white text-gray-800 text-sm font-medium px-3 py-1 rounded-full"
-                      >
-                        {ingredients}
-                      </span>
-                    ))}
-                  </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-7xl">
+          {desc.map((desc, index) => (
+            <motion.div
+              key={desc.title}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{
+                duration: 0.8,
+                ease: [0.25, 0.1, 0.25, 1],
+                delay: index * 0.15,
+              }}
+              className="max-w-sm border border-gray-200 rounded-lg shadow-sm bg-red hover:scale-[1.02] transition-transform duration-300"
+            >
+              <img className="rounded-t-lg" src={desc.img} alt={desc.title} />
+              <div className="p-5">
+                <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
+                  {desc.title}
+                </h5>
+                <div className="flex flex-row flex-wrap gap-2 mt-4 justify-center items-center">
+                  {desc.ingredients.map((ingredients) => (
+                    <span
+                      key={ingredients}
+                      className="bg-white text-gray-800 text-sm font-medium px-3 py-1 rounded-full"
+                    >
+                      {ingredients}
+                    </span>
+                  ))}
                 </div>
               </div>
-            );
-          })}
+            </motion.div>
+          ))}
         </div>
       </div>
     </div>
