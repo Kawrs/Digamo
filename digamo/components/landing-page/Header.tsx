@@ -5,20 +5,20 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-white/70 backdrop-blur-sm z-50 shadow-sm">
+    <header className="fixed top-0 left-0 w-full bg-white/70 backdrop-blur-sm z-50 shadow-sm dark:bg-black/50 dark:border-b dark:backdrop-blur-sm dark:shadow-sm">
       <div className="flex items-center justify-between py-3 px-6 sm:px-10 lg:px-24">
-        <h3 className="font-bold text-xl text-black font-montserrat tracking-wide">
+        <h3 className="font-bold text-xl text-black font-montserrat tracking-wide dark:text-white">
           Digamo
         </h3>
 
-        <nav className="hidden md:flex flex-1 justify-center">
-          <ul className="flex space-x-8 font-medium font-montserrat text-gray-900">
+        <nav className="hidden md:flex flex-1 justify-center ">
+          <ul className="flex space-x-8 font-medium font-montserrat text-gray-900 ">
             <li>
               <a
                 href="#hero"
                 className="relative text-gray-800 font-medium  transition-colors duration-300 
              after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] 
-             after:bg-red after:transition-all after:duration-300 hover:after:w-full"
+             after:bg-red after:transition-all after:duration-300 hover:after:w-full dark:text-white dark:after:bg-orange"
               >
                 Home
               </a>
@@ -28,7 +28,7 @@ function Header() {
                 href="#features"
                 className="relative text-gray-800 font-medium  transition-colors duration-300 
              after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] 
-             after:bg-red after:transition-all after:duration-300 hover:after:w-full"
+             after:bg-red after:transition-all after:duration-300 hover:after:w-full dark:text-white dark:after:bg-orange "
               >
                 Features
               </a>
@@ -38,7 +38,7 @@ function Header() {
                 href="#steps"
                 className="relative text-gray-800 font-medium  transition-colors duration-300 
              after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] 
-             after:bg-red after:transition-all after:duration-300 hover:after:w-full"
+             after:bg-red after:transition-all after:duration-300 hover:after:w-full dark:text-white dark:after:bg-orange"
               >
                 Usage
               </a>
@@ -48,7 +48,7 @@ function Header() {
                 href="#samples"
                 className="relative text-gray-800 font-medium  transition-colors duration-300 
              after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] 
-             after:bg-red after:transition-all after:duration-300 hover:after:w-full"
+             after:bg-red after:transition-all after:duration-300 hover:after:w-full dark:text-white dark:after:bg-orange"
               >
                 Samples
               </a>
@@ -57,7 +57,7 @@ function Header() {
         </nav>
 
         <div className="hidden md:flex items-center space-x-3">
-          <button className="py-2.5 px-8 text-sm font-semibold text-gray-700 font-montserrat hover:bg-mint/80 hover:text-white transition-colors rounded-lg tracking-wide cursor-pointer">
+          <button className="py-2.5 px-8 text-sm font-semibold text-gray-700 font-montserrat hover:bg-mint/80 hover:text-white transition-colors rounded-lg tracking-wide cursor-pointer dark:text-white">
             Login
           </button>
           <button className="py-2.5 px-6 text-sm font-semibold bg-orange text-white font-montserrat border border-gray-200 hover:bg-coral transition-colors rounded-lg tracking-wide cursor-pointer shadow-md hover:shadow-lg">

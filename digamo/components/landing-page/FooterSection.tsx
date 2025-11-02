@@ -4,7 +4,7 @@ import Image from "next/image";
 
 function FooterSection() {
   return (
-    <footer className="bg-white w-full overflow-x-hidden">
+    <footer className="bg-white dark:bg-black dark:border-t w-full overflow-x-hidden">
       <div className="mx-auto max-w-screen-xl px-6 py-10">
         <div className="md:flex md:justify-between md:items-start">
           <div className="mb-6 md:mb-0 flex items-center space-x-2">
@@ -21,7 +21,7 @@ function FooterSection() {
           </div>
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
             <div>
-              <h2 className="mb-4 text-sm font-semibold text-gray-900 uppercase ">
+              <h2 className="mb-4 text-sm font-semibold text-gray-900 dark:text-white uppercase ">
                 Contacts
               </h2>
               <ul className="text-gray-500 font-medium space-y-2">
@@ -37,7 +37,7 @@ function FooterSection() {
             </div>
 
             <div>
-              <h2 className="mb-4 text-sm font-semibold text-gray-900 uppercase">
+              <h2 className="mb-4 text-sm font-semibold text-gray-900 uppercase dark:text-white ">
                 Follow us
               </h2>
               <ul className="text-gray-500  font-medium space-y-2">
@@ -59,7 +59,7 @@ function FooterSection() {
             </div>
 
             <div>
-              <h2 className="mb-4 text-sm font-semibold text-gray-900 uppercase ">
+              <h2 className="mb-4 text-sm font-semibold text-gray-900 uppercase dark:text-white ">
                 Legal
               </h2>
               <ul className="text-gray-500 font-medium space-y-2">

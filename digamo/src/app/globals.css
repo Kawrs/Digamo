@@ -19,12 +19,12 @@
   --color-gray: oklch(0.39 0 0);
 }
 
-/* @media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-} */
+}
 
 body {
   background: var(--background);
