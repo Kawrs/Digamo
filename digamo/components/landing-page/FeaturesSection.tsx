@@ -28,7 +28,7 @@ function FeaturesSection() {
   ];
 
   return (
-    <div className="features min-h-screen flex flex-col w-full bg-white py-20 md:py-24 lg:py-32 justify-center items-center">
+    <div className="features min-h-screen flex flex-col w-full bg-white dark:bg-black/50 py-20 md:py-24 lg:py-32 justify-center items-center">
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -39,7 +39,7 @@ function FeaturesSection() {
         <h1 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-montserrat leading-tight">
           Everything You Need To Cook Smarter
         </h1>
-        <h2 className="text-lg tracking-wide font-montserrat text-gray-700">
+        <h2 className="text-lg tracking-wide font-montserrat text-gray-300">
           Our intelligent platform makes meal planning effortless and fun
         </h2>
       </motion.div>
@@ -60,13 +60,13 @@ function FeaturesSection() {
                   delay: index * 0.15,
                 }}
                 className="bg-gradient-to-br from-gold/20 to-mint/20 hover:from-gold/40 hover:to-mint/40 
-                           p-8 rounded-xl text-left shadow-md transition-transform duration-300 hover:scale-[1.02]"
+                           p-8 rounded-xl text-left shadow-md transition-transform duration-300 hover:scale-[1.02] dark:from-gold/40 dark:to-mint/40 dark:hover:from-gold/60 dark:hover:to-mint/60"
               >
-                <Icon className="text-orange-500 w-10 h-10 mb-4" />
-                <h3 className="text-lg tracking-wide font-montserrat font-semibold text-gray-900 mb-2">
+                <Icon className="text-orange-500 w-10 h-10 mb-4 dark:text-gold" />
+                <h3 className="text-lg tracking-wide font-montserrat font-semibold dark:text-white text-gray-900 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-sm font-montserrat tracking-wide text-gray-700">
+                <p className="text-sm light:text-black font-montserrat tracking-wide dark:text-gray-300">
                   {feature.description}
                 </p>
               </motion.div>

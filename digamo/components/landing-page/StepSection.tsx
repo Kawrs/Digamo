@@ -36,8 +36,8 @@ function StepSection() {
   ];
 
   return (
-    <div className="steps-section flex flex-col justify-center items-center min-h-screen w-full bg-gray-50 py-8 md:py-10">
-      <div className="titles justify-center text-center space-y-3 px-6 md:px-8 max-w-4xl mx-auto mb-4 md:mb-6">
+    <div className="steps-section flex flex-col dark:bg-black justify-center items-center min-h-screen w-full bg-gray-50 py-8 md:py-10">
+      <div className="titles justify-center text-center dark:text-white space-y-3 px-6 md:px-8 max-w-4xl mx-auto mb-4 md:mb-6">
         <h1 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-montserrat leading-tight">
           How It Works
         </h1>
@@ -81,7 +81,7 @@ function StepSection() {
                 >
                   {step.title}
                 </h2>
-                <p className="font-montserrat text-base sm:text-lg text-gray-600 max-w-md leading-relaxed">
+                <p className="font-montserrat text-base dark:text-gray-300 sm:text-lg text-gray-600 max-w-md leading-relaxed">
                   {step.description}
                 </p>
               </div>
