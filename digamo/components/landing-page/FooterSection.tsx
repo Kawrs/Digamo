@@ -6,28 +6,40 @@ function FooterSection() {
   return (
     <footer className="bg-white dark:bg-black dark:border-t w-full overflow-x-hidden">
       <div className="mx-auto max-w-screen-xl px-6 py-10">
-        <div className="md:flex md:justify-between md:items-start">
-          <div className="mb-6 md:mb-0 flex items-center space-x-2">
-            <Image
-              src="https://flowbite.com/docs/images/logo.svg"
-              alt="FlowBite Logo"
-              width={32}
-              height={32}
-              className="h-8 w-auto"
-            />
-            <span className="text-2xl font-semibold whitespace-nowrap">
-              Digamo
-            </span>
+        <div className="md:flex md:justify-between md:items-start gap-12">
+          <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3 sm:mb-7">
+            <div>
+              <div className="mb-6 md:mb-0 flex items-center space-x-2">
+                <Image
+                  src="https://flowbite.com/docs/images/logo.svg"
+                  alt="FlowBite Logo"
+                  width={32}
+                  height={32}
+                  className="h-8 w-auto"
+                />
+                <span className="text-2xl font-semibold whitespace-nowrap">
+                  Digamo
+                </span>
+              </div>
+              <ul className="text-xl space-y-3 mt-2">
+                <li className="flex items-center space-x-2 whitespace-nowrap">
+                  Got any ingredients?
+                </li>
+                <li className="flex items-center space-x-2 font-bold whitespace-nowrap">
+                  LET&apos;S GET COOKING!
+                </li>
+              </ul>
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-8 sm:gap-12 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-16">
             <div>
               <h2 className="mb-4 text-sm font-semibold text-gray-900 dark:text-white uppercase ">
                 Contacts
               </h2>
-              <ul className="text-gray-500 font-medium space-y-2">
+              <ul className="text-gray-500 font-medium space-y-3">
                 <li className="flex items-center space-x-2">
                   <CallIcon />
-                  <p>09636390422</p>
+                  <p>09636390421</p>
                 </li>
                 <li className="flex items-center space-x-2">
                   <EmailIcon />
@@ -40,7 +52,7 @@ function FooterSection() {
               <h2 className="mb-4 text-sm font-semibold text-gray-900 uppercase dark:text-white ">
                 Follow us
               </h2>
-              <ul className="text-gray-500  font-medium space-y-2">
+              <ul className="text-gray-500  font-medium space-y-3">
                 <li>
                   <a
                     href="https://github.com/Kawrs/Digamo.git"
@@ -62,7 +74,7 @@ function FooterSection() {
               <h2 className="mb-4 text-sm font-semibold text-gray-900 uppercase dark:text-white ">
                 Legal
               </h2>
-              <ul className="text-gray-500 font-medium space-y-2">
+              <ul className="text-gray-500 font-medium space-y-3">
                 <li>
                   <a href="#" className="hover:underline">
                     Privacy Policy
@@ -90,7 +102,6 @@ function FooterSection() {
           </span>
 
           <div className="flex justify-center mt-4 sm:mt-0 space-x-5">
-            {/* Social icons */}
             <a href="#" className="text-gray-500 hover:text-gray-900 ">
               <i className="fab fa-facebook-f"></i>
             </a>
