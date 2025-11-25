@@ -6,7 +6,7 @@ function Header() {
 
   return (
     <header className="fixed top-0 left-0 w-full bg-white/70 backdrop-blur-sm z-50 shadow-sm dark:bg-black/50 dark:border-b dark:backdrop-blur-sm dark:shadow-sm">
-      <div className="flex items-center justify-between py-3 px-6 sm:px-10 lg:px-24">
+      <div className="navigation flex items-center justify-between py-3 px-6 sm:px-10 lg:px-24">
         <h3 className="font-bold text-xl text-black font-montserrat tracking-wide dark:text-white">
           Digamo
         </h3>
@@ -17,7 +17,7 @@ function Header() {
               <a
                 href="#hero"
                 className="relative text-gray-800 font-medium  transition-colors duration-300 
-             after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] 
+            after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:translate-y-0.5
              after:bg-red after:transition-all after:duration-300 hover:after:w-full dark:text-white dark:after:bg-orange"
               >
                 Home
@@ -27,7 +27,7 @@ function Header() {
               <a
                 href="#features"
                 className="relative text-gray-800 font-medium  transition-colors duration-300 
-             after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] 
+             after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:translate-y-0.5
              after:bg-red after:transition-all after:duration-300 hover:after:w-full dark:text-white dark:after:bg-orange "
               >
                 Features
@@ -37,7 +37,7 @@ function Header() {
               <a
                 href="#steps"
                 className="relative text-gray-800 font-medium  transition-colors duration-300 
-             after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] 
+             after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:translate-y-0.5
              after:bg-red after:transition-all after:duration-300 hover:after:w-full dark:text-white dark:after:bg-orange"
               >
                 Usage
@@ -47,7 +47,7 @@ function Header() {
               <a
                 href="#samples"
                 className="relative text-gray-800 font-medium  transition-colors duration-300 
-             after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] 
+             after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:translate-y-0.5
              after:bg-red after:transition-all after:duration-300 hover:after:w-full dark:text-white dark:after:bg-orange"
               >
                 Samples

@@ -57,6 +57,7 @@ function SamplesSection() {
                 alt={desc.title}
                 width={800}
                 height={400}
+                loading="lazy"
                 className="rounded-t-lg h-76 w-full object-cover"
               />
               <div className="p-5">
