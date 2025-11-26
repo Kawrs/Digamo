@@ -1,24 +1,13 @@
 "use client";
 
-import Image from "next/image";
+// import Image from "next/image";
 import { useState, useEffect } from "react";
 import Scene from "components/landing-page/Scene";
 
 function HeroSection() {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? scrollTop / docHeight : 0;
-      setScrollProgress(progress);
-    };
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // useEffect(() => {
+    
+  // }, []);
  
   return (
     <div className="hero w-full min-h-screen flex flex-col py-2 lg:flex-row items-center justify-center gap-8 lg:gap-12 bg-gradient-to-tl from-gold/20 to-mint/30 pt-24 pb-12 lg:pt-0 overflow-x-hidden dark:from-gold/60 dark:to-mint/60">
@@ -47,8 +36,8 @@ function HeroSection() {
       </div>
 
       <div className="character flex-1 flex items-center justify-center lg:justify-end w-full px-6 sm:px-8 md:px-12 lg:px-16">
-        <div className="w-full max-w-lg mt-50">
-        <Scene scrollProgress={scrollProgress} />
+        <div className="mt-40">
+        <Scene />
         </div>
 
         {/* <Image

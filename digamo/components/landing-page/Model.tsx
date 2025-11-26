@@ -1,13 +1,10 @@
-import { useRef, useEffect, ComponentProps, useState } from "react";
+import React, { useRef, useEffect, ComponentProps, useState } from "react";
 import { useGLTF, useAnimations, PerspectiveCamera } from "@react-three/drei";
 import { Group } from "three";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 
-export default function Model({
-  object,
-  ...props
-}: Partial<ComponentProps<"primitive">>) {
+export default function Model(props: Partial<ComponentProps<"primitive">>) {
   const group = useRef<Group>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const tmpPos = useRef(new THREE.Vector3());
@@ -65,14 +62,17 @@ export default function Model({
   
   useEffect(() => {
     if (!scene) return;
-    // lights from blender export grrrr dili same sa blender
-    scene.traverse((child) => {
-      if ((child as any).isLight) {
+    // blender lights
+    type MaybeLight = THREE.Light & { intensity?: number; isLight?: boolean };
+    scene.traverse((child: THREE.Object3D) => {
+      const maybeLight = child as MaybeLight;
+      if (maybeLight.isLight) {
         try {
-          (child as THREE.Light).visible = true;
-          if ((child as any).intensity === undefined)
-            (child as any).intensity = 300;
-        } catch (e) {}
+          maybeLight.visible = true;
+          if (maybeLight.intensity === undefined) maybeLight.intensity = 300;
+        } catch {
+          // ignore
+        }
       }
     });
     
@@ -142,7 +142,10 @@ export default function Model({
 
   return (
     <>
-      <PerspectiveCamera ref={cameraRef as any} makeDefault />
+      <PerspectiveCamera
+        ref={cameraRef as unknown as React.Ref<THREE.PerspectiveCamera>}
+        makeDefault
+      />
       <primitive ref={group} object={scene} {...props} />
     </>
   );

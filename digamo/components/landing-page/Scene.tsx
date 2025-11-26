@@ -1,33 +1,28 @@
 "use client";
 // import { Model } from "../Rubixcub/e";
 import { Canvas } from "@react-three/fiber";
-import {
-  OrbitControls,
-  useProgress,
-  Html,
-  ScrollControls,
-} from "@react-three/drei";
+import { useProgress, Html } from "@react-three/drei";
 import { Suspense } from "react";
 import Model from "./Model";
 
 function Loader() {
-  const { progress, active } = useProgress();
+  const { progress } = useProgress();
 
   return <Html center>{progress.toFixed(1)} % loaded</Html>;
 }
 
-export default function Scene({ scrollProgress }: { scrollProgress: number }) {
+export default function Scene() {
   return (
     <Canvas
       style={{
-        width: "100%",
+        width: "40vw",
         // maxWidth: 600,
         height: "30vw",
-        maxHeight: 1000,
+        maxHeight: 800,
         minHeight: 300,
       }}
     >
-      <ambientLight intensity={0.5} />
+      <ambientLight intensity={1} />
       <Suspense fallback={<Loader />}>
         <Model />
       </Suspense>
