@@ -39,7 +39,7 @@ function FeaturesSection() {
         <h1 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-montserrat leading-tight">
           Everything You Need To Cook Smarter
         </h1>
-        <h2 className="text-lg tracking-wide font-montserrat text-gray-300">
+        <h2 className="text-lg tracking-wide font-montserrat text-gray-900 dark:text-gray-300">
           Our intelligent platform makes meal planning effortless and fun
         </h2>
       </motion.div>
@@ -63,7 +63,7 @@ function FeaturesSection() {
                            p-8 rounded-xl text-left shadow-md transition-transform duration-300 hover:scale-[1.02] dark:from-gold/40 dark:to-mint/40 dark:hover:from-gold/60 dark:hover:to-mint/60"
               >
                 <Icon className="text-orange-500 w-10 h-10 mb-4 dark:text-gold" />
-                <h3 className="text-lg tracking-wide font-montserrat font-semibold dark:text-white text-gray-900 mb-2">
+                <h3 className="text-lg tracking-wide font-montserrat font-semibold dark:text-white text-coral mb-2">
                   {feature.title}
                 </h3>
                 <p className="text-sm light:text-black font-montserrat tracking-wide dark:text-gray-300">

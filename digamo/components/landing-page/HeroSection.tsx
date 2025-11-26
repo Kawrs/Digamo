@@ -13,10 +13,10 @@ function HeroSection() {
     <div className="hero w-full min-h-screen flex flex-col py-2 lg:flex-row items-center justify-center gap-8 lg:gap-12 bg-gradient-to-tl from-gold/20 to-mint/30 pt-24 pb-12 lg:pt-0 overflow-x-hidden dark:from-gold/60 dark:to-mint/60">
       <div className="titles flex-1 space-y-4 lg:space-y-6 text-center lg:text-left w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 pt-20">
         <div className="title space-y-2 sm:space-y-3">
-          <h1 className="font-montagu text-4xl sm:text-5xl lg:text-5xl xl:text-6xl text-gray font-bold tracking-wide dark:text-white">
+          <h1 className="font-montagu text-4xl sm:text-5xl lg:text-5xl xl:text-6xl text-gray font-bold tracking-wide dark:text-white whitespace-nowrap">
             Add Your Pantry.
           </h1>
-          <h1 className="font-montagu text-4xl sm:text-5xl lg:text-5xl xl:text-6xl text-gold font-bold tracking-wide ">
+          <h1 className="font-montagu text-4xl sm:text-5xl lg:text-5xl xl:text-6xl bg-gradient-to-r from-orange to-coral font-bold tracking-wide bg-clip-text text-transparent">
             Get A Recipe.
           </h1>
           <h1 className="font-montagu text-4xl sm:text-5xl lg:text-5xl xl:text-6xl text-gray font-bold tracking-wide dark:text-white">
@@ -30,7 +30,7 @@ function HeroSection() {
             your ingredients.
           </h2>
         </div>
-        <button className="py-3 px-8 sm:px-10 text-lg sm:text-xl font-montserrat font-bold bg-gold rounded-lg hover:bg-orange cursor-pointer transition-colors text-white tracking-wide shadow-lg hover:shadow-xl hover:scale-[1.02] duration-300">
+        <button className="py-3 px-8 sm:px-10 text-lg sm:text-xl font-montserrat font-bold bg-gradient-to-r from-orange to-coral rounded-lg hover:bg-orange cursor-pointer transition-colors text-white tracking-wide shadow-lg hover:shadow-xl hover:scale-[1.02] duration-300">
           Generate Recipes Now
         </button>
       </div>
@@ -42,6 +42,7 @@ function HeroSection() {
 
         {/* <Image
           src="/ex1.png"
+          loading="lazy"
           alt="Hero Character"
           width={384}
           height={384}
