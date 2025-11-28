@@ -2,7 +2,7 @@ import Image from "next/image";
 
 function HeroSection() {
   return (
-    <div className="hero w-full min-h-screen flex flex-col py-2 lg:flex-row items-center justify-center gap-8 lg:gap-12 bg-gradient-to-tl from-gold/20 to-mint/30 pt-24 pb-12 lg:pt-0 overflow-x-hidden dark:from-gold/60 dark:to-mint/60">
+    <div className="hero w-full min-h-screen flex flex-col py-2 lg:flex-row items-center justify-center gap-8 lg:gap-12 bg-gradient-to-tl from-gold/20 to-mint/30 pt-24 pb-12 lg:pt-0 overflow-x-hidden dark:from-gold/50 dark:to-mint/40">
       <div className="titles flex-1 space-y-4 lg:space-y-6 text-center lg:text-left w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 pt-20">
         <div className="title space-y-2 sm:space-y-3">
           <h1 className="font-montagu text-4xl sm:text-5xl lg:text-5xl xl:text-6xl text-gray font-bold tracking-wide dark:text-white whitespace-nowrap">
