@@ -19,7 +19,7 @@ export default function Carousel() {
   };
 
   const getPosition = (index: number) => {
-    let diff = (index - current + baseItems.length) % baseItems.length;
+    const diff = (index - current + baseItems.length) % baseItems.length;
 
     if (diff === 0) return "center";
     if (diff === 1) return "right";
