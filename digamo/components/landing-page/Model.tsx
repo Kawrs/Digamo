@@ -59,7 +59,6 @@ export default function Model(props: Partial<ComponentProps<"primitive">>) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  
   useEffect(() => {
     if (!scene) return;
     // blender lights
@@ -75,7 +74,7 @@ export default function Model(props: Partial<ComponentProps<"primitive">>) {
         }
       }
     });
-    
+
     const cameraNode = scene.getObjectByName("aCamera") as
       | THREE.PerspectiveCamera
       | undefined;
@@ -90,7 +89,7 @@ export default function Model(props: Partial<ComponentProps<"primitive">>) {
       cam.far = cameraNode.far;
       cam.updateProjectionMatrix();
     }
-    
+
     headRef.current = scene.getObjectByName("Head") || null;
     hatRef.current = scene.getObjectByName("Hat") || null;
     spoonRef.current = scene.getObjectByName("Spoon") || null;
@@ -102,9 +101,7 @@ export default function Model(props: Partial<ComponentProps<"primitive">>) {
     needleRef.current = scene.getObjectByName("GaugeNeedle") || null;
   }, [scene]);
 
-  
   useFrame(() => {
-  
     if (headRef.current) {
       headRef.current.rotation.y +=
         (mouse.x * 0.5 - headRef.current.rotation.y) * 0.1;
@@ -119,7 +116,7 @@ export default function Model(props: Partial<ComponentProps<"primitive">>) {
         (mouse.x * 0.5 - hatRef.current.rotation.y) * 0.1;
       forkRef.current.rotation.y +=
         (mouse.x * 0.5 - hatRef.current.rotation.y) * 0.1;
-        //y
+      //y
       hatRef.current.rotation.x +=
         (-mouse.y * 0.2 - hatRef.current.rotation.x) * 0.1;
       spoonRef.current.rotation.x +=
@@ -129,15 +126,13 @@ export default function Model(props: Partial<ComponentProps<"primitive">>) {
     }
 
     //arms animation di pa mu gana
-    const armLift = (scroll * Math.PI) / 4; 
+    const armLift = (scroll * Math.PI) / 4;
     if (leftArmRef.current) {
       leftArmRef.current.rotation.x = -armLift;
     }
     if (rightArmRef.current) {
       rightArmRef.current.rotation.x = -armLift;
     }
-
-  
   });
 
   return (
