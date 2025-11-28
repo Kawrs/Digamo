@@ -1,14 +1,14 @@
 "use client";
 
 // import Image from "next/image";
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 import Scene from "components/landing-page/Scene";
 
 function HeroSection() {
   // useEffect(() => {
-    
+
   // }, []);
- 
+
   return (
     <div className="hero w-full min-h-screen flex flex-col py-2 lg:flex-row items-center justify-center gap-8 lg:gap-12 bg-gradient-to-tl from-gold/20 to-mint/30 pt-24 pb-12 lg:pt-0 overflow-x-hidden dark:from-gold/50 dark:to-mint/40">
       <div className="titles flex-1 space-y-4 lg:space-y-6 text-center lg:text-left w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 pt-20">
@@ -37,7 +37,7 @@ function HeroSection() {
 
       <div className="character flex-1 flex items-center justify-center lg:justify-end w-full px-6 sm:px-8 md:px-12 lg:px-16">
         <div className="mt-40">
-        <Scene />
+          <Scene />
         </div>
 
         {/* <Image
