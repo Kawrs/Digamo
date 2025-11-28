@@ -1,5 +1,8 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
+
+
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -57,10 +60,12 @@ function Header() {
         </nav>
 
         <div className="hidden md:flex items-center space-x-3">
-          <button className="py-2.5 px-8 text-sm font-semibold text-gray-700 font-montserrat hover:bg-mint/80 hover:text-white transition-colors rounded-lg tracking-wide cursor-pointer dark:text-white">
-            Login
-          </button>
-          <button className="py-2.5 px-6 text-sm font-semibold bg-coral text-white font-montserrat border border-gray-200 hover:bg-orange transition-colors rounded-lg tracking-wide cursor-pointer shadow-md hover:shadow-lg">
+          <Link href="/auth/login">
+            <button className="py-2.5 px-8 text-sm font-semibold text-gray-700 font-montserrat hover:bg-mint/80 hover:text-white transition-colors rounded-lg tracking-wide cursor-pointer dark:text-white">
+              Login
+            </button>
+          </Link>
+          <button className="py-2.5 px-6 text-sm font-semibold bg-orange text-white font-montserrat border border-gray-200 hover:bg-coral transition-colors rounded-lg tracking-wide cursor-pointer shadow-md hover:shadow-lg">
             Register
           </button>
         </div>
@@ -108,9 +113,12 @@ function Header() {
               Samples
             </a>
             <div className="flex flex-col space-y-3 mt-4">
-              <button className="py-2.5 px-8 text-sm font-semibold text-gray-700 font-montserrat hover:bg-mint/80 hover:text-white transition-colors rounded-lg tracking-wide cursor-pointer">
-                Login
+              
+               
+               <button className="py-2.5 px-8 text-sm font-semibold text-gray-700 font-montserrat hover:bg-mint/80 hover:text-white transition-colors rounded-lg tracking-wide cursor-pointer">
+               Login
               </button>
+
               <button className="py-2.5 px-6 text-sm font-semibold bg-orange text-white font-montserrat hover:bg-coral transition-colors rounded-lg tracking-wide cursor-pointer  hover:shadow-lg">
                 Register
               </button>
