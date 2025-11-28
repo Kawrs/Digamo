@@ -60,7 +60,7 @@ function Header() {
           <button className="py-2.5 px-8 text-sm font-semibold text-gray-700 font-montserrat hover:bg-mint/80 hover:text-white transition-colors rounded-lg tracking-wide cursor-pointer dark:text-white">
             Login
           </button>
-          <button className="py-2.5 px-6 text-sm font-semibold bg-orange text-white font-montserrat border border-gray-200 hover:bg-coral transition-colors rounded-lg tracking-wide cursor-pointer shadow-md hover:shadow-lg">
+          <button className="py-2.5 px-6 text-sm font-semibold bg-coral text-white font-montserrat border border-gray-200 hover:bg-orange transition-colors rounded-lg tracking-wide cursor-pointer shadow-md hover:shadow-lg">
             Register
           </button>
         </div>

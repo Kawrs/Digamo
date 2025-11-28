@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import SearchBar from "components/home-page/SearchBar";
 
 export default function Carousel() {
   const [current, setCurrent] = useState(0);
 
   const baseItems = [
-    { id: 0, label: "Favorites", color: "bg-gray" },
-    { id: 1, label: "My Pantry", color: "bg-gray" },
-    { id: 2, label: "Randomizer", color: "bg-gray" },
+    { id: 0, label: "Favorites", color: "bg-gold" },
+    { id: 1, label: "My Pantry", color: "bg-orange" },
+    { id: 2, label: "Randomizer", color: "bg-coral" },
   ];
 
   const next = () => {
@@ -28,16 +29,16 @@ export default function Carousel() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="absolute top-46 text-center text-4xl">
+    <div className="flex flex-col items-center justify-center min-h-screen z-10">
+      <div className="absolute top-46 text-center text-4xl font-quattrocento  text-gray-900 dark:text-white">
         <h1>Good Morning, Beautiful!</h1>
       </div>
       <div className="relative w-full flex items-center justify-center max-w-2xl mx-auto">
         <button
           onClick={prev}
-          className="absolute -left-12 z-30 p-2  rounded transition cursor-pointer"
+          className="left absolute -left-50  z-30 p-2  rounded transition cursor-pointer"
         >
-          <ChevronLeft size={32} className="text-gray-700" />
+          <ChevronLeft size={32} className="text-gray-700 dark:text-white" />
         </button>
 
         <div className="w-96 h-64 flex items-center justify-center perspective">
@@ -50,18 +51,26 @@ export default function Carousel() {
                   key={item.id}
                   className={`absolute transition-all duration-500 ${
                     position === "center"
-                      ? "z-20 scale-100 opacity-100"
+                      ? "z-20 scale-95 opacity-100"
                       : position === "left"
-                      ? "z-10 -translate-x-56 scale-75 opacity-60"
+                      ? "z-10 -translate-x-56 scale-75 opacity-50"
                       : position === "right"
-                      ? "z-10 translate-x-56 scale-75 opacity-60"
+                      ? "z-10 translate-x-56 scale-75 opacity-50"
                       : "scale-50 opacity-0"
                   }`}
                 >
                   <div
-                    className={`w-64 h-48 ${item.color} rounded-lg shadow-lg flex items-center justify-center`}
+                    className={`w-64 h-48 ${
+                      item.color
+                    } rounded-lg shadow-lg flex font-quattrocento items-center justify-center 
+                    ${
+                      position === "center"
+                        ? "cursor-pointer hover:scale-105"
+                        : "cursor-default"
+                    }
+                    transition duration-200 ease-in-out`}
                   >
-                    <span className="text-2xl font-semibold text-white">
+                    <span className="text-xl font-semibold text-dark">
                       {item.label}
                     </span>
                   </div>
@@ -74,9 +83,9 @@ export default function Carousel() {
         {/* Right Arrow */}
         <button
           onClick={next}
-          className="absolute -right-12 z-30 p-2 rounded transition cursor-pointer"
+          className="right absolute -right-50 z-30 p-2 rounded transition cursor-pointer"
         >
-          <ChevronRight size={32} className="text-gray-700" />
+          <ChevronRight size={32} className="text-gray-700 dark:text-white" />
         </button>
       </div>
 
@@ -87,10 +96,13 @@ export default function Carousel() {
             key={item.id}
             onClick={() => setCurrent(item.id)}
             className={`w-2 h-2 rounded-full transition ${
-              current === item.id ? "bg-gray-700" : "bg-gray-400"
+              current === item.id ? "bg-gray-500" : "bg-gray-400"
             }`}
           />
         ))}
+      </div>
+      <div className="bar absolute bottom-20 w-full px-4">
+        <SearchBar />
       </div>
     </div>
   );
