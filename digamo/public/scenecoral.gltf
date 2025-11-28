@@ -5232,7 +5232,7 @@
   ],
   "buffers": [
     {
-      "uri": "scene_data.bin",
+      "uri": "scenecoral_data.bin",
       "byteLength": 1713196
     }
   ],
@@ -14216,7 +14216,7 @@
   ],
   "images": [
     {
-      "uri": "scene_img0.png"
+      "uri": "scenecoral_img0.png"
     }
   ],
   "cameras": [
