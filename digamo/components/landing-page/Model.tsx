@@ -10,7 +10,7 @@ export default function Model(props: Partial<ComponentProps<"primitive">>) {
   const tmpPos = useRef(new THREE.Vector3());
   const tmpQuat = useRef(new THREE.Quaternion());
  
-  const { scene, animations } = useGLTF("/scene.glb");
+  const { scene, animations } = useGLTF("/scenecoral.glb");
   const { actions } = useAnimations(animations, group);
 
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
