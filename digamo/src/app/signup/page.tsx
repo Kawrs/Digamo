@@ -5,10 +5,10 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 const SignupPage = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-  
+
   return (
     <div className="bg-white w-full min-h-screen h-full py-15 px-5">
-      <div className="border border-black h-full w-4/5 flex m-auto rounded-2xl">
+      <div className=" h-full w-4/5 flex m-auto rounded-2xl shadow-2xl">
       
         {/* left side*/}
         <div className=' h-full w-2/5 bg-gradient-to-tl from-[#F0B60E] to-[#B8D4C8] rounded-l-2xl z-0 relative -mr-5'>
@@ -28,8 +28,8 @@ const SignupPage = () => {
         </div>
 
         {/* right side*/}
-        <div className='border-black border-l h-full w-1/2 rounded-2xl z-10 relative bg-white' >
-          <div className='flex flex-col items-center h-full w-full my-10 '>
+        <div className=' h-full w-1/2 rounded-2xl z-10 relative bg-white' >
+          <div className='flex flex-col items-center h-full w-full mt-7 '>
             <h1 className='text-gray-900 text-4xl relative left-13 mb-5'>Create Account</h1>
             
             <div className='flex flex-col gap-4 relative left-15'>
