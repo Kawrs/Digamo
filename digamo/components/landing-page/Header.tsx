@@ -65,9 +65,11 @@ function Header() {
               Login
             </button>
           </Link>
+          <Link href="/auth/signup">
           <button className="py-2.5 px-6 text-sm font-semibold bg-orange text-white font-montserrat border border-gray-200 hover:bg-coral transition-colors rounded-lg tracking-wide cursor-pointer shadow-md hover:shadow-lg">
             Register
           </button>
+          </Link>
         </div>
 
         <button
@@ -118,10 +120,11 @@ function Header() {
                <button className="py-2.5 px-8 text-sm font-semibold text-gray-700 font-montserrat hover:bg-mint/80 hover:text-white transition-colors rounded-lg tracking-wide cursor-pointer">
                Login
               </button>
-
+              <Link href="/auth/signup">
               <button className="py-2.5 px-6 text-sm font-semibold bg-orange text-white font-montserrat hover:bg-coral transition-colors rounded-lg tracking-wide cursor-pointer  hover:shadow-lg">
                 Register
               </button>
+              </Link>
             </div>
           </div>
         )}
