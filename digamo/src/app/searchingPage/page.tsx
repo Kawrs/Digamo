@@ -1,3 +1,5 @@
+"use client";
+
 import HeaderHome from "components/home-page/HeaderHome";
 import SearchBar from "components/home-page/SearchBar";
 
