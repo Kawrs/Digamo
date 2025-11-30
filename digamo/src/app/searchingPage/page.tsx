@@ -2,6 +2,7 @@
 
 import HeaderHome from "components/home-page/HeaderHome";
 import SearchBar from "components/home-page/SearchBar";
+export const dynamic = "force-dynamic";
 
 export default function SearchingPage() {
   return (
