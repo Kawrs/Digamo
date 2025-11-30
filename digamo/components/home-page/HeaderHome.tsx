@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import KitchenIcon from "@mui/icons-material/Kitchen";
@@ -13,15 +14,15 @@ function HeaderHome() {
         </h3>
 
         <nav className="hidden md:flex items-center space-x-3 icons-container">
-          <div className="heart cursor-pointer">
+          <button className="heart cursor-pointer">
             <FavoriteIcon style={{ color: "red" }} />
-          </div>
-          <div className="pantry-logo cursor-pointer">
+          </button>
+          <button className="pantry-logo cursor-pointer">
             <KitchenIcon style={{ color: "coral" }} />
-          </div>
-          <div className="profile cursor-pointer">
+          </button>
+          <button className="profile cursor-pointer">
             <div className="rounded-full bg-red p-4"></div>
-          </div>
+          </button>
         </nav>
 
         <button
@@ -53,7 +54,19 @@ function HeaderHome() {
         </button>
 
         {menuOpen && (
-          <div className="absolute top-full left-0 w-full bg-white shadow-md md:hidden p-5 flex flex-col space-y-4 font-montserrat"></div>
+          <div className="absolute top-full right-0 w-1/4 bg-gray-100 shadow-md md:hidden p-5 flex flex-col space-y-4 font-montserrat">
+            <nav className=" flex flex-col items-center justify-end space-x-3 icons-container ">
+              <button className="heart cursor-pointer">
+                <FavoriteIcon style={{ color: "red" }} />
+              </button>
+              <button className="pantry-logo cursor-pointer">
+                <KitchenIcon style={{ color: "coral" }} />
+              </button>
+              <button className="profile cursor-pointer w-0.5">
+                <div className="rounded-full bg-red p-4"></div>
+              </button>
+            </nav>
+          </div>
         )}
       </div>
     </header>

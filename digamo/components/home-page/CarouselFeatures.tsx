@@ -30,8 +30,8 @@ export default function Carousel() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen z-10">
-      <div className="absolute top-46 text-center text-4xl font-quattrocento  text-gray-900 dark:text-white">
-        <h1>Good Morning, Beautiful!</h1>
+      <div className=" absolute top-46 text-center  font-quattrocento  text-gray-900 dark:text-white">
+        <h1 className="greetings text-4xl">Good Morning, Beautiful!</h1>
       </div>
       <div className="relative w-full flex items-center justify-center max-w-2xl mx-auto">
         <button
@@ -41,7 +41,7 @@ export default function Carousel() {
           <ChevronLeft size={32} className="text-gray-700 dark:text-white" />
         </button>
 
-        <div className="w-96 h-64 flex items-center justify-center perspective">
+        <div className="w-100 h-70 flex items-center justify-center perspective">
           <div className="relative w-full h-full flex items-center justify-center">
             {baseItems.map((item, index) => {
               const position = getPosition(index);
