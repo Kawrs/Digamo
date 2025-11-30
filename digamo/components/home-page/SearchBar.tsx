@@ -2,18 +2,23 @@
 
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import Link from "next/link";
-import React, { use, useRef } from "react";
-import { useRouter } from "next/navigation";
+import React, { useRef, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SearchBar() {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const myInput = useRef<HTMLInputElement | null>(null);
+  const searchParams = useSearchParams();
 
-  const handleButtonClick = () => {
-    router.push("/searchingPage");
-  };
+  //kani siya kay para inig change pages dli mawala ang sulod sa search bar after clicking the send button or pressing enter
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q && inputRef.current) {
+      inputRef.current.value = q;
+    }
+  }, [searchParams]);
 
   const handleKeyDown = (event: {
     key: string;
@@ -28,14 +33,14 @@ export default function SearchBar() {
 
   const checkInput = () => {
     const inputValue = inputRef.current?.value ?? "";
-
     if (inputValue.trim() === "") {
       console.log("Input is empty or whitespace.");
       return;
     }
 
-    handleButtonClick();
+    router.push(`/searchingPage?q=${encodeURIComponent(inputValue)}`);
   };
+
   return (
     <div>
       <form className="max-w-md mx-auto">
