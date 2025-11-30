@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import SearchBar from "components/home-page/SearchBar";
+import { Suspense } from "react";
 
 export default function Carousel() {
   const [current, setCurrent] = useState(0);
@@ -103,7 +104,9 @@ export default function Carousel() {
         ))}
       </div>
       <div className="bar absolute bottom-20 w-full px-4">
-        <SearchBar />
+        <Suspense fallback={<div>Loading...</div>}>
+          <SearchBar />
+        </Suspense>
       </div>
     </div>
   );
