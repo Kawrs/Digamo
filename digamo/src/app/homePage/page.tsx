@@ -1,7 +1,10 @@
 "use client";
+
 import HeaderHome from "components/home-page/HeaderHome";
 import DecorationLR from "components/home-page/DecorationLR";
 import Carousel from "components/home-page/CarouselFeatures";
+
+export const dynamic = "force-dynamic";
 
 export default function HomePage() {
   return (
