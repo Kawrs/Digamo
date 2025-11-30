@@ -62,7 +62,7 @@ const SignupPage = () => {
                         className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-900 hover:cursor-pointer
                           transition-all duration-200 hover:scale-110 active:scale-95'
                       >
-                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        {showPassword ?  <FaEye />: <FaEyeSlash />}
                       </button>
                     </div>
                   </div>
@@ -83,7 +83,7 @@ const SignupPage = () => {
                         className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-900 hover:cursor-pointer
                           transition-all duration-200 hover:scale-110 active:scale-95'
                       >
-                        {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                        {showConfirmPassword ?  <FaEye />: <FaEyeSlash />}
                       </button>
                     </div>
                   </div>
