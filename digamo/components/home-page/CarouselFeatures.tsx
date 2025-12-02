@@ -1,6 +1,8 @@
+"use client";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import SearchBar from "components/home-page/SearchBar";
+import { Suspense } from "react";
 
 export default function Carousel() {
   const [current, setCurrent] = useState(0);
@@ -30,8 +32,8 @@ export default function Carousel() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen z-10">
-      <div className="absolute top-46 text-center text-4xl font-quattrocento  text-gray-900 dark:text-white">
-        <h1>Good Morning, Beautiful!</h1>
+      <div className=" absolute top-46 text-center  font-quattrocento  text-gray-900 dark:text-white">
+        <h1 className="greetings text-4xl">Good Morning, Beautiful!</h1>
       </div>
       <div className="relative w-full flex items-center justify-center max-w-2xl mx-auto">
         <button
@@ -41,7 +43,7 @@ export default function Carousel() {
           <ChevronLeft size={32} className="text-gray-700 dark:text-white" />
         </button>
 
-        <div className="w-96 h-64 flex items-center justify-center perspective">
+        <div className="w-100 h-70 flex items-center justify-center perspective">
           <div className="relative w-full h-full flex items-center justify-center">
             {baseItems.map((item, index) => {
               const position = getPosition(index);
@@ -102,7 +104,9 @@ export default function Carousel() {
         ))}
       </div>
       <div className="bar absolute bottom-20 w-full px-4">
-        <SearchBar />
+        <Suspense fallback={<div>Loading...</div>}>
+          <SearchBar />
+        </Suspense>
       </div>
     </div>
   );
