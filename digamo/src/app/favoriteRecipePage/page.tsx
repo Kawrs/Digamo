@@ -17,6 +17,6 @@ const FavoriteRecipePage = () => {
       </div>
     </div>
   );
-}
+};
 
 export default FavoriteRecipePage;

@@ -23,7 +23,7 @@ export default function NavButtons() {
     {
       title: "Favorites",
       icon: "ant-design:heart-filled",
-      page: "/#",
+      page: "/favoriteRecipePage",
     },
   ];
   return (

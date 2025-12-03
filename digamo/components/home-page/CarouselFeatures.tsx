@@ -10,9 +10,24 @@ export default function Carousel() {
   const [current, setCurrent] = useState(0);
 
   const baseItems = [
-    { id: 0, label: "Favorites", color: "bg-gold", path: "/favoriteRecipePage" },
-    { id: 1, label: "My Pantry", color: "bg-orange" },
-    { id: 2, label: "Randomizer", color: "bg-coral" },
+    {
+      id: 0,
+      label: "Favorites",
+      color: "bg-gold",
+      path: "/favoriteRecipePage",
+    },
+    {
+      id: 1,
+      label: "My Pantry",
+      color: "bg-orange",
+      path: "/#",
+    },
+    {
+      id: 2,
+      label: "Randomizer",
+      color: "bg-coral",
+      path: "/#",
+    },
   ];
 
   const next = () => {
@@ -64,31 +79,26 @@ export default function Carousel() {
                   }`}
                 >
                   {position === "center" ? (
-  <Link href={item.path || "/"}>
-    <div
-      className={`w-64 h-48 ${
-        item.color
-      } rounded-lg shadow-lg flex font-quattrocento items-center justify-center 
+                    <Link href={item.path || "/"}>
+                      <div
+                        className={`w-64 h-48 ${item.color} rounded-lg shadow-lg flex font-quattrocento items-center justify-center 
       cursor-pointer hover:scale-105 transition duration-200 ease-in-out`}
-    >
-      <span className="text-xl font-semibold text-dark">
-        {item.label}
-      </span>
-    </div>
-  </Link>
-) : (
-  <div
-    className={`w-64 h-48 ${
-      item.color
-    } rounded-lg shadow-lg flex font-quattrocento items-center justify-center 
+                      >
+                        <span className="text-xl font-semibold text-dark">
+                          {item.label}
+                        </span>
+                      </div>
+                    </Link>
+                  ) : (
+                    <div
+                      className={`w-64 h-48 ${item.color} rounded-lg shadow-lg flex font-quattrocento items-center justify-center 
     cursor-default transition duration-200 ease-in-out`}
-  >
-    <span className="text-xl font-semibold text-dark">
-      {item.label}
-    </span>
-  </div>
-)}
-
+                    >
+                      <span className="text-xl font-semibold text-dark">
+                        {item.label}
+                      </span>
+                    </div>
+                  )}
                 </div>
               );
             })}

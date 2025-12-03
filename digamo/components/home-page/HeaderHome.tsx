@@ -7,7 +7,7 @@ function HeaderHome() {
 
   return (
     <header className="fixed top-0 left-0 w-full bg-white/70 backdrop-blur-sm z-50 shadow-sm dark:bg-black/50 dark:border-b dark:backdrop-blur-sm dark:shadow-sm">
-      <div className="navigation flex items-center justify-between py-5 px-6 sm:px-10 lg:px-24">
+      <div className="navigation flex items-center justify-between py-3 px-6 sm:px-10 lg:px-24">
         <h3 className="font-bold text-xl text-black font-montserrat tracking-wide dark:text-white">
           Digamo
         </h3>
@@ -17,7 +17,6 @@ function HeaderHome() {
         </nav>
 
         <nav className="hidden md:flex items-center space-x-3 icons-container">
-   
           <button className="profile cursor-pointer">
             <div className="rounded-full bg-red p-4"></div>
           </button>
