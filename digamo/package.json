@@ -12,6 +12,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@fontsource/montagu-slab": "^5.2.10",
+    "@iconify-icons/mdi-light": "^1.2.5",
     "@mui/icons-material": "^7.3.4",
     "@mui/material": "^7.3.5",
     "@mui/styled-engine-sc": "^7.3.5",
@@ -28,6 +29,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@iconify-icon/react": "^3.0.3",
+    "@iconify/react": "^6.0.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
