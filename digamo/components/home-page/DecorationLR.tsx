@@ -28,7 +28,7 @@ export default function HomePage() {
       {/* Left Bottom Green Circle */}
       <div className="absolute bottom-[15%] hidden lg:block left-[-20px]">
         <div className="relative">
-          <div className="w-63 h-60 rounded-full bg-gradient-to-br from-mint to-mint/80 opacity-90"></div>
+          <div className="w-63 h-60 rounded-full bg-gradient-to-br from-mint to-mint/60 opacity-90"></div>
           <div
             data-layer="Ellipse 19"
             className="Ellipse19 absolute top-3 right-[-8px] w-50 h-53 rounded-full border-[5px] left-5 border-white"

@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import NavButtons from "./NavButtons";
 
@@ -16,10 +17,10 @@ function HeaderHome() {
         </nav>
 
         <nav className="hidden md:flex items-center space-x-3 icons-container">
-          <div className="profile cursor-pointer">
-            {/* ilisdanan pani para dynamic */}
+   
+          <button className="profile cursor-pointer">
             <div className="rounded-full bg-red p-4"></div>
-          </div>
+          </button>
         </nav>
 
         <button
