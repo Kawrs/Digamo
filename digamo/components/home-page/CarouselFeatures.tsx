@@ -3,12 +3,14 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import SearchBar from "components/home-page/SearchBar";
 import { Suspense } from "react";
+import Link from "next/link";
+import path from "path";
 
 export default function Carousel() {
   const [current, setCurrent] = useState(0);
 
   const baseItems = [
-    { id: 0, label: "Favorites", color: "bg-gold" },
+    { id: 0, label: "Favorites", color: "bg-gold", path: "/favoriteRecipePage" },
     { id: 1, label: "My Pantry", color: "bg-orange" },
     { id: 2, label: "Randomizer", color: "bg-coral" },
   ];
@@ -61,21 +63,32 @@ export default function Carousel() {
                       : "scale-50 opacity-0"
                   }`}
                 >
-                  <div
-                    className={`w-64 h-48 ${
-                      item.color
-                    } rounded-lg shadow-lg flex font-quattrocento items-center justify-center 
-                    ${
-                      position === "center"
-                        ? "cursor-pointer hover:scale-105"
-                        : "cursor-default"
-                    }
-                    transition duration-200 ease-in-out`}
-                  >
-                    <span className="text-xl font-semibold text-dark">
-                      {item.label}
-                    </span>
-                  </div>
+                  {position === "center" ? (
+  <Link href={item.path || "/"}>
+    <div
+      className={`w-64 h-48 ${
+        item.color
+      } rounded-lg shadow-lg flex font-quattrocento items-center justify-center 
+      cursor-pointer hover:scale-105 transition duration-200 ease-in-out`}
+    >
+      <span className="text-xl font-semibold text-dark">
+        {item.label}
+      </span>
+    </div>
+  </Link>
+) : (
+  <div
+    className={`w-64 h-48 ${
+      item.color
+    } rounded-lg shadow-lg flex font-quattrocento items-center justify-center 
+    cursor-default transition duration-200 ease-in-out`}
+  >
+    <span className="text-xl font-semibold text-dark">
+      {item.label}
+    </span>
+  </div>
+)}
+
                 </div>
               );
             })}
