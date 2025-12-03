@@ -1,6 +1,5 @@
 import { useState } from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import KitchenIcon from "@mui/icons-material/Kitchen";
+import NavButtons from "./NavButtons";
 
 function HeaderHome() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,13 +12,12 @@ function HeaderHome() {
         </h3>
 
         <nav className="hidden md:flex items-center space-x-3 icons-container">
-          <div className="heart cursor-pointer">
-            <FavoriteIcon style={{ color: "red" }} />
-          </div>
-          <div className="pantry-logo cursor-pointer">
-            <KitchenIcon style={{ color: "coral" }} />
-          </div>
+          <NavButtons />
+        </nav>
+
+        <nav className="hidden md:flex items-center space-x-3 icons-container">
           <div className="profile cursor-pointer">
+            {/* ilisdanan pani para dynamic */}
             <div className="rounded-full bg-red p-4"></div>
           </div>
         </nav>
@@ -53,7 +51,15 @@ function HeaderHome() {
         </button>
 
         {menuOpen && (
-          <div className="absolute top-full left-0 w-full bg-white shadow-md md:hidden p-5 flex flex-col space-y-4 font-montserrat"></div>
+          <div className="absolute top-full left-0 w-full bg-white shadow-md md:hidden p-5 flex flex-col space-y-4 font-montserrat">
+            <div className="flex flex-col gap-4">
+              <NavButtons />
+            </div>
+            {/* ilisdanan pani para dynamic */}
+            <div className="profile mt-4">
+              <div className="rounded-full bg-red p-4 w-1"></div>
+            </div>
+          </div>
         )}
       </div>
     </header>

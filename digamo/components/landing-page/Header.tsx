@@ -2,8 +2,6 @@
 import { useState } from "react";
 import Link from "next/link";
 
-
-
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -113,10 +111,8 @@ function Header() {
               Samples
             </a>
             <div className="flex flex-col space-y-3 mt-4">
-              
-               
-               <button className="py-2.5 px-8 text-sm font-semibold text-gray-700 font-montserrat hover:bg-mint/80 hover:text-white transition-colors rounded-lg tracking-wide cursor-pointer">
-               Login
+              <button className="py-2.5 px-8 text-sm font-semibold text-gray-700 font-montserrat hover:bg-mint/80 hover:text-white transition-colors rounded-lg tracking-wide cursor-pointer">
+                Login
               </button>
 
               <button className="py-2.5 px-6 text-sm font-semibold bg-orange text-white font-montserrat hover:bg-coral transition-colors rounded-lg tracking-wide cursor-pointer  hover:shadow-lg">
