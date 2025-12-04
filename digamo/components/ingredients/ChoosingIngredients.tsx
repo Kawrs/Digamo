@@ -1,6 +1,6 @@
 "use client";
 import SearchingIngredients from "components/ingredients/SearchingIngredients";
-import { useState } from "react";
+// import { useState } from "react";
 
 type ChoosingIngredientsProps = {
   isOpen: boolean;

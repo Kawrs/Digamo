@@ -1,7 +1,7 @@
 "use client";
 
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
-import Link from "next/link";
+// import Link from "next/link";
 import React, { useRef, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ChoosingIngredients from "components/ingredients/ChoosingIngredients";
