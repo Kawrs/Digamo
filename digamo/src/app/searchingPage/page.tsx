@@ -2,7 +2,6 @@
 
 import HeaderHome from "components/home-page/HeaderHome";
 import SearchBar from "components/home-page/SearchBar";
-// export const dynamic = "force-dynamic";
 import { Suspense } from "react";
 
 export default function SearchingPage() {
