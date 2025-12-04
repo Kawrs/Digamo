@@ -83,7 +83,7 @@ export default function Login() {
               className="bg-[#4F4F4F] text-white rounded-[30px] relative left-15 h-10 w-90 hover:cursor-pointer hover:bg-[#0e100f]
                         active:translate-y-1 transition-ease-out duration-100"
             >
-              Sign In
+              Sign in
             </button>
             <div>
               <Script
@@ -107,7 +107,7 @@ export default function Login() {
             </div>
             <div className="flex items-center justify-center gap-2 relative ml-25 mt-4">
               <p className="text-[#223F61] text-sm font-medium">
-                Don`&apos;`t have an account?
+                Don&apos;t have an account?
               </p>
               <Link
                 href="/auth/signup"
