@@ -34,11 +34,12 @@ export default function SearchingIngredients({
         placeholder="Search..."
         value={query}
         onChange={handleInputChange}
-        className="px-9 py-3 border-gold w-full rounded-lg border-2 focus:outline-none text-gray-900"
+        className="px-9 py-3 border-gold w-full rounded-lg dark:text-white border-2 focus:outline-none text-gray-90"
       />
 
       {/* ang ubos kay sa lista with title and checkbox */}
-      <div className="py-3 px-9 bg-white border-2 border-gold rounded-sm dark:text-gray-900 flex flex-row gap-4 justify-between items-center">
+      <h1>Label &#40;0/1&#41; </h1>
+      <div className="py-3 px-9 bg-white dark:bg-black border-2 border-gold rounded-sm dark:text-gray-900 flex flex-row gap-4 justify-between items-center">
         <div className="flex-row flex gap-4 items-center">
           <input
             type="checkbox"
@@ -47,19 +48,17 @@ export default function SearchingIngredients({
             className="cursor-pointer"
           />
           {/* name of ingredient */}
-          <div className="flex flex-col gap-2">
-            <label className="flex flex-row gap-2">itemName</label>
+          <div className="flex flex-col gap-2 dark:text-white">
+            <label className="flex flex-row gap-2 ">itemName</label>
             {/* quantity */}
             <p>quantity</p>
           </div>
         </div>
 
         {/* expiration date */}
-        <p>Expiration date</p>
-        {/* status */}
-        <div className="px-2 py-1 bg-red rounded-full dark:text-white">
-          Status
-        </div>
+        <p className="dark:text-white">Expiration date</p>
+        {/* status, mausab pani ang colors each stats */}
+        <div className="px-2 py-1 bg-red/60 text-red rounded-full">Status</div>
       </div>
 
       {/* buttons ang ubos for confirm and cancel */}

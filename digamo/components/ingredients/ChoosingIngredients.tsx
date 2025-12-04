@@ -17,18 +17,18 @@ export default function ChoosingIngredients({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 backgdrop-blur-sm">
+    <div className="fixed w-full inset-0 bg-transparent flex items-center justify-center z-50 backgdrop-blur-sm">
       <div
-        className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm w-[70%]"
+        className="absolute inset-0 backdrop-blur-sm w-full"
         onClick={onClose}
       />
-      <div className="bg-white p-6 rounded-lg shadow-lg relative max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-4 text-gray-900">
+      <div className="bg-white dark:bg-black p-6 rounded-lg shadow-lg relative max-w-md w-full">
+        <h2 className="text-2xl font-bold mb-4  dark:text-white text-gray-900">
           Choose Ingredients
         </h2>
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-500 hover:text-black"
+          className="absolute top-2 right-2 text-gray-500 hover:text-black dark:hover:text-white"
         >
           ✕
         </button>
