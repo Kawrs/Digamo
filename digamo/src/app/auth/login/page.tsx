@@ -8,7 +8,7 @@ import Script from "next/script";
 
 // import Link from "next/link";
 
-export default function login() {
+export default function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
 
   return (
@@ -103,7 +103,7 @@ export default function login() {
             </div>
             <div className="flex items-center justify-center gap-2 relative ml-25 mt-4">
               <p className="text-[#223F61] text-sm font-medium">
-                Don't have an account?
+                Don`&apos;`t have an account?
               </p>
               <Link
                 href="/auth/signup"
