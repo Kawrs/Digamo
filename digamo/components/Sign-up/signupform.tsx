@@ -75,7 +75,7 @@ const SignupForm = () => {
           <h2 className="text-red-500 text-md text-start ">Error Message</h2>
 
           {/* Button */}
-          <Link href="/homePage">
+          <Link rel="preload" href="/homePage">
             <button
               className="bg-[#4F4F4F] text-white rounded-2xl h-10 w-full max-w-sm shadow-2xl shadow-black-50 mb-10
                                   hover:bg-gradient-to-r hover:cursor-pointer hover:from-[#F36B3F] hover:to-[#EF4444]

@@ -1,0 +1,27 @@
+.bigCard{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px 24px;
+    width: 100%;
+    height: 550px;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.titleSection{
+    font: Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 200;
+    /* margin-bottom: 10px; */
+}
+.description{
+     font: Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 200;
+    color:gray;
+    /* margin-bottom: 10px; */
+}
