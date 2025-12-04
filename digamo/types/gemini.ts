@@ -18,12 +18,6 @@ export interface RecipeGenerationResponse {
   prepTime: string;
   cookTime: string;
   servings: string;
-  nutritionInfo?: {
-    calories?: string;
-    protein?: string;
-    carbs?: string;
-    fat?: string;
-  };
 }
 
 export interface MealSuggestionRequest {

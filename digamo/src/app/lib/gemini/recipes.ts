@@ -13,7 +13,7 @@ export const generateRecipe = async (ingredients: string[], type: RecipeType): P
   } else if (type === RecipeType.WEEKLY_MEAL_PLAN) {
     prompt = `${promptIngredients} Please generate a 7-day (weekly) meal plan, including breakfast, lunch, and dinner recipes for each day. For each recipe, list the ingredients with quantities and clear preparation instructions. Ensure the plan primarily utilizes the provided ingredients. Summarize this plan into a JSON object matching the RecipeGenerationResponse schema where 'name' is 'Weekly Meal Plan', 'description' is a summary of the plan, 'ingredients' lists key ingredients used, and 'instructions' details the daily meals.`;
   } else {
-    throw new Error('Invalid recipe type specified.');
+    throw new Error('Weekly meal plan generation not yet supported with this API endpoint.');
   }
 
   // Define the schema for the RecipeGenerationResponse
@@ -35,20 +35,9 @@ export const generateRecipe = async (ingredients: string[], type: RecipeType): P
       prepTime: { type: Type.STRING, description: 'Estimated preparation time (e.g., "15 minutes").' },
       cookTime: { type: Type.STRING, description: 'Estimated cooking time (e.g., "30 minutes").' },
       servings: { type: Type.STRING, description: 'Number of servings (e.g., "4 people").' },
-      nutritionInfo: {
-        type: Type.OBJECT,
-        properties: {
-          calories: { type: Type.STRING, description: 'Calories per serving.' },
-          protein: { type: Type.STRING, description: 'Protein per serving.' },
-          carbs: { type: Type.STRING, description: 'Carbohydrates per serving.' },
-          fat: { type: Type.STRING, description: 'Fat per serving.' },
-        },
-        propertyOrdering: ["calories", "protein", "carbs", "fat"],
-        optional: true, // Nutrition info is optional
-      },
     },
     required: ['name', 'description', 'ingredients', 'instructions', 'prepTime', 'cookTime', 'servings'],
-    propertyOrdering: ['name', 'description', 'ingredients', 'instructions', 'prepTime', 'cookTime', 'servings', 'nutritionInfo'],
+    propertyOrdering: ['name', 'description', 'ingredients', 'instructions', 'prepTime', 'cookTime', 'servings'],
   };
 
   try {
