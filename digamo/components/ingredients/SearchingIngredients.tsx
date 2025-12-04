@@ -1,3 +1,5 @@
+"use client";
+
 import { main } from "framer-motion/client";
 import { SetStateAction, useState } from "react";
 // import SearchIcon from "@mui/icons-material/Search";
