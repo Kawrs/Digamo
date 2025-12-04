@@ -2,9 +2,15 @@
 
 import { main } from "framer-motion/client";
 import { SetStateAction, useState } from "react";
-// import SearchIcon from "@mui/icons-material/Search";
+// import SearchIcon from "@mui/icons-material/Search";\
 
-export default function ChoosingIngredients({ onClose }: any) {
+type SearchingIngredientsProps = {
+  onChoose: (value: string) => void;
+};
+
+export default function SearchingIngredients({
+  onChoose,
+}: SearchingIngredientsProps) {
   const [query, setQuery] = useState("");
   const [isChecked, setIsChecked] = useState(false);
 
@@ -60,7 +66,7 @@ export default function ChoosingIngredients({ onClose }: any) {
       <div className="right-0 px-9 flex flex-row gap-4 justify-end">
         <button
           className="text-orange border-2 border-gold px-3 rounded-sm cursor-pointer hover:text-orange/80"
-          onClick={onClose}
+          onClick={() => onChoose("cancel")}
         >
           Cancel
         </button>

@@ -2,11 +2,18 @@
 import SearchingIngredients from "components/ingredients/SearchingIngredients";
 import { useState } from "react";
 
+type ChoosingIngredientsProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  children?: React.ReactNode;
+  className?: string;
+};
+
 export default function ChoosingIngredients({
   isOpen,
   onClose,
   children,
-}: any) {
+}: ChoosingIngredientsProps) {
   if (!isOpen) return null;
 
   return (
@@ -27,7 +34,11 @@ export default function ChoosingIngredients({
         </button>
         {children}
         {/* dri nga dapit kay for the searcbar */}
-        <SearchingIngredients onClose={onClose} />
+        <SearchingIngredients
+          onChoose={(value) => {
+            if (value === "cancel") onClose();
+          }}
+        />
       </div>
     </div>
   );
