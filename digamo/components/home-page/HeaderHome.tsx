@@ -1,27 +1,25 @@
+"use client";
 import { useState } from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import KitchenIcon from "@mui/icons-material/Kitchen";
+import NavButtons from "./NavButtons";
 
 function HeaderHome() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="fixed top-0 left-0 w-full bg-white/70 backdrop-blur-sm z-50 shadow-sm dark:bg-black/50 dark:border-b dark:backdrop-blur-sm dark:shadow-sm">
-      <div className="navigation flex items-center justify-between py-5 px-6 sm:px-10 lg:px-24">
+      <div className="navigation flex items-center justify-between py-3 px-6 sm:px-10 lg:px-24">
         <h3 className="font-bold text-xl text-black font-montserrat tracking-wide dark:text-white">
           Digamo
         </h3>
 
         <nav className="hidden md:flex items-center space-x-3 icons-container">
-          <div className="heart cursor-pointer">
-            <FavoriteIcon style={{ color: "red" }} />
-          </div>
-          <div className="pantry-logo cursor-pointer">
-            <KitchenIcon style={{ color: "coral" }} />
-          </div>
-          <div className="profile cursor-pointer">
+          <NavButtons />
+        </nav>
+
+        <nav className="hidden md:flex items-center space-x-3 icons-container">
+          <button className="profile cursor-pointer">
             <div className="rounded-full bg-red p-4"></div>
-          </div>
+          </button>
         </nav>
 
         <button
@@ -53,7 +51,15 @@ function HeaderHome() {
         </button>
 
         {menuOpen && (
-          <div className="absolute top-full left-0 w-full bg-white shadow-md md:hidden p-5 flex flex-col space-y-4 font-montserrat"></div>
+          <div className="absolute top-full left-0 w-full bg-white shadow-md md:hidden p-5 flex flex-col space-y-4 font-montserrat">
+            <div className="flex flex-col gap-4">
+              <NavButtons />
+            </div>
+            {/* ilisdanan pani para dynamic */}
+            <div className="profile mt-4">
+              <div className="rounded-full bg-red p-4 w-1"></div>
+            </div>
+          </div>
         )}
       </div>
     </header>

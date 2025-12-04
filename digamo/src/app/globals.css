@@ -11,6 +11,8 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-montagu: var(--font-montagu);
+  --font-quattrocento: var(--font-quattrocento);
+  --font-coromorant: var(--font-cormorantgaramond);
   --color-mint: oklch(0.79 0.088 171.7);
   --color-gold: oklch(0.8075 0.1635 85.03);
   --color-orange: oklch(0.72 0.147 67.4);
@@ -75,4 +77,54 @@ body {
     padding-top: 5rem;
     padding-bottom: 3rem;
   }
+}
+
+@layer base {
+  input[type="search"] {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
+
+.quattro {
+  font-family: var(--font-quattrocento);
+}
+
+/* carousel */
+@media (max-width: 767px) {
+  .left {
+    left: -10px;
+  }
+
+  .right {
+    right: -10px;
+  }
+
+  .bar {
+    bottom: 100px;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 768px) {
+  .left {
+    left: -10px;
+  }
+
+  .right {
+    right: -10px;
+  }
+
+  .bar {
+    bottom: 100px;
+  }
+  /* 
+  .greetings {
+    font-size: 100px;
+  } */
 }
