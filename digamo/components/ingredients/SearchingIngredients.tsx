@@ -27,7 +27,7 @@ export default function SearchingIngredients({
   };
 
   return (
-    <main className="flex gap-4 flex-col w-full">
+    <div className="flex gap-4 flex-col w-full">
       {/* searchbar ni dri */}
       <input
         type="text"
@@ -74,6 +74,6 @@ export default function SearchingIngredients({
           Confirm
         </button>
       </div>
-    </main>
+    </div>
   );
 }
