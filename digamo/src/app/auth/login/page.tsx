@@ -5,6 +5,7 @@ import Scene from "components/landing-page/Scene";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Link from "next/link";
 import Script from "next/script";
+import Image from "next/image";
 
 // import Link from "next/link";
 
@@ -93,10 +94,13 @@ export default function Login() {
                 type="button"
                 className="flex items-center justify-center ml-30  h-10 w-90 bg-white border border-gray-300 rounded-[30px] shadow hover:bg-gray-100 transition-colors duration-200 text-[#223F61] font-medium cursor-pointer mt-2"
               >
-                <img
+                <Image
                   src="https://developers.google.com/identity/images/g-logo.png"
                   alt="Google"
-                  className="w-5 h-5 mr-8"
+                  width={20}
+                  height={20}
+                  className="mr-8"
+                  unoptimized
                 />
                 <span>Sign in with Google</span>
               </button>
