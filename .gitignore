@@ -1,0 +1,15 @@
+# Ignore dependency folders
+node_modules/
+digamo/node_modules/
+
+# Ignore build files
+.next/
+dist/
+build/
+
+# Ignore environment variables (security)
+.env
+.env.local
+
+# Ignore system files
+.DS_Store
