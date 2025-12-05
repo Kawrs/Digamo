@@ -83,13 +83,22 @@ const SignupForm = () => {
             // after signup
             router.push(`/homePage?email=${encodeURIComponent(emailToPass)}`);
             
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Signup Error:", error);
-            if (error.message) {
-                setErrorMsg(error.message);
-            } else {
-                setErrorMsg("An unexpected error occurred.");
-            }
+            
+            // Safely check if the error object has a 'message' property before accessing it
+            let errorMessage = "An unexpected error occurred.";
+
+            if (typeof error === 'object' && error !== null && 'message' in error) {
+                const message = (error as { message: string }).message;
+                
+                if (message.includes('already exists')) {
+                    errorMessage = "Account already exists! Please use the 'Log In' page.";
+                } else {
+                    errorMessage = message;
+                }
+            }         
+            setErrorMsg(errorMessage);
         } finally {
             setLoading(false);
         }
