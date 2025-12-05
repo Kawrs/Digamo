@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Table from "./Table";
 import styles from "./PantryInventory.module.css";
+import { Plus, Sparkles } from "lucide-react";
 
 export default function PantryInventory() {
   const [addItemFunction, setAddItemFunction] = useState<(() => void) | null>(
@@ -27,19 +28,21 @@ export default function PantryInventory() {
           </div>
           <nav className="absolute top-4 right-4 hidden md:flex items-center">
             <button className="profile cursor-pointer">
-              <div className="rounded-lg bg-white w-40 h-10 border border-gray-200 mr-2 flex items-center justify-center">
+              <div className="rounded-lg bg-white w-40 h-10 border border-gray-200 mr-2 flex items-center justify-center gap-2">
+                <Sparkles size={18} />
                 <p className="text-lg text-gray-800 font-medium">Condiments</p>
               </div>
             </button>
             <button className="profile cursor-pointer" onClick={handleAddClick}>
-              <div className="rounded-lg bg-[#030213] w-32 h-10 flex items-center justify-center">
+              <div className="rounded-lg bg-[#030213] w-32 h-10 flex items-center justify-center gap-2">
+                <Plus size={18} color="white" />
+
                 <p className="text-lg text-white font-medium">Add Item</p>
               </div>
             </button>
           </nav>
-          <div>
-            <Table onAdd={setAddItemFunction} />
-          </div>
+
+          <Table onAdd={setAddItemFunction} />
         </div>
       </div>
     </div>
