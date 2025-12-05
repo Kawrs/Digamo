@@ -3,7 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { FaEye, FaEyeSlash } from "react-icons/fa"; 
-import { supabase }  from '../../src/app/lib/supabase/client';
+//import { supabase }  from '../../src/app/lib/supabase/client';
 import { auth, db } from "../../src/app/lib/firebase/firebaseConfig";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
@@ -73,6 +73,13 @@ const SignupForm = () => {
         }
 
         try {
+            // Check if Firebase is initialized
+            if (!auth || !db) {
+                setErrorMsg("Firebase is not initialized. Please check your configuration.");
+                setLoading(false);
+                return;
+            }
+
             // Step 1: Create user
             const result = await createUserWithEmailAndPassword(
                 auth,
@@ -87,26 +94,14 @@ const SignupForm = () => {
             });
 
             // Step 3: Create user document in Firestore
-            try {
-                await setDoc(doc(db, "users", user.uid), {
+            await setDoc(doc(db, "users", user.uid), {
                     username: formData.username,
                     email: formData.email,
                     uid: user.uid,
                     createdAt: new Date().toISOString(),
                 });
-            } catch (firestoreError: unknown) {
-                // If Firestore fails due to permissions, provide helpful message
-                const error = firestoreError as { code?: string; message?: string };
-                if (error?.code === 'permission-denied' || 
-                    error?.message?.includes('permission') ||
-                    error?.message?.includes('Permission')) {
-                    throw new Error('Firestore permission denied. Please update your Firestore security rules to allow authenticated users to create documents in the "users" collection.');
-                }
-                // Re-throw other Firestore errors
-                throw firestoreError;
-            }
 
-            setSuccessMsg("Success! Account created.");
+            console.log("✅ User created, profile updated, and Firestore doc set!", user);
             
             // Clear form
             setFormData({
@@ -120,28 +115,31 @@ const SignupForm = () => {
         } catch (err: unknown) {
             let errorMessage = "An unexpected error occurred.";
             
-            // Type guard for Firebase errors
-            const error = err as { code?: string; message?: string };
-            
-            if (error?.code) {
-                switch (error.code) {
-                    case "auth/email-already-in-use":
-                        errorMessage = "Account already exists! Please use the 'Log In' page.";
-                        break;
-                    case "auth/invalid-email":
-                        errorMessage = "Invalid email address.";
-                        break;
-                    case "auth/weak-password":
-                        errorMessage = "Password should be at least 6 characters.";
-                        break;
-                    case "permission-denied":
-                        errorMessage = "Permission denied. Please update Firestore security rules to allow users to create their profile.";
-                        break;
-                    default:
-                        errorMessage = error.message || errorMessage;
+             if (err && typeof err === 'object') {
+                const error = err as { code?: string; message?: string };
+                
+                if (error.code) {
+                    switch (error.code) {
+                        case "auth/email-already-in-use":
+                            errorMessage = "Account already exists! Please use the 'Log In' page.";
+                            break;
+                        case "auth/invalid-email":
+                            errorMessage = "Invalid email address.";
+                            break;
+                        case "auth/weak-password":
+                            errorMessage = "Password should be at least 6 characters.";
+                            break;
+                        case "permission-denied":
+                            errorMessage = "Permission denied. Please update Firestore security rules to allow users to create their profile.";
+                            break;
+                        default:
+                            errorMessage = error.message || errorMessage;
+                    }
+                } else if (error.message) {
+                    errorMessage = error.message;
                 }
-            } else if (error?.message) {
-                errorMessage = error.message;
+            } else if (typeof err === 'string') {
+                errorMessage = err;
             }
             
             setErrorMsg(errorMessage);

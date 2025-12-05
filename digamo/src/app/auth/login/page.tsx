@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { auth } from "../../lib/firebase/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useEffect, useState } from "react";
 
 export default function Login() {
   const router = useRouter();
@@ -15,6 +16,11 @@ export default function Login() {
   const [password, setPassword] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [errorMsg, setErrorMsg] = React.useState("");
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   return (
     <div className="bg-white w-full min-h-screen py-8 md:py-20">
@@ -115,6 +121,10 @@ export default function Login() {
                   return;
                 }
                 try {
+                  if (!auth) {
+                    setErrorMsg("Firebase is not initialized. Please check your configuration.");
+                    return;
+                  }
                   setLoading(true);
                   await signInWithEmailAndPassword(auth, email, password);
                   router.push("/homePage");
