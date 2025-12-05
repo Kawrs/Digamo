@@ -151,7 +151,7 @@ const SignupForm = () => {
     return (
         <div className="w-full md:w-3/5 rounded-2xl z-10 relative bg-white">
             <div className="flex flex-col items-center justify-center h-full w-full px-4">
-                <h1 className="text-gray-900 text-3xl md:text-4xl mb-5 text-center mt-5">
+                <h1 className="text-gray-900 text-3xl md:text-4xl mb-5 text-center mt-5 font-monserrat">
                     Create Account
                 </h1>
 
@@ -159,7 +159,7 @@ const SignupForm = () => {
 
                     {/* Username */}
                     <div className="flex flex-col gap-1">
-                        <h2 className="text-gray-500">Username:</h2>
+                        <h2 className="font-monserrat text-[#4F4F4F]">Username:</h2>
                         <div className="rounded-3xl p-[2px] bg-gradient-to-r from-[#F0B60E] to-[#EF4444]">
                             <input
                                 name="username"
@@ -173,7 +173,7 @@ const SignupForm = () => {
 
                     {/* Email */}
                     <div className="flex flex-col gap-1">
-                        <h2 className="text-gray-500">Email:</h2>
+                        <h2 className="font-monserrat text-[#4F4F4F]">Email:</h2>
                         <div className="rounded-3xl p-[2px] bg-gradient-to-r from-[#F0B60E] to-[#EF4444]">
                             <input
                                 name="email"
@@ -188,7 +188,7 @@ const SignupForm = () => {
 
                     {/* Password */}
                     <div className="flex flex-col gap-1">
-                        <h2 className="text-gray-500">Password:</h2>
+                        <h2 className="font-monserrat text-[#4F4F4F]">Password:</h2>
                         <div className="rounded-3xl p-[2px] bg-gradient-to-r from-[#F0B60E] to-[#EF4444]">
                             <div className="relative">
                                 <input
@@ -212,7 +212,7 @@ const SignupForm = () => {
 
                     {/* Confirm Password */}
                     <div className="flex flex-col gap-1">
-                        <h2 className="text-gray-500">Confirm Password:</h2>
+                        <h2 className="font-monserrat text-[#4F4F4F]">Confirm Password:</h2>
                         <div className="rounded-3xl p-[2px] bg-gradient-to-r from-[#F0B60E] to-[#EF4444]">
                             <div className="relative">
                                 <input
