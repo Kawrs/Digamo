@@ -94,11 +94,12 @@ const SignupForm = () => {
                     uid: user.uid,
                     createdAt: new Date().toISOString(),
                 });
-            } catch (firestoreError: any) {
+            } catch (firestoreError: unknown) {
                 // If Firestore fails due to permissions, provide helpful message
-                if (firestoreError?.code === 'permission-denied' || 
-                    firestoreError?.message?.includes('permission') ||
-                    firestoreError?.message?.includes('Permission')) {
+                const error = firestoreError as { code?: string; message?: string };
+                if (error?.code === 'permission-denied' || 
+                    error?.message?.includes('permission') ||
+                    error?.message?.includes('Permission')) {
                     throw new Error('Firestore permission denied. Please update your Firestore security rules to allow authenticated users to create documents in the "users" collection.');
                 }
                 // Re-throw other Firestore errors
@@ -116,11 +117,14 @@ const SignupForm = () => {
             });
 
             router.push("/dashboard");
-        } catch (err: any) {
+        } catch (err: unknown) {
             let errorMessage = "An unexpected error occurred.";
             
-            if (err?.code) {
-                switch (err.code) {
+            // Type guard for Firebase errors
+            const error = err as { code?: string; message?: string };
+            
+            if (error?.code) {
+                switch (error.code) {
                     case "auth/email-already-in-use":
                         errorMessage = "Account already exists! Please use the 'Log In' page.";
                         break;
@@ -134,15 +138,10 @@ const SignupForm = () => {
                         errorMessage = "Permission denied. Please update Firestore security rules to allow users to create their profile.";
                         break;
                     default:
-                        errorMessage = err.message || errorMessage;
+                        errorMessage = error.message || errorMessage;
                 }
-            } else if (err?.message) {
-                // Check if it's a permission-related error message
-                if (err.message.includes('permission') || err.message.includes('Permission')) {
-                    errorMessage = err.message;
-                } else {
-                    errorMessage = err.message;
-                }
+            } else if (error?.message) {
+                errorMessage = error.message;
             }
             
             setErrorMsg(errorMessage);
