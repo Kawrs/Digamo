@@ -1,66 +1,174 @@
-import { Type, GenerateContentResponse } from "@google/genai"; // Added GenerateContentResponse
-import { RecipeType, RecipeGenerationResponse } from '@../../types/gemini';
-import { GEMINI_MODEL_TEXT_TASK } from '@../../constants';
-import { getGeminiInstance } from './client';
+import { Type, GenerateContentResponse } from "@google/genai";
+import { PantryItem, Recipe, GeminiRecipeOutput, RecipeResponseSchema } from '../../../../types/gemini';
+import { matchIngredients } from '../../myPantry/utils';
+import { v4 as uuidv4 } from 'uuid';
+import { getGeminiInstance, GEMINI_MODEL } from './client';
 
-export const generateRecipe = async (ingredients: string[], type: RecipeType): Promise<RecipeGenerationResponse> => {
-  const ai = getGeminiInstance();
-  const promptIngredients = ingredients.length > 0 ? `I have the following ingredients: ${ingredients.join(', ')}.` : 'I have some common pantry ingredients.';
+// Helper to parse Gemini's text response and apply recipe matching
+const processGeminiRecipe = (geminiOutput: GeminiRecipeOutput, pantryItems: PantryItem[]): Recipe => {
+  const { matchedIngredients, missingIngredients } = matchIngredients(geminiOutput.ingredients, pantryItems);
 
-  let prompt: string;
-  if (type === RecipeType.QUICK_SNACK_MEAL) {
-    prompt = `${promptIngredients} Please generate a single, quick meal or snack recipe. Provide clear instructions, ingredients list with quantities, and an estimated prep/cook time. Ensure the response is in JSON format, adhering to the RecipeGenerationResponse schema.`;
-  } else if (type === RecipeType.WEEKLY_MEAL_PLAN) {
-    prompt = `${promptIngredients} Please generate a 7-day (weekly) meal plan, including breakfast, lunch, and dinner recipes for each day. For each recipe, list the ingredients with quantities and clear preparation instructions. Ensure the plan primarily utilizes the provided ingredients. Summarize this plan into a JSON object matching the RecipeGenerationResponse schema where 'name' is 'Weekly Meal Plan', 'description' is a summary of the plan, 'ingredients' lists key ingredients used, and 'instructions' details the daily meals.`;
-  } else {
-    throw new Error('Weekly meal plan generation not yet supported with this API endpoint.');
-  }
-
-  // Define the schema for the RecipeGenerationResponse
-  const recipeSchema = {
-    type: Type.OBJECT,
-    properties: {
-      name: { type: Type.STRING, description: 'The name of the recipe or meal plan.' },
-      description: { type: Type.STRING, description: 'A short description of the recipe or meal plan.' },
-      ingredients: {
-        type: Type.ARRAY,
-        items: { type: Type.STRING },
-        description: 'A list of ingredients with quantities (e.g., "2 cups flour").',
-      },
-      instructions: {
-        type: Type.ARRAY,
-        items: { type: Type.STRING },
-        description: 'A list of step-by-step instructions for preparation.',
-      },
-      prepTime: { type: Type.STRING, description: 'Estimated preparation time (e.g., "15 minutes").' },
-      cookTime: { type: Type.STRING, description: 'Estimated cooking time (e.g., "30 minutes").' },
-      servings: { type: Type.STRING, description: 'Number of servings (e.g., "4 people").' },
-    },
-    required: ['name', 'description', 'ingredients', 'instructions', 'prepTime', 'cookTime', 'servings'],
-    propertyOrdering: ['name', 'description', 'ingredients', 'instructions', 'prepTime', 'cookTime', 'servings'],
+  return {
+    id: uuidv4(),
+    name: geminiOutput.name,
+    description: geminiOutput.description,
+    ingredients: geminiOutput.ingredients,
+    instructions: geminiOutput.instructions,
+    prepTime: geminiOutput.prepTime,
+    cookTime: geminiOutput.cookTime,
+    servings: geminiOutput.servings,
+    matchedIngredients: matchedIngredients,
+    missingIngredients: missingIngredients,
   };
+};
 
+export const generateRecipes = async (
+  pantryItems: PantryItem[],
+  count: number = 3
+): Promise<Recipe[]> => {
   try {
-    const response: GenerateContentResponse = await ai.models.generateContent({ // Explicitly typed response
-      model: GEMINI_MODEL_TEXT_TASK,
+    const ai = getGeminiInstance();
+    const pantryList = pantryItems.map(item => `${item.name} (${item.quantity}, expires ${item.expiryDate.toLocaleDateString()})`).join(', ');
+
+    const prompt = `
+      As Digamo, an AI-powered recipe generator, create ${count} unique, practical, and family-friendly recipes.
+      Prioritize using ingredients from the user's pantry, especially those expiring soon.
+      For each recipe, ensure specific measurements are provided and keep prep/cook times realistic (15-45 minutes).
+      Output the recipes in a JSON array format as defined by the RecipeResponseSchema.
+      DO NOT include nutrition information.
+
+      User's Pantry: ${pantryList}
+      Dietary restrictions/preferences: None specified.
+      `;
+
+    const response: GenerateContentResponse = await ai.models.generateContent({
+      model: GEMINI_MODEL,
       contents: [{ parts: [{ text: prompt }] }],
       config: {
         responseMimeType: "application/json",
-        responseSchema: recipeSchema,
-      }
+        responseSchema: {
+          type: Type.ARRAY,
+          items: RecipeResponseSchema.parameters,
+        },
+      },
     });
 
-    const jsonStr = response.text;
-    if (jsonStr === undefined) {
-      throw new Error('Model did not return text content in the expected JSON format.');
+    const text = response.text;
+    if (!text) {
+      throw new Error("Gemini API returned no text response for recipes.");
     }
-    const recipeResponse: RecipeGenerationResponse = JSON.parse(jsonStr.trim());
-    
-    return recipeResponse;
+    const geminiRecipes: GeminiRecipeOutput[] = JSON.parse(text);
+    return geminiRecipes.map(gr => processGeminiRecipe(gr, pantryItems));
 
   } catch (error) {
-    console.error('Error generating recipe:', error);
-    const errorMessage = `Failed to generate recipe. Please try again. ${error instanceof Error ? error.message : String(error)}`;
-    throw new Error(errorMessage);
+    console.error("Error generating recipes:", error);
+    throw error;
+  }
+};
+
+export const customizeRecipe = async (
+  originalRecipe: Recipe,
+  customizationPrompt: string,
+  pantryItems: PantryItem[]
+): Promise<Recipe> => {
+  try {
+    const ai = getGeminiInstance();
+    const pantryList = pantryItems.map(item => `${item.name} (${item.quantity})`).join(', ');
+
+    const prompt = `
+      As Digamo, an AI-powered recipe customizer, modify the following recipe based on the user's request.
+      Keep the essence of the original recipe, but make reasonable adjustments.
+      Ensure the output is in the JSON format as defined by the RecipeResponseSchema.
+      DO NOT include nutrition information.
+
+      Original Recipe:
+      Name: ${originalRecipe.name}
+      Ingredients: ${originalRecipe.ingredients.join(', ')}
+      Instructions: ${originalRecipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}
+      Prep Time: ${originalRecipe.prepTime}
+      Cook Time: ${originalRecipe.cookTime}
+      Servings: ${originalRecipe.servings}
+
+      User's Pantry (for context): ${pantryList}
+
+      Customization Request: "${customizationPrompt}"
+      `;
+
+    const response: GenerateContentResponse = await ai.models.generateContent({
+      model: GEMINI_MODEL,
+      contents: [{ parts: [{ text: prompt }] }],
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: RecipeResponseSchema.parameters,
+      },
+    });
+
+    const text = response.text;
+    if (!text) {
+      throw new Error("Gemini API returned no text response for customized recipe.");
+    }
+    const geminiOutput: GeminiRecipeOutput = JSON.parse(text);
+    return processGeminiRecipe(geminiOutput, pantryItems);
+
+  } catch (error) {
+    console.error("Error customizing recipe:", error);
+    throw error;
+  }
+};
+
+export const generateSurpriseMeal = async (pantryItems: PantryItem[]): Promise<Recipe> => {
+  try {
+    const ai = getGeminiInstance();
+    const pantryList = pantryItems.map(item => `${item.name} (${item.quantity}, expires ${item.expiryDate.toLocaleDateString()})`).join(', ');
+
+    const prompt = `
+      As Digamo's "Surprise Me!" feature, generate ONE creative, unexpected, and catchy meal suggestion.
+      Think outside the box (fusion cuisine, unexpected combos) but ensure it's tasty and practical for home cooking.
+      Prioritize ingredients from the user's pantry, especially expiring items.
+      Start with a catchy meal name and a 2-3 sentence description explaining why it's awesome,
+      then follow with the full recipe in JSON format as defined by the RecipeResponseSchema.
+      DO NOT include nutrition information.
+
+      User's Pantry: ${pantryList}
+      `;
+
+    // We need to parse two parts: the conversational description and the JSON.
+    // So we'll get a raw text response and parse manually.
+    const response: GenerateContentResponse = await ai.models.generateContent({
+      model: GEMINI_MODEL,
+      contents: [{ parts: [{ text: prompt }] }],
+      config: {
+        responseMimeType: "text/plain", // Request plain text to get both description and JSON
+      },
+    });
+
+    const text = response.text;
+    if (!text) {
+      throw new Error("Gemini API returned no text response for surprise meal.");
+    }
+
+    // Attempt to extract the JSON part from the text.
+    const jsonStartIndex = text.indexOf('{');
+    const jsonEndIndex = text.lastIndexOf('}');
+
+    if (jsonStartIndex === -1 || jsonEndIndex === -1 || jsonEndIndex < jsonStartIndex) {
+        console.error("Could not find valid JSON in surprise meal response:", text);
+        throw new Error("Gemini API did not return a valid JSON recipe for surprise meal.");
+    }
+
+    const jsonString = text.substring(jsonStartIndex, jsonEndIndex + 1);
+    const geminiOutput: GeminiRecipeOutput = JSON.parse(jsonString);
+
+    // If the description is needed separately, it would be text.substring(0, jsonStartIndex).trim();
+    // For now, we'll embed the description within the Recipe object if available.
+    const recipe = processGeminiRecipe(geminiOutput, pantryItems);
+    if (!recipe.description && jsonStartIndex > 0) {
+      recipe.description = text.substring(0, jsonStartIndex).trim();
+    }
+    return recipe;
+
+  } catch (error) {
+    console.error("Error generating surprise meal:", error);
+    throw error;
   }
 };
