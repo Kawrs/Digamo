@@ -68,7 +68,7 @@ export default function SearchBar() {
       <ChoosingIngredients
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        className="absolute inset-0 bg-opacity-50 backdrop-blur-sm"
+        className="inset-0 bg-opacity-50 backdrop-blur-sm w-full"
       ></ChoosingIngredients>
 
       <form className="max-w-md mx-auto">
