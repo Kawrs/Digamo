@@ -33,11 +33,9 @@ export default function Randomizer() {
         <button
           onClick={handleShuffle}
           disabled={loading}
-          className={`animate-pulse hover:scale-110 transition-transform duration-200 active:scale-95 ${
-            loading && "opacity-50 cursor-not-allowed"
-          }`}
-        >
-          <Shuffle size={95} className="mt-10" />
+          className={"animate-pulse hover:scale-110 transition-transform duration-200 active:scale-95"}>
+            
+          <Shuffle size={95} className="mt-10 hover:cursor-pointer" />
         </button>
       </div>
 
