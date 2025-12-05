@@ -6,12 +6,12 @@ const SignupPage = () => {
 
 
   return (
-    <div className=" w-full min-h-screen h-full py-15">
+    <div className="w-full min-h-screen h-full py-15 grid place-items-center">
 
       {/*Desktop*/}
       <section className="hidden md:block">
         {/* container */}
-      <div className="h-full w-4/5 flex md:flex-row flex-col m-auto rounded-2xl shadow-2xl justify-center">
+      <div className="h-full w-[90vw] max-w-[1400px] flex md:flex-row flex-col m-auto rounded-2xl shadow-2xl justify-center">
         {/* left side*/}
           <Signin />
         {/* right side*/}

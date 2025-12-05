@@ -8,8 +8,8 @@ const FavoriteRecipePage = () => {
      const [liked, setLiked] = useState(false);
     return (
         <div className=" bg-gradient-to-tl from-[#F0B60E]/30 to-[#B8D4C8]/30 
-        w-full h-full rounded-2xl p-5 flex flex-col justify-between
-        shadow-[0_5px_5px_rgba(255,255,255,0.3)] hover:scale-105 transition-all duration-200">
+        w-full h-full rounded-2xl p-5 flex flex-col justify-between shadow-xl
+        dark:shadow-[0_5px_5px_rgba(255,255,255,0.3)] hover:scale-105 transition-all duration-200">
             <div className="flex items-end justify-end mb-2">
                 {/*Favorite button */}
                 <button onClick={() => setLiked(!liked)}
