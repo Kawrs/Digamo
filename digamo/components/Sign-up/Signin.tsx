@@ -11,7 +11,7 @@ const signin = () => {
               <img className='bg-gray-900 w-45 h-45 m-5'></img>
 
               {/* Sign in Button */}
-              <Link href="/auth/signup">
+              <Link href="/auth/login">
                 <button className=' text-white rounded-2xl h-8 w-50 mt-5 
                         border border-white shadow-2xl bg-gradient-to-r from-[#F7931E] to-[#F36B3F]
                         hover:cursor-pointer hover:from-[#F36B3F] hover:to-[#EF4444]
