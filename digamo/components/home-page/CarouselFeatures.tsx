@@ -27,7 +27,7 @@ export default function Carousel() {
       id: 2,
       label: "Randomizer",
       color: "bg-coral",
-      path: "/#",
+      path: "/randomizer",
     },
   ];
 
