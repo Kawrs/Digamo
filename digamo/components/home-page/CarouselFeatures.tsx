@@ -21,7 +21,7 @@ export default function Carousel() {
       id: 1,
       label: "My Pantry",
       color: "bg-orange",
-      path: "/#",
+      path: "/myPantry",
     },
     {
       id: 2,
