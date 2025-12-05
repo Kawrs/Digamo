@@ -6,7 +6,7 @@ const SignupPage = () => {
 
 
   return (
-    <div className="bg-white w-full min-h-screen h-full py-15">
+    <div className=" w-full min-h-screen h-full py-15">
 
       {/*Desktop*/}
       <section className="hidden md:block">
