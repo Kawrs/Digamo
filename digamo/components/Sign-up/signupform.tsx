@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { FaEye, FaEyeSlash } from "react-icons/fa"; 
-import supabase from '../../src/app/lib/supabaseClient';
+import { supabase}  from '@../../src/app/lib/supabase/client';
 
 const SignupForm = () => {
     // Router for successful navigation AFTER database save
