@@ -116,59 +116,45 @@ export const customizeRecipe = async (
   }
 };
 
-export const generateSurpriseMeal = async (pantryItems: PantryItem[]): Promise<Recipe> => {
+export const generateFilipinoRecipes = async (): Promise<Recipe[]> => {
   try {
     const ai = getGeminiInstance();
-    const pantryList = pantryItems.map(item => `${item.name} (${item.quantity}, expires ${item.expiryDate.toLocaleDateString()})`).join(', ');
 
     const prompt = `
-      As Digamo's "Surprise Me!" feature, generate ONE creative, unexpected, and catchy meal suggestion.
-      Think outside the box (fusion cuisine, unexpected combos) but ensure it's tasty and practical for home cooking.
-      Prioritize ingredients from the user's pantry, especially expiring items.
-      Start with a catchy meal name and a 2-3 sentence description explaining why it's awesome,
-      then follow with the full recipe in JSON format as defined by the RecipeResponseSchema.
-      DO NOT include nutrition information.
+      Generate FOUR unique Filipino recipes.
+      Each recipe must follow this structure (JSON only, no extra text):
+      {
+        "name": "",
+        "description": "",
+        "calories": number,
+        "ingredients": [""],
+        "instructions": [""]
+      }
+      Return an ARRAY of 4 such objects. No markdown. No explanations. JSON only.
+    `;
 
-      User's Pantry: ${pantryList}
-      `;
-
-    // We need to parse two parts: the conversational description and the JSON.
-    // So we'll get a raw text response and parse manually.
-    const response: GenerateContentResponse = await ai.models.generateContent({
+    const response = await ai.models.generateContent({
       model: GEMINI_MODEL,
       contents: [{ parts: [{ text: prompt }] }],
-      config: {
-        responseMimeType: "text/plain", // Request plain text to get both description and JSON
-      },
+      config: { responseMimeType: "text/plain" },
     });
 
-    const text = response.text;
-    if (!text) {
-      throw new Error("Gemini API returned no text response for surprise meal.");
-    }
+    const text = response.text ?? "";
 
-    // Attempt to extract the JSON part from the text.
-    const jsonStartIndex = text.indexOf('{');
-    const jsonEndIndex = text.lastIndexOf('}');
+    // Extract JSON
+    const jsonStart = text.indexOf("[");
+    const jsonEnd = text.lastIndexOf("]");
 
-    if (jsonStartIndex === -1 || jsonEndIndex === -1 || jsonEndIndex < jsonStartIndex) {
-        console.error("Could not find valid JSON in surprise meal response:", text);
-        throw new Error("Gemini API did not return a valid JSON recipe for surprise meal.");
-    }
+    if (jsonStart === -1 || jsonEnd === -1)
+      throw new Error("Failed to extract recipe array JSON from Gemini");
 
-    const jsonString = text.substring(jsonStartIndex, jsonEndIndex + 1);
-    const geminiOutput: GeminiRecipeOutput = JSON.parse(jsonString);
+    const jsonString = text.substring(jsonStart, jsonEnd + 1);
 
-    // If the description is needed separately, it would be text.substring(0, jsonStartIndex).trim();
-    // For now, we'll embed the description within the Recipe object if available.
-    const recipe = processGeminiRecipe(geminiOutput, pantryItems);
-    if (!recipe.description && jsonStartIndex > 0) {
-      recipe.description = text.substring(0, jsonStartIndex).trim();
-    }
-    return recipe;
+    const recipes: Recipe[] = JSON.parse(jsonString);
+    return recipes;
 
-  } catch (error) {
-    console.error("Error generating surprise meal:", error);
-    throw error;
+  } catch (err) {
+    console.error("Error generating Filipino recipes:", err);
+    throw err;
   }
 };
