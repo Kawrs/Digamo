@@ -11,11 +11,12 @@ function FooterSection() {
             <div>
               <div className="mb-6 md:mb-0 flex items-center space-x-2">
                 <Image
-                  src="https://flowbite.com/docs/images/logo.svg"
-                  alt="FlowBite Logo"
-                  width={32}
-                  height={32}
-                  className="h-8 w-auto"
+                  src="/chef's-head.png"
+                  alt="Digamo Logo"
+                  width={40}
+                  height={40}
+                  loading="lazy"
+                  className=" auto"
                 />
                 <span className="text-2xl font-semibold whitespace-nowrap">
                   Digamo
