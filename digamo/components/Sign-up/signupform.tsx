@@ -2,12 +2,12 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { FaEye, FaEyeSlash } from "react-icons/fa"; 
-import supabase from '../../src/app/lib/supabaseClient';
+import { supabase }  from '../../src/app/lib/supabase/client';
 
 const SignupForm = () => {
     // Router for successful navigation AFTER database save
     const router = useRouter();
-    
+
     // Password visibility states
     const [showPassword, setShowPassword] = React.useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
@@ -73,16 +73,16 @@ const SignupForm = () => {
             if (error) throw error;
 
             setSuccessMsg('Success! Account created.');
-            
+
             // Capture email before clearing
             const emailToPass = formData.email;
-            
+
             // Clear form
             setFormData({ username: '', email: '', password: '', confirmPassword: '' });
 
             // after signup
             router.push(`/homePage?email=${encodeURIComponent(emailToPass)}`);
-            
+
         } catch (error: unknown) {
             console.error("Signup Error:", error);
             
@@ -113,7 +113,7 @@ const SignupForm = () => {
 
                 {/* Form   */}
                 <form className="flex flex-col gap-4 w-full max-w-sm" onSubmit={handleSignup}>
-                    
+
                     {/* Username */}
                     <div className="flex flex-col gap-1">
                         <h2 className="text-gray-500">Username:</h2>
@@ -194,7 +194,7 @@ const SignupForm = () => {
                             {errorMsg}
                         </h2>
                     )}
-                    
+
                     {/*Successful*/}
                     {successMsg && (
                         <h2 className="text-green-500 text-sm font-semibold text-start">
@@ -212,10 +212,11 @@ const SignupForm = () => {
                     >
                         {loading ? "Processing..." : "Sign Up"}
                     </button>
-                    
+
                 </form>
             </div>
         </div>
     );
 }
+
 export default SignupForm;
