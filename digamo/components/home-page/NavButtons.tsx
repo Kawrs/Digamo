@@ -18,7 +18,7 @@ export default function NavButtons() {
     {
       title: "Randomizer",
       icon: "streamline-flex:shuffle-solid",
-      page: "/#",
+      page: "/randomizer",
     },
     {
       title: "Favorites",
