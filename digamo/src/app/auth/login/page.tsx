@@ -23,7 +23,7 @@ export default function Login() {
   }, []);
 
   return (
-    <div className="bg-white w-full min-h-screen py-8 md:py-20">
+    <div className="bg-white w-full min-h-screen py-8 md:py-20 flex items-center justify-center ">
       <Script
         async
         src="https://www.googletagmanager.com/gtag/js?id=G-QMVC5BR2W3"
@@ -35,16 +35,18 @@ export default function Login() {
                 gtag("config", "G-QMVC5BR2W3");`}
       </Script>
 
-      <div className="h-full w-11/12 md:w-4/5 flex flex-col md:flex-row m-auto rounded-2xl shadow-2xl overflow-hidden border-1 border-gray-300">
+      <div className="h-full w-11/12 md:w-4/5 flex flex-col md:flex-row m-auto rounded-2xl overflow-hidden border-1 border-gray-300 items-center shadow-lg">
         {/* Left side - Hidden on mobile */}
         <div className="hidden md:flex h-full md:w-2/5 bg-gradient-to-tl from-[#F0B60E] to-[#B8D4C8] rounded-l-2xl z-0 relative -mr-5 overflow-hidden flex-col">
           <div className="flex-shrink-0 pt-8 px-6 text-center">
-            <h1 className="text-gray-900 text-4xl font-bold">Welcome!</h1>
-            <h6 className="text-[#F36B3F] text-base mt-2 leading-snug">
+            <h1 className="text-[#4F4F4F] text-4xl font-montagu font-bold">
+              Welcome!
+            </h1>
+            <h6 className="text-[#F36B3F] text-xl font-montagu">
               Add Your Pantry. Get a Recipe. Start Cooking.
             </h6>
           </div>
-          <div className="flex-1 flex justify-start ml-15">
+          <div className="flex-1 flex justify-center items-center">
             <Image
               src="/chef's-head.png"
               alt="Digamo Logo"
@@ -60,18 +62,20 @@ export default function Login() {
         <div className="h-full w-full md:w-1/2 rounded-2xl md:rounded-l-none relative  py-8 md:py-0">
           {/* Mobile header - Only shown on mobile */}
           <div className="md:hidden text-center mb-8 px-6">
-            <h1 className="text-gray-900 text-3xl font-bold">Welcome!</h1>
-            <h6 className="text-[#F36B3F] text-sm mt-2">
+            <h1 className="text-[#4F4F4F] text-4xl font-montagu font-bold">
+              Welcome!
+            </h1>
+            <h2 className="text-[#F36B3F] text-xl font-montagu">
               Add Your Pantry. Get a Recipe. Start Cooking.
-            </h6>
+            </h2>
           </div>
 
-          <div className="flex flex-col items-center h-full w-full justify-center px-6 md:px-0 mt-10">
+          <div className="flex flex-col items-center h-full w-full justify-center px-6 md:px-0">
             <h1 className="text-gray-900 text-3xl md:text-4xl mb-5 text-center md:text-left md:relative md:left-15">
               Sign in
             </h1>
 
-            <div className="flex flex-col gap-4 w-full max-w-sm md:relative md:left-15">
+            <div className="flex flex-col gap-4 w-full  max-w-sm md:relative md:left-15">
               <div className="flex flex-col gap-1">
                 <h2 className="text-gray-500">Email:</h2>
                 <div className="rounded-3xl p-[2px] bg-gradient-to-r from-[#F0B60E] to-[#EF4444] justify-center items-center">
