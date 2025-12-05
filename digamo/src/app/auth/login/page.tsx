@@ -4,9 +4,23 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Link from "next/link";
 import Script from "next/script";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { auth } from "../../lib/firebase/firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useEffect, useState } from "react";
 
 export default function Login() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [errorMsg, setErrorMsg] = React.useState("");
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   return (
     <div className="bg-white w-full min-h-screen py-8 md:py-20">
@@ -59,9 +73,14 @@ export default function Login() {
 
             <div className="flex flex-col gap-4 w-full max-w-sm md:relative md:left-15">
               <div className="flex flex-col gap-1">
-                <h2 className="text-gray-500">Username:</h2>
+                <h2 className="text-gray-500">Email:</h2>
                 <div className="rounded-3xl p-[2px] bg-gradient-to-r from-[#F0B60E] to-[#EF4444] justify-center items-center">
-                  <input className="rounded-2xl w-full h-10 md:h-8 bg-white text-gray-900 outline-none pl-5" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="rounded-2xl w-full h-10 md:h-8 bg-white text-gray-900 outline-none pl-5"
+                  />
                 </div>
               </div>
 
@@ -72,6 +91,8 @@ export default function Login() {
                   <div className="relative">
                     <input
                       type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       className="rounded-2xl w-full h-10 md:h-8 bg-white text-gray-900 outline-none pl-5 pr-10"
                     />
                     <button
@@ -86,12 +107,56 @@ export default function Login() {
               </div>
             </div>
 
-            <h2 className="text-red-500 text-sm md:text-md m-2 md:-ml-20 text-center md:text-left">
-              Error Message
-            </h2>
+            {errorMsg && (
+              <h2 className="text-red-500 text-sm md:text-md m-2 md:-ml-20 text-center md:text-left">
+                {errorMsg}
+              </h2>
+            )}
 
-            <button className="bg-[#4F4F4F] text-white rounded-[30px] h-10 w-full max-w-sm md:w-90 md:relative md:left-15 hover:cursor-pointer hover:bg-[#0e100f] active:translate-y-1 transition-ease-out duration-100">
-              Sign in
+            <button
+              onClick={async () => {
+                setErrorMsg("");
+                if (!email || !password) {
+                  setErrorMsg("Please fill in email and password.");
+                  return;
+                }
+                try {
+                  if (!auth) {
+                    setErrorMsg("Firebase is not initialized. Please check your configuration.");
+                    return;
+                  }
+                  setLoading(true);
+                  await signInWithEmailAndPassword(auth, email, password);
+                  router.push("/homePage");
+                } catch (error: unknown) {
+                  console.error("Login error", error);
+                  let message = "Failed to sign in.";
+                  if (typeof error === "object" && error && "code" in error) {
+                    const code = (error as { code: string; message?: string }).code;
+                    switch (code) {
+                      case "auth/invalid-email":
+                        message = "Invalid email address.";
+                        break;
+                      case "auth/user-not-found":
+                      case "auth/wrong-password":
+                        message = "Invalid email or password.";
+                        break;
+                      case "auth/too-many-requests":
+                        message = "Too many attempts. Try again later.";
+                        break;
+                      default:
+                        message = (error as { message?: string }).message || message;
+                    }
+                  }
+                  setErrorMsg(message);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+              className="bg-[#4F4F4F] text-white rounded-[30px] h-10 w-full max-w-sm md:w-90 md:relative md:left-15 hover:cursor-pointer hover:bg-[#0e100f] active:translate-y-1 transition-ease-out duration-100 disabled:opacity-60"
+            >
+              {loading ? "Signing in..." : "Sign in"}
             </button>
 
             <div className="w-full max-w-sm md:w-90 md:relative md:left-15">
