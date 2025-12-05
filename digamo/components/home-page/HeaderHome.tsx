@@ -2,10 +2,26 @@
 import { useState } from "react";
 import NavButtons from "./NavButtons";
 import Image from "next/image";
+import Link from "next/link";
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function HeaderHome() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  // const auth = getAuth();
+  // onAuthStateChanged(auth, (user) => {
+  //   if (user) {
+  //     // User is signed in
+  //     const username = user.displayName;
+  //     console.log("Current user's display name:", username);
+  //   } else {
+  //     // User is signed out
+  //     console.log("No user signed in.");
+  //   }
+  // });
 
   return (
     <header className="fixed top-0 left-0 w-full bg-white/70 backdrop-blur-sm z-50 shadow-sm dark:bg-black/50 dark:border-b dark:backdrop-blur-sm dark:shadow-sm">
@@ -24,7 +40,7 @@ function HeaderHome() {
           </h3>
         </div>
 
-        <nav className="hidden md:flex items-center space-x-3 icons-container">
+        <nav className="hidden md:flex items-center space-x-3 icons-container ">
           <NavButtons />
         </nav>
 
@@ -32,7 +48,9 @@ function HeaderHome() {
         <nav className="hidden md:flex relative items-center space-x-3 icons-container">
           <div className="items-center flex space-x-[-10px]">
             <button className="profile cursor-pointer">
-              <div className="rounded-full bg-red p-4"></div>
+              <div className="rounded-full bg-red/20 px-1 py-1">
+                <AccountCircleIcon className="text-gray w-10 h-10" />
+              </div>
             </button>
 
             <button
@@ -61,24 +79,38 @@ function HeaderHome() {
               </svg>
             </button>
           </div>
-
-          <div
-            className={`z-10 mt-7 absolute top-full right-0 bg-neutral-primary-medium border-1 rounded-base shadow-lg w-44 transition-all ${
-              dropdownOpen ? "block" : "hidden"
-            }`}
-          >
-            <ul>
-              <li>
-                <a
-                  href="#"
-                  className="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
-                >
-                  Sign out
-                </a>
-              </li>
-            </ul>
-          </div>
         </nav>
+        <div
+          className={`z-10 absolute top-full right-3 items-center justify-center bg-white w-[20%] border-1 border-gold rounded-base shadow-lg p-4 transition-all ${
+            dropdownOpen ? "block" : "hidden"
+          }`}
+        >
+          <ul className=" flex flex-col space-y-4 items-center">
+            <li className="border-t-1 border-b-1 border-mint/30 py-2 w-full items-center justify-center flex">
+              <div className="flex flex-col items-center space-x-2 space-y-4">
+                <h2 className="items-start w-full font-bold text-gray-900">
+                  Email
+                </h2>
+                <div className="flex flex-row space-x-2 items-center">
+                  <AlternateEmailIcon />
+                  <p>bautista.ann@icloud.com</p>
+                </div>
+              </div>
+            </li>
+            <li>
+              <Link href="#">
+                <button className="px-8 py-2 border-1 border-gold hover:bg-coral cursor-pointer rounded-full">
+                  Change Password
+                </button>
+              </Link>
+            </li>
+            <li>
+              <button className="px-8 py-2 bg-gold rounded-full cursor-pointer hover:bg-coral">
+                Sign Out
+              </button>
+            </li>
+          </ul>
+        </div>
 
         <button
           onClick={() => setMenuOpen(!menuOpen)}

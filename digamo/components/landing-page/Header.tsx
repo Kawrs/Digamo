@@ -110,23 +110,39 @@ function Header() {
         </button>
 
         {menuOpen && (
-          <div className="absolute top-full left-0 w-full bg-white shadow-md md:hidden p-5 flex flex-col space-y-4 font-montserrat">
-            <a href="#hero" className="hover:text-orange transition-colors">
-              Home
-            </a>
-            <a href="#features" className="hover:text-orange transition-colors">
-              Features
-            </a>
-            <a href="#steps" className="hover:text-orange transition-colors">
-              Usage
-            </a>
-            <a href="#samples" className="hover:text-orange transition-colors">
-              Samples
-            </a>
+          <div className="absolute top-full right-0 w-[40%] bg-white shadow-md md:hidden p-5 flex flex-col space-y-4 font-montserrat items-center">
+            <div className="nav flex flex-col space-y-4">
+              <a
+                href="#hero"
+                className="hover:text-orange transition-colors  text-gray-900"
+              >
+                Home
+              </a>
+              <a
+                href="#features"
+                className="hover:text-orange transition-colors text-gray-900"
+              >
+                Features
+              </a>
+              <a
+                href="#steps"
+                className="hover:text-orange transition-colors text-gray-900"
+              >
+                Usage
+              </a>
+              <a
+                href="#samples"
+                className="hover:text-orange transition-colors  text-gray-900"
+              >
+                Samples
+              </a>
+            </div>
             <div className="flex flex-col space-y-3 mt-4">
-              <button className="py-2.5 px-8 text-sm font-semibold text-gray-700 font-montserrat hover:bg-mint/80 hover:text-white transition-colors rounded-lg tracking-wide cursor-pointer">
-                Login
-              </button>
+              <Link href="/auth/login">
+                <button className="py-2.5 px-8 text-sm font-semibold text-gray-700 font-montserrat hover:bg-mint/80 hover:text-white transition-colors rounded-lg tracking-wide cursor-pointer">
+                  Login
+                </button>
+              </Link>
               <Link href="/auth/signup">
                 <button className="py-2.5 px-6 text-sm font-semibold bg-orange text-white font-montserrat hover:bg-coral transition-colors rounded-lg tracking-wide cursor-pointer  hover:shadow-lg">
                   Register

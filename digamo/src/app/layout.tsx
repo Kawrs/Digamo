@@ -4,7 +4,6 @@ import { Montagu_Slab } from "next/font/google";
 import { Montserrat } from "next/font/google";
 import { Cormorant_Garamond } from "next/font/google";
 import { Quattrocento } from "next/font/google";
-
 import "./globals.css";
 import type { Viewport } from "next";
 
