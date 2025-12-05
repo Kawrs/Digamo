@@ -52,8 +52,10 @@ export default function Randomizer() {
           <Card
             key={index}
             name={recipe.name}
-            calories={recipe.calories}
+            duration={recipe.duration}
             description={recipe.description}
+            ingredients={recipe.ingredients}
+            instructions={recipe.instructions}
           />
         ))}
       </div>

@@ -121,14 +121,18 @@ export const generateFilipinoRecipes = async (): Promise<Recipe[]> => {
     const ai = getGeminiInstance();
 
     const prompt = `
-      Generate FOUR unique Filipino recipes.
+      As Digamo's "Surprise Me!" feature, generate FOUR unique Filipino recipes, unexpected, and catchy
+      Provide a unique, practical, and family-friendly recipe.
+      Start with a catchy meal name and a 2-3 sentence description explaining why it's awesome,
+      then follow with the full recipe in JSON format as defined by the RecipeResponseSchema.
+      DO NOT include nutrition information.
       Each recipe must follow this structure (JSON only, no extra text):
       {
         "name": "",
         "description": "",
-        "calories": number,
+        "duration": number,
         "ingredients": [""],
-        "instructions": [""]
+        "instructions": [""],
       }
       Return an ARRAY of 4 such objects. No markdown. No explanations. JSON only.
     `;

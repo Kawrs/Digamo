@@ -5,11 +5,13 @@ import { X } from "lucide-react";
 
 interface RecipeCard {
   name: string;
-  calories: number;
+  duration: number;
   description: string;
+  ingredients?: string[];
+  instructions?: string[];                                                                
 }
 
-export default function Card({ name, calories, description }: RecipeCard) {
+export default function Card({ name, duration, description, ingredients, instructions }: RecipeCard) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -20,7 +22,7 @@ export default function Card({ name, calories, description }: RecipeCard) {
       >
         <div className="flex justify-between items-center">
           <span className="text-gray-800 font-medium text-lg">{name}</span>
-          <span className="text-gray-600 font-medium">{calories} calories</span>
+          <span className="text-gray-600 font-medium">{duration} mins</span>
         </div>
       </div>
 
@@ -41,8 +43,10 @@ export default function Card({ name, calories, description }: RecipeCard) {
             </button>
 
             <h2 className="text-2xl font-bold text-gray-800 mb-2">{name}</h2>
-            <p className="text-black font-semibold mb-4">{calories} calories</p>
+            <p className="text-black font-semibold mb-4">{duration} mins</p>
             <p className="text-gray-600 leading-relaxed mb-6">{description}</p>
+            <p className="text-gray-600 leading-relaxed mb-6">{ingredients?.join(", ")}</p>
+            <p className="text-gray-600 leading-relaxed mb-6">{instructions?.join(" ")}</p>
           </div>
         </div>
       )}
