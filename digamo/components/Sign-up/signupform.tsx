@@ -1,5 +1,5 @@
 "use client";
-<<<<<<< Updated upstream
+
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { FaEye, FaEyeSlash } from "react-icons/fa"; 
@@ -12,16 +12,6 @@ const SignupForm = () => {
     // Password visibility states
     const [showPassword, setShowPassword] = React.useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-=======
-import React from "react";
-import { useRouter } from "next/navigation";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import supabase from "../../src/app/lib/supabaseClient";
-
-const SignupForm = () => {
-  // Router for successful navigation AFTER database save
-  const router = useRouter();
->>>>>>> Stashed changes
 
   // Password visibility states
   const [showPassword, setShowPassword] = React.useState(false);
@@ -191,7 +181,6 @@ const SignupForm = () => {
             </div>
           </div>
 
-<<<<<<< Updated upstream
             setSuccessMsg('Success! Account created.');
 
             // Capture email before clearing
@@ -208,41 +197,6 @@ const SignupForm = () => {
             
             // Safely check if the error object has a 'message' property before accessing it
             let errorMessage = "An unexpected error occurred.";
-=======
-          {/* Confirm Password */}
-          <div className="flex flex-col gap-1">
-            <h2 className="text-gray-500">Confirm Password:</h2>
-            <div className="rounded-3xl p-[2px] bg-gradient-to-r from-[#F0B60E] to-[#EF4444]">
-              <div className="relative">
-                <input
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  type={showConfirmPassword ? "text" : "password"}
-                  className="rounded-2xl w-full h-8 bg-white text-gray-900 outline-none pl-5 pr-10"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-900"
-                >
-                  {showConfirmPassword ? (
-                    <FaEye size={20} />
-                  ) : (
-                    <FaEyeSlash size={20} />
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Error */}
-          {errorMsg && (
-            <h2 className="text-red-500 text-sm font-semibold text-start animate-pulse">
-              {errorMsg}
-            </h2>
-          )}
->>>>>>> Stashed changes
 
           {/*Successful*/}
           {successMsg && (
@@ -251,7 +205,6 @@ const SignupForm = () => {
             </h2>
           )}
 
-<<<<<<< Updated upstream
     return (
         <div className='w-full md:w-3/5 rounded-2xl z-10 relative bg-white'>
             <div className="flex flex-col items-center justify-center h-full w-full px-4">
@@ -368,21 +321,3 @@ const SignupForm = () => {
 }
 
 export default SignupForm;
-=======
-          {/* Button  */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-[#4F4F4F] text-white rounded-2xl h-10 w-full max-w-sm shadow-2xl shadow-black-50 mb-10
-                                   hover:bg-gradient-to-r hover:cursor-pointer hover:from-[#F36B3F] hover:to-[#EF4444]
-                                   active:translate-y-1 transition-all disabled:opacity-50"
-          >
-            {loading ? "Processing..." : "Sign Up"}
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-};
-export default SignupForm;
->>>>>>> Stashed changes
