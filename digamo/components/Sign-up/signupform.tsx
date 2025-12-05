@@ -4,6 +4,16 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { FaEye, FaEyeSlash } from "react-icons/fa"; 
 import { supabase }  from '../../src/app/lib/supabase/client';
+import { auth, db } from "../../src/app/lib/firebase/firebaseConfig";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+ 
+interface SignupFormData {
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
 
 const SignupForm = () => {
     const router = useRouter();
@@ -13,7 +23,7 @@ const SignupForm = () => {
     const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
     // Form state
-    const [formData, setFormData] = React.useState({
+    const [formData, setFormData] = React.useState<SignupFormData>({
         username: "",
         email: "",
         password: "",
@@ -27,7 +37,8 @@ const SignupForm = () => {
 
     // Update form fields
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value } as SignupFormData));
     };
 
     // Handle submit
@@ -49,6 +60,12 @@ const SignupForm = () => {
             return;
         }
 
+        if (formData.password.length < 6) {
+            setErrorMsg("Password must be at least 6 characters long.");
+            setLoading(false);
+            return;
+        }
+
         if (formData.password !== formData.confirmPassword) {
             setErrorMsg("Passwords do not match.");
             setLoading(false);
@@ -56,20 +73,41 @@ const SignupForm = () => {
         }
 
         try {
-            const { error } = await supabase.auth.signUp({
-                email: formData.email,
-                password: formData.password,
-                options: {
-                    data: { username: formData.username },
-                },
+            // Step 1: Create user
+            const result = await createUserWithEmailAndPassword(
+                auth,
+                formData.email,
+                formData.password
+            );
+            const user = result.user;
+
+            // Step 2: Update display name
+            await updateProfile(user, {
+                displayName: `${formData.username}`,
             });
 
-            if (error) throw error;
+            // Step 3: Create user document in Firestore
+            try {
+                await setDoc(doc(db, "users", user.uid), {
+                    username: formData.username,
+                    email: formData.email,
+                    uid: user.uid,
+                    createdAt: new Date().toISOString(),
+                });
+            } catch (firestoreError: any) {
+                // If Firestore fails due to permissions, provide helpful message
+                if (firestoreError?.code === 'permission-denied' || 
+                    firestoreError?.message?.includes('permission') ||
+                    firestoreError?.message?.includes('Permission')) {
+                    throw new Error('Firestore permission denied. Please update your Firestore security rules to allow authenticated users to create documents in the "users" collection.');
+                }
+                // Re-throw other Firestore errors
+                throw firestoreError;
+            }
 
             setSuccessMsg("Success! Account created.");
-
-            const emailToPass = formData.email;
-
+            
+            // Clear form
             setFormData({
                 username: "",
                 email: "",
@@ -77,25 +115,37 @@ const SignupForm = () => {
                 confirmPassword: "",
             });
 
-            router.push(`/homePage?email=${encodeURIComponent(emailToPass)}`);
-
-        } catch (error: unknown) {
-            console.error("Signup Error:", error);
-
+            router.push("/dashboard");
+        } catch (err: any) {
             let errorMessage = "An unexpected error occurred.";
-
-            if (typeof error === "object" && error !== null && "message" in error) {
-                const message = (error as { message: string }).message;
-
-                if (message.includes("already exists")) {
-                    errorMessage = "Account already exists! Please use the 'Log In' page.";
+            
+            if (err?.code) {
+                switch (err.code) {
+                    case "auth/email-already-in-use":
+                        errorMessage = "Account already exists! Please use the 'Log In' page.";
+                        break;
+                    case "auth/invalid-email":
+                        errorMessage = "Invalid email address.";
+                        break;
+                    case "auth/weak-password":
+                        errorMessage = "Password should be at least 6 characters.";
+                        break;
+                    case "permission-denied":
+                        errorMessage = "Permission denied. Please update Firestore security rules to allow users to create their profile.";
+                        break;
+                    default:
+                        errorMessage = err.message || errorMessage;
+                }
+            } else if (err?.message) {
+                // Check if it's a permission-related error message
+                if (err.message.includes('permission') || err.message.includes('Permission')) {
+                    errorMessage = err.message;
                 } else {
-                    errorMessage = message;
+                    errorMessage = err.message;
                 }
             }
-
+            
             setErrorMsg(errorMessage);
-
         } finally {
             setLoading(false);
         }
@@ -118,6 +168,7 @@ const SignupForm = () => {
                                 name="username"
                                 value={formData.username}
                                 onChange={handleChange}
+                                required
                                 className="rounded-2xl w-full h-8 bg-white text-gray-900 outline-none pl-5"
                             />
                         </div>
@@ -132,6 +183,7 @@ const SignupForm = () => {
                                 type="email"
                                 value={formData.email}
                                 onChange={handleChange}
+                                required
                                 className="rounded-2xl w-full h-8 bg-white text-gray-900 outline-none pl-5"
                             />
                         </div>
@@ -147,6 +199,7 @@ const SignupForm = () => {
                                     type={showPassword ? "text" : "password"}
                                     value={formData.password}
                                     onChange={handleChange}
+                                    required
                                     className="rounded-2xl w-full h-8 bg-white text-gray-900 outline-none pl-5 pr-10"
                                 />
                                 <button
@@ -170,6 +223,7 @@ const SignupForm = () => {
                                     type={showConfirmPassword ? "text" : "password"}
                                     value={formData.confirmPassword}
                                     onChange={handleChange}
+                                    required
                                     className="rounded-2xl w-full h-8 bg-white text-gray-900 outline-none pl-5 pr-10"
                                 />
                                 <button
