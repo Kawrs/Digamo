@@ -12,6 +12,9 @@ export default function Randomizer() {
   const handleShuffle = async () => {
     try {
       setLoading(true);
+      // Clear recipes briefly to show the user a 'refresh' is happening
+      setRecipes([]); 
+      
       const result = await generateFilipinoRecipes();
       setRecipes(result);
     } catch (error) {
@@ -33,8 +36,8 @@ export default function Randomizer() {
         <button
           onClick={handleShuffle}
           disabled={loading}
-          className={"animate-pulse hover:scale-110 transition-transform duration-200 active:scale-95"}>
-            
+          className={"animate-pulse hover:scale-110 transition-transform duration-200 active:scale-95"}
+        >
           <Shuffle size={95} className="mt-10 hover:cursor-pointer" />
         </button>
       </div>
@@ -45,7 +48,7 @@ export default function Randomizer() {
         </p>
       </div>
 
-      <div className="flex flex-col items-center mt-10 gap-4">
+      <div className="flex flex-col items-center mt-10 gap-4 pb-20 px-4">
         {recipes.map((recipe, index) => (
           <Card
             key={index}
