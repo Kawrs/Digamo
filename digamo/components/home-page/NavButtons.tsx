@@ -13,7 +13,7 @@ export default function NavButtons() {
     {
       title: "My Pantry",
       icon: "healthicons:vegetables",
-      page: "/#",
+      page: "/myPantry",
     },
     {
       title: "Randomizer",
