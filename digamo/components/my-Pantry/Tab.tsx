@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { FaBoxOpen, FaBook, FaCalendarAlt, FaRandom } from "react-icons/fa";
+import { FaColumns, FaBookOpen, FaCalendarAlt, FaRandom } from "react-icons/fa";
 
 type TabItem = {
   id: string;
@@ -16,10 +16,10 @@ type Props = {
 };
 
 const defaultTabs: TabItem[] = [
-  { id: "pantry", label: "My Pantry", icon: <FaBoxOpen size={16} /> },
-  { id: "recipes", label: "Recipes", icon: <FaBook size={16} /> },
-  { id: "mealplan", label: "Meal Plan", icon: <FaCalendarAlt size={16} /> },
-  { id: "surprise", label: "Surprise Me", icon: <FaRandom size={16} /> },
+  { id: "pantry", label: "My Pantry", icon: <FaColumns size={16} /> },
+  { id: "recipes", label: "Recipes", icon: <FaBookOpen size={16} /> },
+  // { id: "mealplan", label: "Meal Plan", icon: <FaCalendarAlt size={16} /> },
+  // { id: "surprise", label: "Surprise Me", icon: <FaRandom size={16} /> },
 ];
 
 export default function Tabs({
@@ -44,7 +44,7 @@ export default function Tabs({
   return (
     <div className={`w-full ${className}`}>
       <div className="w-full px-3 mt-25">
-        <div className="max-w-7xl h-10 mx-auto grid grid-cols-4 gap-0 bg-gray-100/70 rounded-lg overflow-hidden">
+        <div className="max-w-7xl h-10 mx-auto grid grid-cols-2 gap-0 bg-gray-100/70 rounded-lg overflow-hidden">
           {tabs.map((t) => {
             const isActive = selected === t.id;
             return (

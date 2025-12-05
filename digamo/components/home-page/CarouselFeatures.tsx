@@ -71,7 +71,7 @@ export default function Carousel() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen z-10">
-      <div className=" absolute top-46 text-center  font-quattrocento  text-gray-900 dark:text-white">
+      <div className=" absolute top-46 text-center font-quattrocento text-gray-900 dark:text-white">
         <h1 className="greetings text-4xl">{Display}</h1>
       </div>
       <div className="relative w-full flex items-center justify-center max-w-2xl mx-auto">
@@ -137,7 +137,7 @@ export default function Carousel() {
       </div>
 
       {/* Dots Indicator */}
-      <div className="absolute bottom-1/3 flex gap-2">
+      <div className="absolute bottom-1/3 mb-5 flex gap-2">
         {baseItems.map((item) => (
           <button
             key={item.id}
@@ -147,6 +147,10 @@ export default function Carousel() {
             }`}
           />
         ))}
+      </div>
+
+      <div className="mt-9 text-xl text-center sm:mt-9">
+        <h1 className="font-quattrocento">Generate recipe from your pantry</h1>
       </div>
       <div className="bar absolute bottom-20 w-full px-4">
         <Suspense fallback={<div>Loading...</div>}>

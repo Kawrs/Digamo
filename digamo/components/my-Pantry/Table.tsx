@@ -36,7 +36,9 @@ export default function PantryTable({ onAdd }: PantryTableProps) {
 
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState<PantryItem | null>(null);
-  const [activeTab, setActiveTab] = useState<"all" | "ingredients">("all");
+  const [activeTab, setActiveTab] = useState<"all" | "ingredients">(
+    "ingredients"
+  );
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -85,22 +87,28 @@ export default function PantryTable({ onAdd }: PantryTableProps) {
   };
 
   const handleAddItem = () => {
-    const newItem = {
-      id: items.length > 0 ? Math.max(...items.map((i) => i.id)) + 1 : 1,
-      name: "New Item",
-      quantity: "0",
-      expiry: new Date().toLocaleDateString("en-US"),
-      status: "fresh",
-      isIngredient: activeTab === "ingredients",
-    };
-    setItems([...items, newItem]);
+    const newItems: PantryItem[] = [];
+    for (let i = 0; i < 5; i++) {
+      newItems.push({
+        id:
+          items.length > 0
+            ? Math.max(...items.map((it) => it.id)) + 1 + i
+            : 1 + i,
+        name: `New Item ${i + 1}`,
+        quantity: "0",
+        expiry: new Date().toLocaleDateString("en-US"),
+        status: "fresh",
+        isIngredient: activeTab === "ingredients",
+      });
+    }
+    setItems([...items, ...newItems]);
   };
 
   React.useEffect(() => {
     if (onAdd) {
       onAdd(() => handleAddItem);
     }
-  }, [onAdd]);
+  }, [onAdd, items, activeTab]);
 
   const filteredItems =
     activeTab === "all" ? items : items.filter((item) => item.isIngredient);
@@ -108,35 +116,33 @@ export default function PantryTable({ onAdd }: PantryTableProps) {
   const ingredientCount = items.filter((item) => item.isIngredient).length;
 
   return (
-    <div className="w-full">
-      <div className="w-max-full flex justify-center mb-6">
-        <div className=" inline-flex bg-gray-100 rounded-lg p-1 ">
-          <button
-            onClick={() => setActiveTab("all")}
-            className={`px-6 py-2 rounded-md transition-all  ${
-              activeTab === "all"
-                ? "bg-white text-gray-900 shadow-sm font-medium "
-                : "text-gray-600 hover:text-gray-900 hover:cursor-pointer"
-            }`}
-          >
-            All Items
-          </button>
-          <button
-            onClick={() => setActiveTab("ingredients")}
-            className={`px-6 py-2 rounded-md transition-all ${
-              activeTab === "ingredients"
-                ? "bg-white text-gray-900 shadow-sm font-medium"
-                : "text-gray-600 hover:text-gray-900 hover:cursor-pointer"
-            }`}
-          >
-            Ingredients ({ingredientCount})
-          </button>
-        </div>
+    <div className="w-full mx-auto justify-center items-center p-4 ">
+      <div className="max-w-full h-10 mx-auto grid grid-cols-2 gap-0 bg-gray-100/70 rounded-lg overflow-hidden mt-7">
+        <button
+          onClick={() => setActiveTab("all")}
+          className={`px-8 py-3 text-sm font-medium transition-colors ${
+            activeTab === "all"
+              ? "bg-white text-gray-900 rounded-xl h-8 mt-1 mb-1 ml-1 mr-1"
+              : "text-gray-600 hover:bg-gray-50 hover: cursor-pointer"
+          } ${activeTab === "ingredients" ? "rounded-l-md" : ""}`}
+        >
+          All Items
+        </button>
+        <button
+          onClick={() => setActiveTab("ingredients")}
+          className={`px-8 py-2 text-sm font-medium transition-colors ${
+            activeTab === "ingredients"
+              ? "bg-white text-gray-900 rounded-xl h-8 mt-1 mb-1 ml-1 mr-1 "
+              : "text-gray-600 hover:bg-gray-50 hover: cursor-pointer"
+          } ${activeTab === "all" ? "rounded-lg" : ""}`}
+        >
+          Ingredients ({ingredientCount})
+        </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden mt-6 border-gray-200 border-2">
         <table className="w-full">
-          <thead className="bg-white border-b border-gray-200">
+          <thead className="bg-white border-gray-200">
             <tr>
               <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700">
                 Item Name

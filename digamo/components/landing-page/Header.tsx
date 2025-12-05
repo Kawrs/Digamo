@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -8,9 +9,19 @@ function Header() {
   return (
     <header className="fixed top-0 left-0 w-full bg-white/70 backdrop-blur-sm z-50 shadow-sm dark:bg-black/50 dark:border-b dark:backdrop-blur-sm dark:shadow-sm">
       <div className="navigation flex items-center justify-between py-3 px-6 sm:px-10 lg:px-24">
-        <h3 className="font-bold text-xl text-black font-montserrat tracking-wide dark:text-white">
-          Digamo
-        </h3>
+        <div className="brand flex flex-row items-center space-x-3">
+          <Image
+            src="/chef's-head.png"
+            alt="Digamo Logo"
+            width={40}
+            height={40}
+            loading="lazy"
+            className="rounded-t-lg h-10 w-full object-cover"
+          />
+          <h3 className="font-bold text-xl text-black font-montserrat tracking-wide dark:text-white">
+            Digamo
+          </h3>
+        </div>
 
         <nav className="hidden md:flex flex-1 justify-center ">
           <ul className="flex space-x-8 font-medium font-montserrat text-gray-900 ">
