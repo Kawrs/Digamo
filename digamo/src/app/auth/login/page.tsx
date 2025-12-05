@@ -100,7 +100,7 @@ export default function Login() {
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-900 hover:cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95"
                     >
-                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                      {showPassword ? <FaEye /> : <FaEyeSlash />}
                     </button>
                   </div>
                 </div>
@@ -122,7 +122,9 @@ export default function Login() {
                 }
                 try {
                   if (!auth) {
-                    setErrorMsg("Firebase is not initialized. Please check your configuration.");
+                    setErrorMsg(
+                      "Firebase is not initialized. Please check your configuration."
+                    );
                     return;
                   }
                   setLoading(true);
@@ -132,7 +134,8 @@ export default function Login() {
                   console.error("Login error", error);
                   let message = "Failed to sign in.";
                   if (typeof error === "object" && error && "code" in error) {
-                    const code = (error as { code: string; message?: string }).code;
+                    const code = (error as { code: string; message?: string })
+                      .code;
                     switch (code) {
                       case "auth/invalid-email":
                         message = "Invalid email address.";
@@ -145,7 +148,8 @@ export default function Login() {
                         message = "Too many attempts. Try again later.";
                         break;
                       default:
-                        message = (error as { message?: string }).message || message;
+                        message =
+                          (error as { message?: string }).message || message;
                     }
                   }
                   setErrorMsg(message);
@@ -154,7 +158,7 @@ export default function Login() {
                 }
               }}
               disabled={loading}
-              className="bg-[#4F4F4F] text-white rounded-[30px] h-10 w-full max-w-sm md:w-90 md:relative md:left-15 hover:cursor-pointer hover:bg-[#0e100f] active:translate-y-1 transition-ease-out duration-100 disabled:opacity-60"
+              className="bg-[#4F4F4F] text-white rounded-[30px] h-10 w-full max-w-sm md:w-90 md:relative md:left-15 hover:cursor-pointer hover:bg-[#0e100f] active:translate-y-1 transition-ease-out duration-100 disabled:opacity-60 mt-4"
             >
               {loading ? "Signing in..." : "Sign in"}
             </button>
@@ -183,12 +187,12 @@ export default function Login() {
             </div>
 
             <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 md:relative md:ml-25 mt-4">
-              <p className="text-[#223F61] text-sm font-medium">
+              <p className="text-[#223F61] text-sm font-medium md:mr-30">
                 Don&apos;t have an account?
               </p>
               <Link
                 href="/auth/signup"
-                className="text-[#223F61] text-sm font-medium cursor-pointer hover:underline"
+                className="text-[#223F61] text-sm font-medium cursor-pointer hover:underline md:ml-5"
               >
                 Sign Up
               </Link>
