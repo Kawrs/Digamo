@@ -130,7 +130,7 @@ export const generateFilipinoRecipes = async (): Promise<Recipe[]> => {
       {
         "name": "",
         "description": "",
-        "duration": number,
+        "cookTime": number,
         "ingredients": [""],
         "instructions": [""],
       }

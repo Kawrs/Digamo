@@ -4,19 +4,26 @@ import HeaderHome from "components/home-page/HeaderHome";
 import Card from "components/randomizer-page/Card";
 import { Shuffle } from "lucide-react";
 import { generateFilipinoRecipes } from "../lib/gemini/recipes";
+import { Recipe } from "types/gemini";
 
 export default function Randomizer() {
-  const [recipes, setRecipes] = useState<any[]>([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleShuffle = async () => {
     try {
       setLoading(true);
-      // Clear recipes briefly to show the user a 'refresh' is happening
       setRecipes([]); 
       
       const result = await generateFilipinoRecipes();
-      setRecipes(result);
+      
+      // Safety check: only update if we actually got data
+      if (result && result.length > 0) {
+        setRecipes(result);
+      } else {
+        console.warn("No recipes returned");
+        // Optional: Show a toast error here
+      }
     } catch (error) {
       console.error("Shuffle failed:", error);
     } finally {
@@ -53,7 +60,7 @@ export default function Randomizer() {
           <Card
             key={index}
             name={recipe.name}
-            duration={recipe.duration}
+            cookTime={recipe.cookTime}
             description={recipe.description}
             ingredients={recipe.ingredients}
             instructions={recipe.instructions}
