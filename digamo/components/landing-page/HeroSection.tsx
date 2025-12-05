@@ -1,14 +1,9 @@
 "use client";
 
-// import Image from "next/image";
-// import { useState, useEffect } from "react";
 import Scene from "components/landing-page/Scene";
+import Link from "next/link";
 
 function HeroSection() {
-  // useEffect(() => {
-
-  // }, []);
-
   return (
     <div className="hero w-full min-h-screen flex flex-col py-2 lg:flex-row items-center justify-center gap-8 lg:gap-12 bg-gradient-to-tl from-gold/20 to-mint/30 pt-24 pb-12 lg:pt-0 overflow-x-hidden dark:from-gold/50 dark:to-mint/40">
       <div className="titles flex-1 space-y-4 lg:space-y-6 text-center lg:text-left w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 pt-20">
@@ -30,24 +25,17 @@ function HeroSection() {
             your ingredients.
           </h2>
         </div>
-        <button className="py-3 px-8 sm:px-10 text-lg sm:text-xl font-montserrat font-bold bg-gradient-to-r from-orange to-coral rounded-lg hover:bg-orange cursor-pointer transition-colors text-white tracking-wide shadow-lg hover:shadow-xl hover:scale-[1.02] duration-300">
-          Generate Recipes Now
-        </button>
+        <Link rel="preload" href="/homePage">
+          <button className="py-3 px-8 sm:px-10 text-lg sm:text-xl font-montserrat font-bold bg-gradient-to-r from-orange to-coral rounded-lg hover:bg-orange cursor-pointer transition-colors text-white tracking-wide shadow-lg hover:shadow-xl hover:scale-[1.02] duration-300">
+            Generate Recipes Now
+          </button>
+        </Link>
       </div>
 
       <div className="character flex-1 flex items-center justify-center lg:justify-end w-full px-6 sm:px-8 md:px-12 lg:px-16">
         <div className="mt-40">
           <Scene />
         </div>
-
-        {/* <Image
-          src="/ex1.png"
-          loading="lazy"
-          alt="Hero Character"
-          width={384}
-          height={384}
-          className="w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 max-w-full object-contain"
-        /> */}
       </div>
     </div>
   );

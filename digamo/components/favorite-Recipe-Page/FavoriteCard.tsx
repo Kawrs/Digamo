@@ -21,13 +21,13 @@ const FavoriteRecipePage = () => {
                 </button>
             </div>
             {/*Title*/}
-            <h1 className="text-[#F7931E] text-2xl font-bold break-words mt-5 mr-5">Testing</h1>
+            <h1 className="text-[#F7931E] text-2xl font-monserrat font-bold break-words mt-5 mr-5">Testing</h1>
             
             {/*Date and view recipe button*/}
             <div className="flex flex-row justify-between items-end mt-10">
-                <h2 className="text-md font-extralight">Date: 1/3/25</h2>
+                <h2 className="text-md font-extralight dark:text-white text-black">Date: 1/3/25</h2>
                 <button className="w-30 h-10 ml-5 bg-gray-500 rounded-2xl bg-gradient-to-l from-[#EF4444] to-[#F36B3F]
-                border border-white hover:cursor-pointer active:translate-y-1 transition-all
+                border border-white hover:cursor-pointer active:translate-y-1 transition-all font-monserrat
                 hover:bg-gradient-to-l hover:from-[#F36B3F] hover:to-[#F7931E] text-white shadow-[0_5px_5px_rgba(0,0,0,0.2)]
                 ">View Recipe</button>
             </div>

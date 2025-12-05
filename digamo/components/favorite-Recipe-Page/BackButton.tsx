@@ -13,12 +13,12 @@ const BackButton = () => {
         >
           {/* Arrow section */}
           <div className="flex items-center justify-center bg-[#B8D4C8]/10 px-3 backdrop-blur-xl">
-            <FaArrowLeftLong className="text-black" />
+            <FaArrowLeftLong className="dark:text-black" />
           </div>
 
           {/* Text section with gap */}
           <div className="flex items-center bg-gradient-to-l from-[#F0B60E]/10 to-[#B8D4C8]/30 px-4 backdrop-blur-xl">
-            <h2 className="font-extralight text-sm text-black">
+            <h2 className="font-extralight text-sm dark:text-black">
               Back to search
             </h2>
           </div>

@@ -1,13 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import SearchBar from "components/home-page/SearchBar";
 import { Suspense } from "react";
 import Link from "next/link";
-import path from "path";
+// import path from "path";
 
 export default function Carousel() {
   const [current, setCurrent] = useState(0);
+  const [Display, setDisplay] = useState("");
 
   const baseItems = [
     {
@@ -20,7 +21,7 @@ export default function Carousel() {
       id: 1,
       label: "My Pantry",
       color: "bg-orange",
-      path: "/#",
+      path: "/myPantry",
     },
     {
       id: 2,
@@ -47,10 +48,31 @@ export default function Carousel() {
     return "hidden";
   };
 
+  // para sa time-dependent greeting
+  useEffect(() => {
+    const updateText = () => {
+      const currentTime = new Date();
+      const currentHour = currentTime.getHours();
+      // i dynamic pana ang name since i-fetch pa sa db
+      let text = "Good Evening, Beautiful!";
+      if (currentHour < 12) {
+        text = "Good Morning, Beautiful!";
+      } else if (currentHour < 18) {
+        text = "Good Afternoon, Beautiful!";
+      }
+      setDisplay(text);
+    };
+
+    updateText();
+    const timer = setInterval(updateText, 60000); // Check every minute
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen z-10">
       <div className=" absolute top-46 text-center  font-quattrocento  text-gray-900 dark:text-white">
-        <h1 className="greetings text-4xl">Good Morning, Beautiful!</h1>
+        <h1 className="greetings text-4xl">{Display}</h1>
       </div>
       <div className="relative w-full flex items-center justify-center max-w-2xl mx-auto">
         <button
