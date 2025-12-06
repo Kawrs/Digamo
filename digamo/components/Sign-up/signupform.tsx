@@ -257,6 +257,7 @@ const SignupForm = () => {
                                    active:translate-y-1 transition-all disabled:opacity-50"
                     >
                         {loading ? "Processing..." : "Sign Up"}
+                        router.push("/homePage");
                     </button>
 
                 </form>
