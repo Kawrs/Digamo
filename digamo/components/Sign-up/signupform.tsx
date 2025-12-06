@@ -54,11 +54,6 @@ const SignupForm = () => {
       return;
     }
 
-    if (formData.username.length < 6) {
-      setErrorMsg("Username must be at least 6 characters long.");
-      setLoading(false);
-      return;
-    }
 
     if (formData.password.length < 6) {
       setErrorMsg("Password must be at least 6 characters long.");
@@ -90,21 +85,23 @@ const SignupForm = () => {
       );
       const user = result.user;
 
-      // Step 2: Update display name
+      //Update display name
       await updateProfile(user, {
         displayName: `${formData.username}`,
       });
 
       // Step 3: Create user document in Firestore
       await setDoc(doc(db, "users", user.uid), {
+        userId: user.uid,
         username: formData.username,
         email: formData.email,
-        uid: user.uid,
+        displayName: formData.username,
+        pantryId: null,
         createdAt: new Date().toISOString(),
-      });
+      }); 
 
       console.log(
-        "✅ User created, profile updated, and Firestore doc set!",
+        "Successfully created profile",
         user
       );
 
@@ -116,8 +113,10 @@ const SignupForm = () => {
         confirmPassword: "",
       });
 
-      router.push("/dashboard");
-    } catch (err: unknown) {
+      router.push("/homePage");
+    } 
+    catch (err: any) {
+      
       let errorMessage = "An unexpected error occurred.";
 
       if (err && typeof err === "object") {
