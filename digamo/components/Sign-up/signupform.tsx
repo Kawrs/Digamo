@@ -3,10 +3,17 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-//import { supabase }  from '../../src/app/lib/supabase/client';
 import { auth, db } from "../../src/app/lib/firebase/firebaseConfig";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { 
+  setDoc, 
+  doc, 
+  writeBatch,
+  serverTimestamp,
+} from "firebase/firestore";
 
 interface SignupFormData {
   username: string;
@@ -18,11 +25,11 @@ interface SignupFormData {
 const SignupForm = () => {
   const router = useRouter();
 
-  // Password visibility
+  // Password visibility state
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
-  // Form state
+  // Form data state
   const [formData, setFormData] = React.useState<SignupFormData>({
     username: "",
     email: "",
@@ -30,30 +37,28 @@ const SignupForm = () => {
     confirmPassword: "",
   });
 
-  // UI states
+  // UI status states
   const [loading, setLoading] = React.useState(false);
   const [errorMsg, setErrorMsg] = React.useState("");
   const [successMsg, setSuccessMsg] = React.useState("");
 
-  // Update form fields
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value } as SignupFormData));
   };
 
-  // Handle submit
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg("");
     setSuccessMsg("");
 
+    // --- Client-side Validation Checks ---
     if (!formData.email || !formData.password || !formData.username) {
       setErrorMsg("Please fill in all fields.");
       setLoading(false);
       return;
     }
-
 
     if (formData.password.length < 6) {
       setErrorMsg("Password must be at least 6 characters long.");
@@ -68,7 +73,7 @@ const SignupForm = () => {
     }
 
     try {
-      // Check if Firebase is initialized
+      // Check initialization safety
       if (!auth || !db) {
         setErrorMsg(
           "Firebase is not initialized. Please check your configuration."
@@ -77,35 +82,50 @@ const SignupForm = () => {
         return;
       }
 
-      // Step 1: Create user
+      // Step 1: Create user in Firebase Authentication
       const result = await createUserWithEmailAndPassword(
         auth,
         formData.email,
         formData.password
       );
       const user = result.user;
-
-      //Update display name
+      
+      const userId = user.uid; 
+      
+      // Step 2: Update display name in Firebase Auth profile
       await updateProfile(user, {
-        displayName: `${formData.username}`,
+        displayName: formData.username,
       });
 
-      // Step 3: Create user document in Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        userId: user.uid,
+      // --- Step 3: Atomic Firestore Database Setup (Batch Write) ---
+      
+      const batch = writeBatch(db);
+      
+      // Set the document IDs to the user's UID for strict 1:1 enforcement
+      const pantryDocRef = doc(db, "pantry", userId);
+      const userDocRef = doc(db, "users", userId);
+
+
+      // A. User document: /users/{userId}
+      batch.set(userDocRef, {
         username: formData.username,
         email: formData.email,
-        displayName: formData.username,
-        pantryId: null,
-        createdAt: new Date().toISOString(),
-      }); 
+        pantryId: userId, 
+        createdAt: serverTimestamp(), 
+      });
 
-      console.log(
-        "Successfully created profile",
-        user
-      );
+      // B. Pantry document: /pantries/{userId}
+      batch.set(pantryDocRef, {
+        createdAt: serverTimestamp(),
+        lastUpdated: serverTimestamp(),
+      });
 
-      // Clear form
+      // Commit the batch
+      await batch.commit();
+
+      console.log("Successfully created user and pantry for:", userId);
+
+      // Clear form 
       setFormData({
         username: "",
         email: "",
@@ -113,9 +133,15 @@ const SignupForm = () => {
         confirmPassword: "",
       });
 
-      router.push("/homePage");
-    } 
-    catch (err: any) {
+      setSuccessMsg("Account created successfully! Redirecting...");
+      setTimeout(() => router.push("/homePage"), 1500);
+
+    } catch (err: any) {
+      // Cleanup: If the Firestore batch fails, delete the Auth user
+      if (auth && auth.currentUser) {
+          await auth.currentUser.delete();
+          console.log("Cleaned up orphaned Auth user due to Firestore failure.");
+      }
       
       let errorMessage = "An unexpected error occurred.";
 
@@ -125,8 +151,7 @@ const SignupForm = () => {
         if (error.code) {
           switch (error.code) {
             case "auth/email-already-in-use":
-              errorMessage =
-                "Account already exists! Please use the 'Log In' page.";
+              errorMessage = "Account already exists! Please use the 'Log In' page.";
               break;
             case "auth/invalid-email":
               errorMessage = "Invalid email address.";
@@ -135,8 +160,7 @@ const SignupForm = () => {
               errorMessage = "Password should be at least 6 characters.";
               break;
             case "permission-denied":
-              errorMessage =
-                "Permission denied. Please update Firestore security rules to allow users to create their profile.";
+              errorMessage = "Permission denied. Please update Firestore security rules.";
               break;
             default:
               errorMessage = error.message || errorMessage;
@@ -153,7 +177,8 @@ const SignupForm = () => {
       setLoading(false);
     }
   };
-
+  
+  // --- JSX remains the same ---
   return (
     <div className="w-full md:w-3/5 rounded-2xl z-10 relative bg-white">
       <div className="flex flex-col items-center justify-center h-full w-full px-4">
@@ -161,10 +186,7 @@ const SignupForm = () => {
           Create Account
         </h1>
 
-        <form
-          className="flex flex-col gap-4 w-full max-w-sm"
-          onSubmit={handleSignup}
-        >
+        <form className="flex flex-col gap-4 w-full max-w-sm" onSubmit={handleSignup}>
           {/* Username */}
           <div className="flex flex-col gap-1">
             <h2 className="font-monserrat text-[#4F4F4F]">Username:</h2>
@@ -212,11 +234,7 @@ const SignupForm = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-900"
                 >
-                  {showPassword ? (
-                    <FaEye size={20} />
-                  ) : (
-                    <FaEyeSlash size={20} />
-                  )}
+                  {showPassword ? <FaEye size={20} /> : <FaEyeSlash size={20} />}
                 </button>
               </div>
             </div>
@@ -269,10 +287,10 @@ const SignupForm = () => {
             type="submit"
             disabled={loading}
             className="bg-[#4F4F4F] text-white rounded-2xl h-10 w-full max-w-sm shadow-2xl shadow-black-50 mb-10
-                                   hover:bg-gradient-to-r hover:cursor-pointer hover:from-[#F36B3F] hover:to-[#EF4444]
-                                   active:translate-y-1 transition-all disabled:opacity-50"
+                hover:bg-gradient-to-r hover:cursor-pointer hover:from-[#F36B3F] hover:to-[#EF4444]
+                active:translate-y-1 transition-all disabled:opacity-50"
           >
-            {loading ? "Processing..." : "Sign Up"}
+            {loading ? "Creating Account..." : "Sign Up"}
           </button>
         </form>
       </div>
