@@ -23,7 +23,7 @@ export default function Login() {
   }, []);
 
   return (
-    <div className="bg-white w-full min-h-screen py-8 md:py-20 flex items-center justify-center ">
+    <div className="bg-white dark:bg-black w-full min-h-screen py-8 md:py-20 flex items-center justify-center ">
       <Script
         async
         src="https://www.googletagmanager.com/gtag/js?id=G-QMVC5BR2W3"
@@ -38,11 +38,11 @@ export default function Login() {
       <div className="h-full w-11/12 md:w-4/5 flex flex-col md:flex-row m-auto rounded-2xl overflow-hidden border-1 border-gray-300 items-center shadow-lg">
         {/* Left side - Hidden on mobile */}
         <div className="hidden md:flex h-full md:w-2/5 bg-gradient-to-tl from-[#F0B60E] to-[#B8D4C8] rounded-l-2xl z-0 relative -mr-5 overflow-hidden flex-col">
-          <div className="flex-shrink-0 pt-8 px-6 text-center">
-            <h1 className="text-[#4F4F4F] text-4xl font-montagu font-bold">
+          <div className="flex-shrink-0 pt-8 px-8 text-center">
+            <h1 className="text-gray text-4xl font-montagu font-bold">
               Welcome!
             </h1>
-            <h6 className="text-[#F36B3F] text-xl font-montagu">
+            <h6 className="text-[#F36B3F] text-xl font-montserrat">
               Add Your Pantry. Get a Recipe. Start Cooking.
             </h6>
           </div>
@@ -71,13 +71,13 @@ export default function Login() {
           </div>
 
           <div className="flex flex-col items-center h-full w-full justify-center px-6 md:px-0">
-            <h1 className="text-gray-900 text-3xl md:text-4xl mb-5 text-center md:text-left md:relative md:left-15">
+            <h1 className="text-gray-900 dark:text-white text-4xl md:text-3xl mb-5 text-center md:text-left md:relative md:left-15">
               Sign in
             </h1>
 
             <div className="flex flex-col gap-4 w-full  max-w-sm md:relative md:left-15">
               <div className="flex flex-col gap-1">
-                <h2 className="text-gray-500">Email:</h2>
+                <h2 className="text-gray-500 dark:text-white ">Email:</h2>
                 <div className="rounded-3xl p-[2px] bg-gradient-to-r from-[#F0B60E] to-[#EF4444] justify-center items-center">
                   <input
                     type="email"
@@ -90,7 +90,7 @@ export default function Login() {
 
               {/* Password input */}
               <div className="flex flex-col gap-1 relative">
-                <h2 className="text-gray-500">Password:</h2>
+                <h2 className="text-gray-500 dark:text-white ">Password:</h2>
                 <div className="rounded-3xl p-[2px] bg-gradient-to-r from-[#F0B60E] to-[#EF4444]">
                   <div className="relative">
                     <input
@@ -162,7 +162,7 @@ export default function Login() {
                 }
               }}
               disabled={loading}
-              className="bg-[#4F4F4F] text-white rounded-[30px] h-10 w-full max-w-sm md:w-90 md:relative md:left-15 hover:cursor-pointer hover:bg-[#0e100f] active:translate-y-1 transition-ease-out duration-100 disabled:opacity-60 mt-4"
+              className="bg-[#4F4F4F] text-white dark:text-gray-900 rounded-[30px] h-10 w-full max-w-sm md:w-90 md:relative md:left-15 hover:cursor-pointer hover:bg-[#0e100f] dark:hover:bg-coral dark:hover:text-white dark:bg-white active:translate-y-1 transition-ease-out duration-100 disabled:opacity-60 mt-4"
             >
               {loading ? "Signing in..." : "Sign in"}
             </button>
@@ -191,12 +191,12 @@ export default function Login() {
             </div>
 
             <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 md:relative md:ml-25 mt-4">
-              <p className="text-[#223F61] text-sm font-medium md:mr-30">
+              <p className="text-[#223F61] text-sm font-medium md:mr-30 dark:text-white">
                 Don&apos;t have an account?
               </p>
               <Link
                 href="/auth/signup"
-                className="text-[#223F61] text-sm font-medium cursor-pointer hover:underline md:ml-5"
+                className="text-[#223F61] dark:text-white text-sm font-medium cursor-pointer hover:underline md:ml-5"
               >
                 Sign Up
               </Link>

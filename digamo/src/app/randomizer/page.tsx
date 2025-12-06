@@ -13,10 +13,10 @@ export default function Randomizer() {
   const handleShuffle = async () => {
     try {
       setLoading(true);
-      setRecipes([]); 
-      
+      setRecipes([]);
+
       const result = await generateFilipinoRecipes();
-      
+
       // Safety check: only update if we actually got data
       if (result && result.length > 0) {
         setRecipes(result);
@@ -32,26 +32,33 @@ export default function Randomizer() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#FCEFC8]">
+    <div className="w-full min-h-screen bg-[#FCEFC8] dark:bg-[#FCEFC8]/60">
       <HeaderHome />
 
-      <div className="w-full flex justify-center font-quattrocento">
-        <p className="mt-30 text-5xl text-black">Recipe Randomizer</p>
+      <div className="w-full flex justify-center font-quattrocento font-bold">
+        <p className="mt-30 text-4xl text-black">Recipe Randomizer</p>
       </div>
 
       <div className="w-full flex justify-center">
         <button
           onClick={handleShuffle}
           disabled={loading}
-          className={"animate-pulse hover:scale-110 transition-transform duration-200 active:scale-95"}
+          className={
+            "animate-pulse hover:scale-110 transition-transform duration-200 active:scale-95"
+          }
         >
-          <Shuffle size={95} className="mt-10 hover:cursor-pointer" />
+          <Shuffle
+            size={95}
+            className="mt-10 dark:text-orange hover:cursor-pointer"
+          />
         </button>
       </div>
 
       <div className="w-full flex justify-center font-quattrocento">
-        <p className="mt-5 text-xl text-black">
-          {loading ? "Generating recipes..." : "Press shuffle to randomize recipes."}
+        <p className="mt-10 text-md text-black">
+          {loading
+            ? "Generating recipes..."
+            : "Press shuffle to randomize recipes."}
         </p>
       </div>
 
