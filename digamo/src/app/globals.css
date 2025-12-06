@@ -13,6 +13,7 @@
   --font-montagu: var(--font-montagu);
   --font-quattrocento: var(--font-quattrocento);
   --font-coromorant: var(--font-cormorantgaramond);
+  --font-montserrat: var(--font-montserrat);
   --color-mint: oklch(0.79 0.088 171.7);
   --color-gold: oklch(0.8075 0.1635 85.03);
   --color-orange: oklch(0.72 0.147 67.4);
@@ -127,4 +128,8 @@ body {
   .greetings {
     font-size: 100px;
   } */
+
+  .navButton {
+    flex-direction: column;
+  }
 }

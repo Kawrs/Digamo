@@ -4,11 +4,15 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import SearchBar from "components/home-page/SearchBar";
 import { Suspense } from "react";
 import Link from "next/link";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { app } from "../../src/app/lib/firebase/clientApp";
 // import path from "path";
 
 export default function Carousel() {
   const [current, setCurrent] = useState(0);
   const [Display, setDisplay] = useState("");
+  const [userName, setUserName] = useState<string | null>(null);
+  const auth = getAuth(app);
 
   const baseItems = [
     {
@@ -48,26 +52,36 @@ export default function Carousel() {
     return "hidden";
   };
 
+  //username fetch from auth
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (users) => {
+      if (users) {
+        const name = users.displayName;
+        console.log(name);
+        setUserName(users.displayName || null);
+      } else {
+        setUserName(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
   // para sa time-dependent greeting
   useEffect(() => {
     const updateText = () => {
-      const currentTime = new Date();
-      const currentHour = currentTime.getHours();
-      // i dynamic pana ang name since i-fetch pa sa db
-      let text = "Good Evening, Beautiful!";
-      if (currentHour < 12) {
-        text = "Good Morning, Beautiful!";
-      } else if (currentHour < 18) {
-        text = "Good Afternoon, Beautiful!";
-      }
+      const currentHour = new Date().getHours();
+      let text = `Good Evening, ${userName || "Beautiful"}!`;
+      if (currentHour < 12) text = `Good Morning, ${userName || "Beautiful"}!`;
+      else if (currentHour < 18)
+        text = `Good Afternoon, ${userName || "Beautiful"}!`;
       setDisplay(text);
     };
 
     updateText();
-    const timer = setInterval(updateText, 60000); // Check every minute
-
+    const timer = setInterval(updateText, 60000); // update every minute
     return () => clearInterval(timer);
-  }, []);
+  }, [userName]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen z-10">
