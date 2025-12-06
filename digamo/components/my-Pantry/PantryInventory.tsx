@@ -29,15 +29,17 @@ export default function PantryInventory() {
           <nav className="absolute top-4 right-4 hidden md:flex items-center">
             <button className="profile cursor-pointer">
               <div className="rounded-lg bg-white w-40 h-10 border border-gray-200 mr-2 flex items-center justify-center gap-2">
-                <Sparkles size={18} />
+                <Sparkles size={18} className="text-orange" />
                 <p className="text-md text-gray-800 font-medium">Condiments</p>
               </div>
             </button>
             <button className="profile cursor-pointer" onClick={handleAddClick}>
-              <div className="rounded-lg bg-[#030213] w-32 h-10 flex items-center justify-center gap-2">
-                <Plus size={18} color="white" />
+              <div className="rounded-lg group bg-[#030213] dark:bg-white hover:bg-coral  dark:text-orange w-32 h-10 flex items-center justify-center gap-2">
+                <Plus size={18} className="text-white dark:text-black " />
 
-                <p className="text-md text-white font-medium">Add Item</p>
+                <p className="text-md text-white dark:text-black font-medium">
+                  Add Item
+                </p>
               </div>
             </button>
           </nav>

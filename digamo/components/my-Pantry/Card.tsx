@@ -12,7 +12,7 @@ const Card: React.FC<CardProps> = ({
   children,
 }) => {
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm w-full">
+    <div className="bg-white dark:bg-black rounded-xl p-6 shadow-sm w-full">
       {imageUrl && (
         <img src={imageUrl} alt={title} className={styles.cardImage} />
       )}

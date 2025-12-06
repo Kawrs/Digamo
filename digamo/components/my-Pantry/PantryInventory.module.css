@@ -18,6 +18,17 @@
   font-weight: 200;
   /* margin-bottom: 10px; */
 }
+
+@media (prefers-color-scheme: dark) {
+  .titleSection {
+    /* background-color: white; */
+    color: white;
+  }
+
+  .bigCard {
+    background: black;
+  }
+}
 .description {
   font: montserrat, sans-serif;
   font-size: 14px;
