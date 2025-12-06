@@ -1,271 +1,208 @@
-import React, { useState } from "react";
-import { Pencil, Trash2 } from "lucide-react";
+"use client";
+import React, { useState, useEffect } from "react";
+// --- Type Definitions (Must match the controller) ---
+type PantryItem = {
+    id: string;
+    name: string;
+    qty?: string;
+    expiryDate?: string;
+    status: 'Stocked' | 'Low' | 'Expired';
+    timestamp?: any;
+    category?: string; // NEW FIELD
+};
 
-interface PantryItem {
-  id: number;
-  name: string;
-  quantity: string;
-  expiry: string;
-  status: string;
-  isIngredient: boolean;
-}
+// Component must accept all C.R.U.D. props from MyPantryPage
+export default function PantryInventory({ items, removeItem, updateItem, addItem, newItemIdToEdit }: {
+    items: PantryItem[],
+    removeItem: (id: string) => Promise<void>,
+    updateItem: (id: string, name: string, qty: string, expiryDate: string, status: string) => Promise<void>,
+    addItem: () => Promise<void>,
+    newItemIdToEdit: string | null
+}) {
+    // --- Inline Editing State and Handlers ---
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editName, setEditName] = useState('');
+    const [editQty, setEditQty] = useState('');
+    const [editExpiryDate, setEditExpiryDate] = useState(''); 
+    // Set edit status to use the controller's internal labels for data consistency
+    const [editStatus, setEditStatus] = useState<'Stocked' | 'Low' | 'Expired'>('Stocked'); 
+    const [editCategory, setEditCategory] = useState(''); // New state for category
 
-interface PantryTableProps {
-  onAdd?: React.Dispatch<React.SetStateAction<(() => void) | null>>;
-}
+    // Effect to automatically start editing the new item when it appears in the list
+    useEffect(() => {
+        if (newItemIdToEdit && newItemIdToEdit !== editingId) {
+            const newItem = items.find(item => item.id === newItemIdToEdit);
+            if (newItem) {
+                handleEditClick(newItem);
+            }
+        }
+    }, [newItemIdToEdit, items]); 
 
-export default function PantryTable({ onAdd }: PantryTableProps) {
-  const [items, setItems] = useState<PantryItem[]>([
-    {
-      id: 1,
-      name: "Chicken Breast",
-      quantity: "600g",
-      expiry: "10/20/2025",
-      status: "use-soon",
-      isIngredient: true,
-    },
-    {
-      id: 2,
-      name: "Rice",
-      quantity: "2kg",
-      expiry: "3/15/2026",
-      status: "fresh",
-      isIngredient: true,
-    },
-  ]);
+    const handleEditClick = (item: PantryItem) => {
+        setEditingId(item.id);
+        setEditName(item.name);
+        setEditQty(item.qty || '');
+        setEditExpiryDate(item.expiryDate || '');
+        setEditStatus(item.status || 'Stocked');
+        setEditCategory(item.category || 'N/A'); // Set new field
+    };
 
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [editForm, setEditForm] = useState<PantryItem | null>(null);
-  const [activeTab, setActiveTab] = useState<"all" | "ingredients">(
-    "ingredients"
-  );
+    const handleSave = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!editName.trim() || !editingId) return;
+        
+        await updateItem(editingId, editName, editQty, editExpiryDate, editStatus);
+        setEditingId(null); 
+    };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "fresh":
-        return "bg-green-100 text-green-700";
-      case "use-soon":
-        return "bg-yellow-100 text-yellow-700";
-      case "expiring-soon":
-        return "bg-orange-100 text-orange-700";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
+    const handleCancel = () => {
+        if (editingId) {
+            const item = items.find(i => i.id === editingId);
+            if (item && item.name === 'New Item') { 
+                removeItem(editingId); 
+            }
+        }
+        setEditingId(null);
+    };
+    
+    // Status Classes aligned to standard colors
+    const getStatusClasses = (status: 'Stocked' | 'Low' | 'Expired') => {
+        switch (status) {
+            case 'Expired': return 'bg-red-100 text-red-700 border-red-300'; // Maps to Expiring Soon/Expired color
+            case 'Low': return 'bg-yellow-100 text-yellow-700 border-yellow-300'; // Maps to Use Soon color
+            case 'Stocked':
+            default: return 'bg-green-100 text-green-700 border-green-300'; // Maps to Fresh color
+        }
+    };
+    
+    const getStatusText = (status: string) => {
+        // Translates internal status codes to required display text
+        switch (status) {
+            case 'Stocked': return 'Fresh';
+            case 'Low': return 'Use Soon';
+            case 'Expired': return 'Expiring Soon'; // Displaying Expiring Soon as requested
+            default: return status;
+        }
+    };
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case "fresh":
-        return "Fresh";
-      case "use-soon":
-        return "Use Soon";
-      case "expiring-soon":
-        return "Expiring Soon";
-      default:
-        return status;
-    }
-  };
+    // Dedicated handler for type-safe status update
+    const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setEditStatus(e.target.value as 'Stocked' | 'Low' | 'Expired');
+    };
 
-  const handleEdit = (item: PantryItem) => {
-    setEditingId(item.id);
-    setEditForm(item);
-  };
 
-  const handleSave = () => {
-    if (!editForm) return;
-    setItems(items.map((item) => (item.id === editingId ? editForm : item)));
-    setEditingId(null);
-  };
-
-  const handleCancel = () => {
-    setEditingId(null);
-    setEditForm(null);
-  };
-
-  const handleDelete = (id: number) => {
-    setItems(items.filter((item) => item.id !== id));
-  };
-
-  const handleAddItem = () => {
-    const newItems: PantryItem[] = [];
-    for (let i = 0; i < 5; i++) {
-      newItems.push({
-        id:
-          items.length > 0
-            ? Math.max(...items.map((it) => it.id)) + 1 + i
-            : 1 + i,
-        name: `New Item ${i + 1}`,
-        quantity: "0",
-        expiry: new Date().toLocaleDateString("en-US"),
-        status: "fresh",
-        isIngredient: activeTab === "ingredients",
-      });
-    }
-    setItems([...items, ...newItems]);
-  };
-
-  React.useEffect(() => {
-    if (onAdd) {
-      onAdd(() => handleAddItem);
-    }
-  }, [onAdd, items, activeTab]);
-
-  const filteredItems =
-    activeTab === "all" ? items : items.filter((item) => item.isIngredient);
-
-  const ingredientCount = items.filter((item) => item.isIngredient).length;
-
-  return (
-    <div className="w-full mx-auto justify-center items-center p-4 ">
-      <div className="max-w-full h-10 mx-auto grid grid-cols-2 gap-0 bg-gray-100/70 rounded-lg overflow-hidden mt-7">
-        <button
-          onClick={() => setActiveTab("all")}
-          className={`px-8 py-3 text-sm font-medium transition-colors ${
-            activeTab === "all"
-              ? "bg-white text-gray-900 rounded-xl h-8 mt-1 mb-1 ml-1 mr-1"
-              : "text-gray-600 hover:bg-gray-50 hover: cursor-pointer"
-          } ${activeTab === "ingredients" ? "rounded-l-md" : ""}`}
-        >
-          All Items
-        </button>
-        <button
-          onClick={() => setActiveTab("ingredients")}
-          className={`px-8 py-2 text-sm font-medium transition-colors ${
-            activeTab === "ingredients"
-              ? "bg-white text-gray-900 rounded-xl h-8 mt-1 mb-1 ml-1 mr-1 "
-              : "text-gray-600 hover:bg-gray-50 hover: cursor-pointer"
-          } ${activeTab === "all" ? "rounded-lg" : ""}`}
-        >
-          Ingredients ({ingredientCount})
-        </button>
-      </div>
-
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden mt-6 border-gray-200 border-2">
-        <table className="w-full">
-          <thead className="bg-white border-gray-200">
-            <tr>
-              <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700">
-                Item Name
-              </th>
-              <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700">
-                Quantity
-              </th>
-              <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700">
-                Expiry Date
-              </th>
-              <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700">
-                Status
-              </th>
-              <th className="text-right py-4 px-6 text-sm font-semibold text-gray-700">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {filteredItems.map((item) => (
-              <tr key={item.id} className="hover:bg-gray-50 transition">
-                {editingId === item.id ? (
-                  <>
-                    <td className="py-4 px-6">
-                      <input
-                        type="text"
-                        value={editForm?.name || ""}
-                        onChange={(e) =>
-                          editForm &&
-                          setEditForm({ ...editForm, name: e.target.value })
-                        }
-                        className="w-full px-2 py-1 border border-gray-300 rounded"
-                      />
-                    </td>
-                    <td className="py-4 px-6">
-                      <input
-                        type="text"
-                        value={editForm?.quantity || ""}
-                        onChange={(e) =>
-                          editForm &&
-                          setEditForm({ ...editForm, quantity: e.target.value })
-                        }
-                        className="w-full px-2 py-1 border border-gray-300 rounded"
-                      />
-                    </td>
-                    <td className="py-4 px-6">
-                      <input
-                        type="text"
-                        value={editForm?.expiry || ""}
-                        onChange={(e) =>
-                          editForm &&
-                          setEditForm({ ...editForm, expiry: e.target.value })
-                        }
-                        className="w-full px-2 py-1 border border-gray-300 rounded"
-                      />
-                    </td>
-                    <td className="py-4 px-6">
-                      <select
-                        value={editForm?.status || "fresh"}
-                        onChange={(e) =>
-                          editForm &&
-                          setEditForm({ ...editForm, status: e.target.value })
-                        }
-                        className="w-full px-2 py-1 border border-gray-300 rounded"
-                      >
-                        <option value="fresh">Fresh</option>
-                        <option value="use-soon">Use Soon</option>
-                        <option value="expiring-soon">Expiring Soon</option>
-                      </select>
-                    </td>
-                    <td className="py-4 px-6 text-right">
-                      <button
-                        onClick={handleSave}
-                        className="text-green-600 hover:text-green-700 font-medium mr-3"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={handleCancel}
-                        className="text-gray-600 hover:text-gray-700 font-medium"
-                      >
-                        Cancel
-                      </button>
-                    </td>
-                  </>
-                ) : (
-                  <>
-                    <td className="py-4 px-6 font-medium text-gray-900">
-                      {item.name}
-                    </td>
-                    <td className="py-4 px-6 text-gray-600">{item.quantity}</td>
-                    <td className="py-4 px-6 text-gray-600">{item.expiry}</td>
-                    <td className="py-4 px-6">
-                      <span
-                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
-                          item.status
-                        )}`}
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
-                        {getStatusText(item.status)}
-                      </span>
-                    </td>
-                    <td className="py-4 px-6 text-right">
-                      <button
-                        onClick={() => handleEdit(item)}
-                        className="text-gray-600 hover:text-blue-600 transition mr-3 hover:cursor-pointer"
-                      >
-                        <Pencil size={18} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(item.id)}
-                        className="text-gray-600 hover:text-red-600 transition hover:cursor-pointer"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </td>
-                  </>
-                )}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
+    return (
+        <div className="w-full px-6 flex justify-center pb-12">
+            <div className="max-w-4xl w-full bg-white rounded-2xl shadow-2xl p-6 space-y-4 border border-gray-200 relative" style={{boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: '14px'}}>
+                
+                {/* Header Section (Matching original UI layout) */}
+                <div className="flex justify-between items-center py-2">
+                    <div>
+                        <h2 className="text-xl font-bold text-gray-800">Pantry Inventory</h2>
+                        <p className="text-sm text-gray-500">Manage your ingredients and condiments with expiry tracking</p>
+                    </div>
+                    
+                    {/* Navigation Buttons (Matching user's requested layout) */}
+                    <nav className="flex items-center space-x-2">
+                         {/* Condiments Button */}
+                        <button className="rounded-lg h-10 border border-gray-200 flex items-center justify-center gap-2 text-gray-800 font-medium text-sm transition hover:bg-gray-50 active:scale-95 px-3 shadow-sm">
+                            {/* Sparkles Icon SVG */}
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M10 2a1 1 0 01.993.843l.794 3.97L16.29 8.23a1 1 0 01.353 1.053l-.994 4.97a1 1 0 01-1.053.848L10 16.993l-4.796.71a1 1 0 01-1.053-.848l-.994-4.97a1 1 0 01.353-1.053l4.503-3.417.794-3.97A1 1 0 0110 2z" />
+                            </svg>
+                            Condiments
+                        </button>
+                        
+                        {/* Add Row Button */}
+                        <button 
+                            className="rounded-lg h-10 flex items-center justify-center gap-2 font-medium text-sm transition duration-150 active:scale-95 bg-indigo-600 text-white hover:bg-indigo-700 shadow-md px-3"
+                            onClick={addItem}
+                        >
+                            {/* Plus Icon SVG */}
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+                            Add Row
+                        </button>
+                    </nav>
+                </div>
+                
+                {/* Inventory Table/List (Replicating Digamo Table structure) */}
+                <div className="bg-white rounded-xl overflow-hidden mt-4 border border-gray-200">
+                    <table className="w-full">
+                        <thead className="bg-gray-50 border-b border-gray-200">
+                            <tr className="text-left text-sm font-semibold text-gray-700">
+                                {/* UI Adjustments based on visual reference */}
+                                <th className="py-3 px-4 w-[25%]">Item Name</th>
+                                <th className="py-3 px-4 w-[10%]">Quantity</th>
+                                <th className="py-3 px-4 w-[10%]">Category</th>
+                                <th className="py-3 px-4 w-[20%]">Expiry Date</th>
+                                <th className="py-3 px-4 w-[20%]">Status</th>
+                                <th className="py-3 px-4 w-[15%] text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            {items.map(item => (
+                                <tr key={item.id} className="hover:bg-gray-50 transition">
+                                    {editingId === item.id ? (
+                                        // Edit View (Inline Form) - Styled to be less "tacky"
+                                        <td colSpan={6} className="p-0">
+                                            <form onSubmit={handleSave} className="flex items-center w-full p-2 space-x-1">
+                                                {/* Name (25%) */}
+                                                <input type="text" value={editName} onChange={(e) => setEditName(e.target.value)} className="w-[25%] p-1 border rounded text-sm focus:ring-indigo-500" required />
+                                                {/* Qty (10%) */}
+                                                <input type="text" value={editQty} onChange={(e) => setEditQty(e.target.value)} className="w-[10%] p-1 border rounded text-sm" />
+                                                {/* Category (10%) */}
+                                                <input type="text" value={editCategory} onChange={(e) => setEditCategory(e.target.value)} className="w-[10%] p-1 border rounded text-sm" placeholder="Cat" />
+                                                {/* Expiry Date (20%) */}
+                                                <input type="date" value={editExpiryDate} onChange={(e) => setEditExpiryDate(e.target.value)} className="w-[20%] p-1 border rounded text-sm" />
+                                                {/* Status (20%) */}
+                                                <select 
+                                                    value={editStatus} 
+                                                    onChange={handleStatusChange} 
+                                                    className={`w-[20%] p-1 border rounded text-sm appearance-none ${getStatusClasses(editStatus)}`}
+                                                >
+                                                    <option value="Stocked">Fresh</option>
+                                                    <option value="Low">Use Soon</option>
+                                                    <option value="Expired">Expiring Soon</option>
+                                                </select>
+                                                {/* Actions (15%) */}
+                                                <div className="flex justify-end space-x-1 w-[15%] pl-2">
+                                                    <button type="submit" className="text-green-600 hover:text-green-800 p-1 transition" title="Save">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                                                    </button>
+                                                    <button type="button" onClick={handleCancel} className="text-gray-500 hover:text-gray-700 p-1 transition" title="Cancel">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </td>
+                                    ) : (
+                                        // Read-Only View - Match Digamo Table Style
+                                        <>
+                                            <td className="py-3 px-4 font-medium text-gray-900 w-[25%]">{item.name}</td>
+                                            <td className="py-3 px-4 text-gray-600 w-[10%]">{item.qty || '-'}</td>
+                                            <td className="py-3 px-4 text-gray-600 w-[10%]">{item.category || 'N/A'}</td>
+                                            <td className="py-3 px-4 text-gray-600 w-[20%]">{item.expiryDate || '-'}</td>
+                                            <td className="py-3 px-4 w-[20%]">
+                                                <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getStatusClasses(item.status)}`}>
+                                                    {getStatusText(item.status)}
+                                                </span>
+                                            </td>
+                                            <td className="py-3 px-4 w-[15%] text-right flex justify-end space-x-1">
+                                                <button onClick={() => handleEditClick(item)} className="text-gray-400 hover:text-indigo-600 p-1 transition" title="Edit">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-1.414 4.318l-.707.707L10.382 10.38l-.707.707-4.12 4.12a2 2 0 00-.586 1.414V17a1 1 0 001 1h.707a2 2 0 001.414-.586l4.12-4.12.707-.707 1.414-1.414.707-.707 1.414-1.414.707-.707z" /></svg>
+                                                </button>
+                                                <button onClick={() => removeItem(item.id)} className="text-gray-400 hover:text-red-600 p-1 transition" title="Delete">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 112 0v6a1 1 0 11-2 0V8z" clipRule="evenodd" /></svg>
+                                                </button>
+                                            </td>
+                                        </>
+                                    )}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    );
+};

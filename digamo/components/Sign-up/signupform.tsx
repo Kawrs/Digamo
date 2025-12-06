@@ -111,7 +111,7 @@ const SignupForm = () => {
                 confirmPassword: "",
             });
 
-            router.push("/dashboard");
+            router.push("/homePage");
         } catch (err: unknown) {
             let errorMessage = "An unexpected error occurred.";
             
