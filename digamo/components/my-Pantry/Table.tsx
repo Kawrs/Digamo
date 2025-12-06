@@ -88,7 +88,7 @@ export default function PantryTable({ onAdd }: PantryTableProps) {
 
   const handleAddItem = () => {
     const newItems: PantryItem[] = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 1; i++) {
       newItems.push({
         id:
           items.length > 0
@@ -140,7 +140,7 @@ export default function PantryTable({ onAdd }: PantryTableProps) {
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden mt-6 border-gray-200 border-2">
+      <div className="bg-white rounded-xl shadow-lg overflow-y-auto max-h-96 mt-6 border-gray-200 border-2">
         <table className="w-full">
           <thead className="bg-white border-gray-200">
             <tr>
