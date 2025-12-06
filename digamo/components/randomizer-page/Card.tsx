@@ -83,7 +83,7 @@ export default function Card({
                 <h3 className="font-bold text-gray-800 mb-2">Instructions</h3>
                 <ol className="list-decimal list-inside text-gray-600 space-y-2">
                   {instructions.map((step, i) => (
-                    <li key={i} className="pl-1 marker:font-bold">{step}</li>
+                    <li key={i} className="pl-1 marker:font-bold">{step.replace(/^(\d+\.|Step \d+[:.]?)\s*/i, "")}</li>
                   ))}
                 </ol>
               </div>
