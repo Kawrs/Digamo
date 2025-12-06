@@ -93,8 +93,8 @@ function HeaderHome() {
         <nav className="hidden md:flex relative items-center space-x-3 icons-container">
           <div className="items-center flex space-x-[-10px]">
             <button className="profile cursor-pointer">
-              <div className="rounded-full bg-red/20 px-1 py-1">
-                <AccountCircleIcon className="text-gray w-10 h-10" />
+              <div className="rounded-full dark:bg-white bg-red/20 px-1 py-1">
+                <AccountCircleIcon className="text-gray dark:text-red w-10 h-10" />
               </div>
             </button>
 
@@ -102,12 +102,12 @@ function HeaderHome() {
               // id="multiLevelDropdownButton"
               data-dropdown-toggle="multi-dropdown"
               ref={dropdownButtonRef}
-              className="inline-flex items-center justify-center text-gray-900  box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none rounded-full"
+              className="inline-flex items-center justify-center text-gray-900 dark:text-white  box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none rounded-full"
               type="button"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
               <svg
-                className="w-4 h-4 ms-1.5 -me-0.5"
+                className="w-4 h-4 ms-1.5 -me-0.5 dark:text-white"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -128,16 +128,17 @@ function HeaderHome() {
         </nav>
         <div
           ref={dropdownRef}
-          className={`z-10 absolute top-full right-3 items-center justify-center bg-white w-[20%] border-1 border-gold rounded-base shadow-lg p-4 transition-all ${
+          className={`z-10 absolute top-full right-3 items-center justify-center rounded-bl-xl rounded-br-xl dark:bg-black bg-white w-[20%] border-1 border-gold rounded-base shadow-lg p-4 transition-all ${
             dropdownOpen ? "block" : "hidden"
           }`}
         >
           <ul className=" flex flex-col space-y-4 items-center">
-            <li className="border-t-1 border-b-1 border-mint/30 py-2 w-full items-center justify-center flex">
+            <li className="border-t-1 border-b-1 border-mint/70 py-2 w-full items-center justify-center flex">
               <div className="flex flex-col items-center space-x-2 space-y-4">
-                <h2 className="items-start w-full font-bold text-gray-900">
+                {/* <h2 className="items-start w-full font-bold text-gray-900 dark:text-white">
                   Email
-                </h2>
+                </h2> */}
+
                 <div className="flex flex-row space-x-2 items-center">
                   <AlternateEmailIcon />
                   <p>{userEmail}</p>

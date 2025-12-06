@@ -156,9 +156,9 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="w-full md:w-3/5 rounded-2xl z-10 relative bg-white">
+    <div className="w-full md:w-4/5 rounded-br-2xl rounded-tr-2xl z-10 relative bg-white dark:bg-black border-1 border-white shadow-lg shadow-black/10 dark:shadow-white/10">
       <div className="flex flex-col items-center justify-center h-full w-full px-4">
-        <h1 className="text-gray-900 text-3xl md:text-4xl mb-5 text-center mt-5 font-monserrat">
+        <h1 className="text-gray-900 dark:text-white text-3xl md:text-4xl mb-5 text-center mt-5 font-monserrat">
           Create Account
         </h1>
 
@@ -168,7 +168,9 @@ const SignupForm = () => {
         >
           {/* Username */}
           <div className="flex flex-col gap-1">
-            <h2 className="font-monserrat text-[#4F4F4F]">Username:</h2>
+            <h2 className="font-monserrat text-[#4F4F4F] dark:text-white ">
+              Username:
+            </h2>
             <div className="rounded-3xl p-[2px] bg-gradient-to-r from-[#F0B60E] to-[#EF4444]">
               <input
                 name="username"
@@ -182,7 +184,9 @@ const SignupForm = () => {
 
           {/* Email */}
           <div className="flex flex-col gap-1">
-            <h2 className="font-monserrat text-[#4F4F4F]">Email:</h2>
+            <h2 className="font-monserrat text-[#4F4F4F] dark:text-white ">
+              Email:
+            </h2>
             <div className="rounded-3xl p-[2px] bg-gradient-to-r from-[#F0B60E] to-[#EF4444]">
               <input
                 name="email"
@@ -197,7 +201,9 @@ const SignupForm = () => {
 
           {/* Password */}
           <div className="flex flex-col gap-1">
-            <h2 className="font-monserrat text-[#4F4F4F]">Password:</h2>
+            <h2 className="font-monserrat text-[#4F4F4F] dark:text-white ">
+              Password:
+            </h2>
             <div className="rounded-3xl p-[2px] bg-gradient-to-r from-[#F0B60E] to-[#EF4444]">
               <div className="relative">
                 <input
@@ -225,7 +231,9 @@ const SignupForm = () => {
 
           {/* Confirm Password */}
           <div className="flex flex-col gap-1">
-            <h2 className="font-monserrat text-[#4F4F4F]">Confirm Password:</h2>
+            <h2 className="font-monserrat text-[#4F4F4F] dark:text-white ">
+              Confirm Password:
+            </h2>
             <div className="rounded-3xl p-[2px] bg-gradient-to-r from-[#F0B60E] to-[#EF4444]">
               <div className="relative">
                 <input
@@ -269,7 +277,7 @@ const SignupForm = () => {
           <button
             type="submit"
             disabled={loading}
-            className="bg-[#4F4F4F] text-white rounded-2xl h-10 w-full max-w-sm shadow-2xl shadow-black-50 mb-10
+            className="bg-[#4F4F4F] dark:bg-white dark:text-orange dark:hover:text-white text-white rounded-2xl h-10 w-full max-w-sm shadow-2xl shadow-black-50 mb-10
                                    hover:bg-gradient-to-r hover:cursor-pointer hover:from-[#F36B3F] hover:to-[#EF4444]
                                    active:translate-y-1 transition-all disabled:opacity-50"
           >
