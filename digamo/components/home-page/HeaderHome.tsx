@@ -5,23 +5,68 @@ import Image from "next/image";
 import Link from "next/link";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { app } from "../../src/app/lib/firebase/clientApp";
+import { useEffect, useRef } from "react";
 function HeaderHome() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownButtonRef = useRef<HTMLButtonElement>(null);
+  const auth = getAuth(app);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
-  // const auth = getAuth();
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user) {
-  //     // User is signed in
-  //     const username = user.displayName;
-  //     console.log("Current user's display name:", username);
-  //   } else {
-  //     // User is signed out
-  //     console.log("No user signed in.");
-  //   }
-  // });
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (users) => {
+      if (users) {
+        const email = users.email;
+        console.log(email);
+        setUserEmail(users.email);
+      } else {
+        setUserEmail(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      const target = e.target as Node;
+
+      if (!dropdownRef.current || !dropdownButtonRef.current) return;
+
+      if (
+        !dropdownRef.current.contains(target) &&
+        !dropdownButtonRef.current.contains(target)
+      ) {
+        setDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    function handleResize() {
+      setDropdownOpen(false);
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      console.log("User signed out successfully");
+      setUserEmail(null);
+      setDropdownOpen(false); // close dropdown if open
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 w-full bg-white/70 backdrop-blur-sm z-50 shadow-sm dark:bg-black/50 dark:border-b dark:backdrop-blur-sm dark:shadow-sm">
@@ -54,8 +99,9 @@ function HeaderHome() {
             </button>
 
             <button
-              id="multiLevelDropdownButton"
+              // id="multiLevelDropdownButton"
               data-dropdown-toggle="multi-dropdown"
+              ref={dropdownButtonRef}
               className="inline-flex items-center justify-center text-gray-900  box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none rounded-full"
               type="button"
               onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -81,6 +127,7 @@ function HeaderHome() {
           </div>
         </nav>
         <div
+          ref={dropdownRef}
           className={`z-10 absolute top-full right-3 items-center justify-center bg-white w-[20%] border-1 border-gold rounded-base shadow-lg p-4 transition-all ${
             dropdownOpen ? "block" : "hidden"
           }`}
@@ -93,7 +140,7 @@ function HeaderHome() {
                 </h2>
                 <div className="flex flex-row space-x-2 items-center">
                   <AlternateEmailIcon />
-                  <p>bautista.ann@icloud.com</p>
+                  <p>{userEmail}</p>
                 </div>
               </div>
             </li>
@@ -105,9 +152,14 @@ function HeaderHome() {
               </Link>
             </li>
             <li>
-              <button className="px-8 py-2 bg-gold rounded-full cursor-pointer hover:bg-coral">
-                Sign Out
-              </button>
+              <Link href="/auth/login">
+                <button
+                  onClick={handleLogout}
+                  className="px-8 py-2 bg-gold rounded-full cursor-pointer hover:bg-coral"
+                >
+                  Sign Out
+                </button>
+              </Link>
             </li>
           </ul>
         </div>
@@ -146,9 +198,37 @@ function HeaderHome() {
               <NavButtons />
             </div>
             {/* ilisdanan pani para dynamic, profile modal sa mobile*/}
-            <div className="profile mt-4">
-              <div className="rounded-full bg-red p-4 w-1"></div>
-            </div>
+            <ul className=" flex flex-col space-y-4 items-center">
+              <li className="border-t-1 border-b-1 border-mint/30 py-2 w-full items-center justify-center flex">
+                <div className="flex flex-col items-center space-x-2 space-y-4">
+                  <h2 className="items-start w-full font-bold text-gray-900">
+                    Email
+                  </h2>
+                  <div className="flex flex-row space-x-2 items-center">
+                    <AlternateEmailIcon />
+                    {/* dynamic ni from database */}
+                    <p>{userEmail}</p>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <Link href="#">
+                  <button className="px-8 py-2 border-1 border-gold hover:bg-coral cursor-pointer rounded-full">
+                    Change Password
+                  </button>
+                </Link>
+              </li>
+              <li>
+                <Link href="/auth/login">
+                  <button
+                    onClick={handleLogout}
+                    className="px-8 py-2 bg-gold rounded-full cursor-pointer hover:bg-coral"
+                  >
+                    Sign Out
+                  </button>
+                </Link>
+              </li>
+            </ul>
           </div>
         )}
       </div>

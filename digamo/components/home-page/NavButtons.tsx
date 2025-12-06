@@ -27,7 +27,7 @@ export default function NavButtons() {
     },
   ];
   return (
-    <div className="flex gap-4">
+    <div className="navButton flex gap-4">
       {features.map((feature, index) => {
         return (
           <Link key={index} href={feature.page}>
@@ -36,7 +36,7 @@ export default function NavButtons() {
                 icon={feature.icon}
                 className="text-xl text-gold group-hover:text-orange"
               />
-              <span className=" text-sm group-hover:text-white">
+              <span className=" text-sm group-hover:text-white whitespace-nowrap">
                 {feature.title}
               </span>
             </div>
