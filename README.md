@@ -14,7 +14,7 @@ Digamo helps you reduce food waste and make better meal decisions by generating 
 ## 🛠 Tech Stack
 - **Frontend**: React + TypeScript + Tailwind CSS
 - **Backend**: Firebase (Auth, Firestore)
-- **AI**: Google Gemini 1.5 Flash
+- **AI**: Google Gemini 2.5 Flash
 
 ## 🤖 AI Integration
 Scheather uses live weather data to:
