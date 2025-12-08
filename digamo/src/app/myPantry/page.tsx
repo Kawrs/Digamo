@@ -6,7 +6,6 @@ import Card from "components/my-Pantry/Card";
 import PantryInventory from "components/my-Pantry/PantryInventory";
 import { PantryItem, ExpiryStatus, PantryCategory } from '../../../types/gemini';
 
-
 interface PantryPageProps {
   pantryItems: PantryItem[];
   addPantryItem: (item: Omit<PantryItem, 'id' | 'expiryStatus'>) => void;
