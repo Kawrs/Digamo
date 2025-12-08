@@ -133,3 +133,7 @@ body {
     flex-direction: column;
   }
 }
+
+.spin-twice:hover {
+  transform: rotate(720deg);
+}

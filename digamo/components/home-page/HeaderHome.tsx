@@ -3,11 +3,14 @@ import { useState } from "react";
 import NavButtons from "./NavButtons";
 import Image from "next/image";
 import Link from "next/link";
-import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import EmailIcon from "@mui/icons-material/Email";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app } from "../../src/app/lib/firebase/clientApp";
 import { useEffect, useRef } from "react";
+import SettingsIcon from "@mui/icons-material/Settings";
+import PasswordIcon from "@mui/icons-material/Password";
+import LogoutIcon from "@mui/icons-material/Logout";
+
 function HeaderHome() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -92,37 +95,15 @@ function HeaderHome() {
         {/* profile modal here desktop */}
         <nav className="hidden md:flex relative items-center space-x-3 icons-container">
           <div className="items-center flex space-x-[-10px]">
-            <button className="profile cursor-pointer">
-              <div className="rounded-full dark:bg-white bg-red/20 px-1 py-1">
-                <AccountCircleIcon className="text-gray dark:text-red w-10 h-10" />
-              </div>
-            </button>
-
             <button
-              // id="multiLevelDropdownButton"
               data-dropdown-toggle="multi-dropdown"
               ref={dropdownButtonRef}
-              className="inline-flex items-center justify-center text-gray-900 dark:text-white  box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none rounded-full"
+              className="inline-flex items-center justify-center group text-gray-900 gap-1 dark:text-white  box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none rounded-full"
               type="button"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
-              <svg
-                className="w-4 h-4 ms-1.5 -me-0.5 dark:text-white"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="m19 9-7 7-7-7"
-                />
-              </svg>
+              <SettingsIcon className="text-gray-900 dark:text-white group-hover:transition-transform hover:duration-900 hover:-rotate-90 cursor-pointer" />
+              <p className="hover:cursor-pointer">Settings</p>
             </button>
           </div>
         </nav>
@@ -132,34 +113,34 @@ function HeaderHome() {
             dropdownOpen ? "block" : "hidden"
           }`}
         >
-          <ul className=" flex flex-col space-y-4 items-center">
-            <li className="border-t-1 border-b-1 border-mint/70 py-2 w-full items-center justify-center flex">
-              <div className="flex flex-col items-center space-x-2 space-y-4">
-                {/* <h2 className="items-start w-full font-bold text-gray-900 dark:text-white">
-                  Email
-                </h2> */}
-
-                <div className="flex flex-row space-x-2 items-center">
-                  <AlternateEmailIcon />
-                  <p>{userEmail}</p>
-                </div>
+          <ul className=" flex flex-col space-y-4 items-start">
+            <li className=" py-2 w-full justify-center flex">
+              <div className="flex flex-row space-x-2">
+                <EmailIcon />
+                <p>{userEmail}</p>
               </div>
             </li>
             <li>
               <Link href="#">
-                <button className="px-8 py-2 border-1 border-gold hover:bg-coral cursor-pointer rounded-full">
-                  Change Password
-                </button>
+                <div className="flex px-8 flex-row space-x-2 items-center justify-center">
+                  <PasswordIcon />
+                  <p className="py-2 cursor-pointer rounded-full hover:underline">
+                    Change Password
+                  </p>
+                </div>
               </Link>
             </li>
             <li>
               <Link href="/auth/login">
-                <button
-                  onClick={handleLogout}
-                  className="px-8 py-2 bg-gold rounded-full cursor-pointer hover:bg-coral"
-                >
-                  Sign Out
-                </button>
+                <div className="flex px-8 flex-row space-x-2 items-center justify-center">
+                  <LogoutIcon />
+                  <p
+                    onClick={handleLogout}
+                    className=" py-2 cursor-pointer hover:underline"
+                  >
+                    Logout
+                  </p>
+                </div>
               </Link>
             </li>
           </ul>
@@ -194,39 +175,39 @@ function HeaderHome() {
         </button>
 
         {menuOpen && (
-          <div className="absolute top-full left-0 w-full bg-white shadow-md md:hidden p-5 flex flex-col space-y-4 font-montserrat">
-            <div className="flex flex-row gap-4">
+          <div className="absolute top-full left-0 w-full bg-white dark:bg-black dark:border-b-2 dark:order-white shadow-md md:hidden p-5 flex flex-col space-y-4 font-montserrat">
+            <div className="w-full">
               <NavButtons />
             </div>
             {/* ilisdanan pani para dynamic, profile modal sa mobile*/}
-            <ul className=" flex flex-col space-y-4 items-center">
-              <li className="border-t-1 border-b-1 border-mint/30 py-2 w-full items-center justify-center flex">
-                <div className="flex flex-col items-center space-x-2 space-y-4">
-                  <h2 className="items-start w-full font-bold text-gray-900">
-                    Email
-                  </h2>
-                  <div className="flex flex-row space-x-2 items-center">
-                    <AlternateEmailIcon />
-                    {/* dynamic ni from database */}
-                    <p>{userEmail}</p>
-                  </div>
+            <ul className=" flex flex-col space-y-4 items-start">
+              <li className=" py-2 px-8 justify-center flex">
+                <div className="flex flex-row space-x-2">
+                  <EmailIcon />
+                  <p>{userEmail}</p>
                 </div>
               </li>
               <li>
                 <Link href="#">
-                  <button className="px-8 py-2 border-1 border-gold hover:bg-coral cursor-pointer rounded-full">
-                    Change Password
-                  </button>
+                  <div className="flex px-8 flex-row space-x-2 items-center justify-center">
+                    <PasswordIcon />
+                    <p className="py-2 cursor-pointer rounded-full hover:underline">
+                      Change Password
+                    </p>
+                  </div>
                 </Link>
               </li>
               <li>
                 <Link href="/auth/login">
-                  <button
-                    onClick={handleLogout}
-                    className="px-8 py-2 bg-gold rounded-full cursor-pointer hover:bg-coral"
-                  >
-                    Sign Out
-                  </button>
+                  <div className="flex px-8 flex-row space-x-2 items-center justify-center">
+                    <LogoutIcon />
+                    <p
+                      onClick={handleLogout}
+                      className=" py-2 cursor-pointer hover:underline"
+                    >
+                      Logout
+                    </p>
+                  </div>
                 </Link>
               </li>
             </ul>
