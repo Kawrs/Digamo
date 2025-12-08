@@ -9,7 +9,7 @@ interface PantryItem {
   status: string;
   isIngredient: boolean;
 }
-//deployyyy
+//deployyy
 
 interface PantryTableProps {
   onAdd?: React.Dispatch<React.SetStateAction<(() => void) | null>>;

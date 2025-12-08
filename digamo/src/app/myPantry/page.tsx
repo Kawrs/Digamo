@@ -13,7 +13,7 @@ interface PantryPageProps {
   deletePantryItem: (id: string) => void;
 }
 
-
+//deployy
 const PantryPage: React.FC<PantryPageProps> = ({ pantryItems, addPantryItem, updatePantryItem, deletePantryItem }) => {
   return (
     <div className="min-h-screen w-screen flex flex-col overflow-x-hidden relative bg-gradient-to-l from-[#f5db83] to-[#B8D4C8] bg-homepage-bg bg-cover bg-center bg-no-repeat">

@@ -15,7 +15,7 @@ const getpantryitemCollectionRef = (userId: string) => {
     {
         throw new Error("Firebase not initializ");
     }
-
+    // deployyy
     //firebase collection pantry-pantry_item thru userId doc
     return collection(db, "pantry", userId, "pantry_item");
 }

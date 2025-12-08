@@ -12,7 +12,7 @@ export default function PantryInventory() {
 
   const handleAddClick = () => {
     if (addItemFunction) {
-      addItemFunction(); // deployy
+      addItemFunction(); // deployyyyyy
     }
   };
 
