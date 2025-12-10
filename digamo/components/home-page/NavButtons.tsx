@@ -27,11 +27,11 @@ export default function NavButtons() {
     },
   ];
   return (
-    <div className="navButton flex gap-4">
+    <div className="navButton flex flex-col sm:flex-row gap-4">
       {features.map((feature, index) => {
         return (
           <Link key={index} href={feature.page}>
-            <div className="group px-2 py-3 flex items-center justify-center gap-1 hover:bg-mint rounded-lg cursor-pointer transition ">
+            <div className="group px-2 py-3 flex items-center border border-white lg:border-none justify-center gap-1 hover:bg-mint rounded-lg cursor-pointer transition ">
               <Icon
                 icon={feature.icon}
                 className="text-xl text-gold group-hover:text-orange"
