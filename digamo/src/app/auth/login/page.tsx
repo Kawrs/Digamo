@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { auth } from "../../lib/firebase/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { UserAuth } from "../../context/AuthContext";
 
 export default function Login() {
   const router = useRouter();
@@ -17,10 +17,44 @@ export default function Login() {
   const [loading, setLoading] = React.useState(false);
   const [errorMsg, setErrorMsg] = React.useState("");
   const [isClient, setIsClient] = React.useState(false);
+  const [googleLoading, setGoogleLoading] = React.useState(false);
+  const { googleSignIn, user } = UserAuth();
 
   React.useEffect(() => {
     setIsClient(true);
-  }, []);
+    if (user) {
+      console.log("User already logged in:", user);
+      router.push("/homePage");
+    }
+  }, [user, router]);
+
+  const handleGoogleLogin = async () => {
+    if (googleLoading) return;
+    setGoogleLoading(true);
+    setErrorMsg("");
+
+    console.log("=== Google Login Start ===");
+    console.log("Auth object:", auth);
+    console.log("Current user before sign in:", auth.currentUser);
+
+    try {
+      console.log("Calling googleSignIn...");
+      await googleSignIn();
+      console.log("googleSignIn completed");
+      console.log("Current user after sign in:", auth.currentUser);
+
+      // Add a small delay to ensure auth state updates
+      setTimeout(() => {
+        router.push("/homePage");
+      }, 500);
+    } catch (error: any) {
+      console.error("Google login error:", error);
+      console.error("Error code:", error.code);
+      setErrorMsg(error.message || "Failed to sign in with Google");
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
 
   return (
     <div className="bg-white dark:bg-black w-full min-h-screen py-8 md:py-20 flex items-center justify-center ">
@@ -174,6 +208,8 @@ export default function Login() {
               />
               <button
                 type="button"
+                onClick={handleGoogleLogin}
+                disabled={googleLoading}
                 className="flex items-center justify-center w-full h-10 bg-white border border-gray-300 rounded-[30px] shadow hover:bg-gray-100 transition-colors duration-200 text-[#223F61] font-medium cursor-pointer mt-2"
               >
                 <Image
