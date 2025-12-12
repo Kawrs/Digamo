@@ -13,7 +13,9 @@ interface PantryInventoryProps {
   }) => void;
 }
 
-export default function PantryInventory({ onStatsChange }: PantryInventoryProps) {
+export default function PantryInventory({
+  onStatsChange,
+}: PantryInventoryProps) {
   const [addItemFunction, setAddItemFunction] = useState<(() => void) | null>(
     null
   );
@@ -24,7 +26,7 @@ export default function PantryInventory({ onStatsChange }: PantryInventoryProps)
 
   return (
     <div className="w-full px-3 flex justify-center ">
-      <div className="max-w-7xl h-435 w-full overflow-hidden">
+      <div className="max-w-7xl h-200 w-full overflow-hidden">
         <div className={styles.bigCard}>
           <div>
             <p className={styles.titleSection}>Pantry Inventory </p>

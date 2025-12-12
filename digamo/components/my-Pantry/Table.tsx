@@ -227,9 +227,10 @@ export default function PantryTable({
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-lg overflow-y-auto max-h-96 mt-6 border-gray-200 border-2">
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden mt-6 border-gray-200 border-2">
+        <div className="overflow-y-auto" style={{ maxHeight: '240px' }}>
         <table className="w-full">
-          <thead className="bg-white border-gray-200">
+          <thead className="bg-white border-gray-200 sticky top-0 z-10">
             <tr>
               <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700">
                 Item Name
@@ -256,7 +257,7 @@ export default function PantryTable({
                 : "—";
 
               return (
-                <tr key={item.id} className="hover:bg-gray-50 transition">
+                <tr key={item.id} className="hover:bg-gray-50 transition h-[60px]">
                   {editingId === item.id ? (
                     <>
                       <td className="py-4 px-6">
@@ -266,7 +267,7 @@ export default function PantryTable({
                           onChange={(e) =>
                             setEditForm({ ...editForm!, name: e.target.value })
                           }
-                          className="w-full px-2 py-1 border border-gray-300 rounded"
+                          className="w-full px-2 py-1 border border-gray-300 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                         />
                       </td>
 
@@ -280,7 +281,7 @@ export default function PantryTable({
                               quantity: e.target.value,
                             })
                           }
-                          className="w-full px-2 py-1 border border-gray-300 rounded"
+                          className="w-full px-2 py-1 border border-gray-300 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                         />
                       </td>
 
@@ -300,7 +301,7 @@ export default function PantryTable({
                               expiry: e.target.value,
                             })
                           }
-                          className="w-full px-2 py-1 border border-gray-300 rounded"
+                          className="w-full px-2 py-1 border border-gray-300 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                         />
                       </td>
 
@@ -377,6 +378,7 @@ export default function PantryTable({
             })}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );
