@@ -28,7 +28,10 @@ export const generateRecipes = async (
 ): Promise<Recipe[]> => {
   try {
     const ai = getGeminiInstance();
-    const pantryList = pantryItems.map(item => `${item.name} (${item.quantity}, expires ${item.expiry.toLocaleDateString()})`).join(', ');
+    const pantryList = pantryItems.map(item => { const expiry = new Date(item.expiry).toLocaleDateString();
+      return `${item.name} (${item.quantity}, expires ${expiry})`;
+    })
+  .join(', ');
 
     const prompt = `
       As Digamo, an AI-powered recipe generator, create ${count} unique, practical, and family-friendly recipes.

@@ -1,6 +1,6 @@
 "use client";
 
-import { db } from "../firebase/firebaseConfig";
+import { db } from "@/app/lib/firebase/firebaseConfig";
 import {
   collection,
   addDoc,
@@ -47,7 +47,7 @@ export async function addPantryItemToDB(
 
 // Update
 export async function updatePantryItemInDB(userId: string, item: PantryItem) {
-  const ref = doc(db!, "users", userId, "pantry", item.id);
+  const ref = doc(db, "pantry", userId, "pantry_items", item.id);
 
   return updateDoc(ref, {
     ...item,
@@ -57,6 +57,6 @@ export async function updatePantryItemInDB(userId: string, item: PantryItem) {
 
 // Delete
 export async function deletePantryItemInDB(userId: string, id: string) {
-  const ref = doc(db!, "users", userId, "pantry", id);
+  const ref = doc(db, "pantry", userId, "pantry_items", id);
   return deleteDoc(ref);
 }

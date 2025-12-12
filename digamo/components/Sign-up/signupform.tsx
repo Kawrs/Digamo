@@ -114,9 +114,7 @@ const SignupForm = () => {
       });
 
       router.push("/homePage");
-    } 
-    catch (err: unknown) {
-      
+    } catch (err: unknown) {
       let errorMessage = "An unexpected error occurred.";
 
       if (err && typeof err === "object") {

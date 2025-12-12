@@ -1,121 +1,198 @@
-import React, { useState } from "react";
-import { Pencil, Trash2 } from "lucide-react";
+"use client";
 
-interface PantryItem {
-  id: number;
-  name: string;
-  quantity: string;
-  expiry: string;
-  status: string;
-  isIngredient: boolean;
-}
-//deployyy
+import React, { useEffect, useState } from "react";
+import { PantryItem } from "../../types/gemini";
+import { db, auth } from "@/app/lib/firebase/firebaseConfig";
+import { Pencil, Trash2 } from "lucide-react";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
+
+import { calculateExpiryStatus } from "@/app/myPantry/utils";
 
 interface PantryTableProps {
   onAdd?: React.Dispatch<React.SetStateAction<(() => void) | null>>;
+  onStatsChange?: (stats: {
+    total: number;
+    ingredients: number;
+    expiringSoon: number;
+  }) => void;
 }
 
-export default function PantryTable({ onAdd }: PantryTableProps) {
-  const [items, setItems] = useState<PantryItem[]>([
-    {
-      id: 1,
-      name: "Chicken Breast",
-      quantity: "600g",
-      expiry: "10/20/2025",
-      status: "use-soon",
-      isIngredient: true,
-    },
-    {
-      id: 2,
-      name: "Rice",
-      quantity: "2kg",
-      expiry: "3/15/2026",
-      status: "fresh",
-      isIngredient: true,
-    },
-  ]);
-
-  const [editingId, setEditingId] = useState<number | null>(null);
+export default function PantryTable({
+  onAdd,
+  onStatsChange,
+}: PantryTableProps) {
+  const [items, setItems] = useState<PantryItem[]>([]);
+  const [editingId, setEditingId] = useState<string | number | null>(null);
   const [editForm, setEditForm] = useState<PantryItem | null>(null);
   const [activeTab, setActiveTab] = useState<"all" | "ingredients">(
     "ingredients"
   );
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "fresh":
-        return "bg-green-100 text-green-700";
-      case "use-soon":
-        return "bg-yellow-100 text-yellow-700";
-      case "expiring-soon":
-        return "bg-orange-100 text-orange-700";
-      default:
-        return "bg-gray-100 text-gray-700";
+  const [userId, setUserId] = useState<string | null>(null);
+
+  // Track user login
+  useEffect(() => {
+    return auth.onAuthStateChanged((user) => {
+      setUserId(user ? user.uid : null);
+    });
+  }, []);
+
+  const pantryCollection =
+    userId ? collection(db, "users", userId, "pantry") : null;
+
+  // Load items
+  async function loadItems() {
+    if (!userId || !pantryCollection) return;
+
+    try {
+      const q = query(pantryCollection, where("userId", "==", userId));
+      const snapshot = await getDocs(q);
+
+      const data = snapshot.docs.map((snap) => {
+        const d = snap.data() as any;
+
+        return {
+          id: snap.id,
+          name: d.name,
+          quantity: d.quantity,
+          expiry: d.expiry?.toDate ? d.expiry.toDate() : d.expiry,
+          status: d.status,
+          expiryStatus: d.expiryStatus,
+          isIngredient: d.isIngredient ?? false,
+          userId: d.userId,
+        };
+      }) as PantryItem[];
+
+      setItems(data);
+
+      // Stats update
+      if (onStatsChange) {
+        const total = data.length;
+        const ingredients = data.filter((i) => i.isIngredient).length;
+        const expiringSoon = data.filter((i) => {
+          const s =
+            (i.expiryStatus || i.status || "")
+              .toString()
+              .replace(/_/g, "-")
+              .toLowerCase();
+          return s === "expiring-soon";
+        }).length;
+
+        onStatsChange({ total, ingredients, expiringSoon });
+      }
+    } catch (err) {
+      console.error("Error loading items:", err);
     }
+  }
+
+  useEffect(() => {
+    loadItems();
+  }, [userId]);
+
+  const normalize = (raw: string | undefined) =>
+    raw ? raw.replace(/_/g, "-").toLowerCase() : "";
+
+  const getStatusColor = (raw: string | undefined) => {
+    const s = normalize(raw);
+    if (s === "fresh") return "bg-green-100 text-green-700";
+    if (s === "use-soon") return "bg-yellow-100 text-yellow-700";
+    if (s === "expiring-soon") return "bg-orange-100 text-orange-700";
+    return "bg-gray-100 text-gray-700";
   };
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case "fresh":
-        return "Fresh";
-      case "use-soon":
-        return "Use Soon";
-      case "expiring-soon":
-        return "Expiring Soon";
-      default:
-        return status;
-    }
+  const getStatusText = (raw: string | undefined) => {
+    const s = normalize(raw);
+    if (s === "fresh") return "Fresh";
+    if (s === "use-soon") return "Use Soon";
+    if (s === "expiring-soon") return "Expiring Soon";
+    return raw ?? "";
   };
 
+  // Edit item
   const handleEdit = (item: PantryItem) => {
     setEditingId(item.id);
     setEditForm(item);
   };
 
-  const handleSave = () => {
-    if (!editForm) return;
-    setItems(items.map((item) => (item.id === editingId ? editForm : item)));
-    setEditingId(null);
-  };
+  // Save edited item
+  const handleSave = async () => {
+    if (!editForm || !userId) return;
 
-  const handleCancel = () => {
-    setEditingId(null);
-    setEditForm(null);
-  };
+    try {
+      const ref = doc(db, "users", userId, "pantry", String(editForm.id));
 
-  const handleDelete = (id: number) => {
-    setItems(items.filter((item) => item.id !== id));
-  };
+      // Convert expiry to Date for status calc
+      const expiryDate = new Date(editForm.expiry);
 
-  const handleAddItem = () => {
-    const newItems: PantryItem[] = [];
-    for (let i = 0; i < 1; i++) {
-      newItems.push({
-        id:
-          items.length > 0
-            ? Math.max(...items.map((it) => it.id)) + 1 + i
-            : 1 + i,
-        name: `New Item ${i + 1}`,
-        quantity: "0",
-        expiry: new Date().toLocaleDateString("en-US"),
-        status: "fresh",
-        isIngredient: activeTab === "ingredients",
+      await updateDoc(ref, {
+        ...editForm,
+        expiry: editForm.expiry,
+        expiryStatus: calculateExpiryStatus(expiryDate),
+        userId,
       });
+
+      setEditingId(null);
+      setEditForm(null);
+      await loadItems();
+    } catch (err) {
+      console.error("Error saving item:", err);
     }
-    setItems([...items, ...newItems]);
   };
 
-  React.useEffect(() => {
-    if (onAdd) {
-      onAdd(() => handleAddItem);
+  // Delete item
+  const handleDelete = async (id: string | number) => {
+    if (!userId) return;
+
+    try {
+      const ref = doc(db, "users", userId, "pantry", String(id));
+      await deleteDoc(ref);
+      await loadItems();
+    } catch (err) {
+      console.error("Error deleting item:", err);
     }
-  }, [onAdd, items, activeTab]);
+  };
 
-  const filteredItems =
-    activeTab === "all" ? items : items.filter((item) => item.isIngredient);
+  // Add item
+  const handleAddItem = async () => {
+    if (!userId) return;
 
-  const ingredientCount = items.filter((item) => item.isIngredient).length;
+    const newItem = {
+      name: "New Item",
+      quantity: "0",
+      expiry: new Date().toISOString().split("T")[0], // YYYY-MM-DD
+      status: "fresh",
+      isIngredient: activeTab === "ingredients",
+      expiryStatus: calculateExpiryStatus(new Date()),
+      userId,
+    };
 
+    try {
+      await addDoc(pantryCollection!, newItem);
+      await loadItems();
+    } catch (err) {
+      console.error("Error adding item:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (onAdd) onAdd(() => handleAddItem);
+  }, [onAdd, activeTab, userId]);
+
+  const filtered =
+    activeTab === "all" ? items : items.filter((i) => i.isIngredient);
+
+  const ingredientCount = items.filter((i) => i.isIngredient).length;
+
+  // ---------------- UI ----------------
   return (
     <div className="w-full mx-auto justify-center items-center p-4 ">
       <div className="max-w-full h-10 mx-auto grid grid-cols-2 gap-0 bg-gray-100/70 rounded-lg overflow-hidden mt-7">
@@ -126,8 +203,7 @@ export default function PantryTable({ onAdd }: PantryTableProps) {
             activeTab === "all"
               ? "bg-white text-gray-900 rounded-xl h-8 mt-1 mb-1 ml-1 mr-1"
               : "text-gray-600 hover:bg-gray-50 hover:cursor-pointer"
-          } 
-    ${activeTab === "ingredients" ? "rounded-l-md" : ""}`}
+          }`}
         >
           All Items
         </button>
@@ -136,9 +212,9 @@ export default function PantryTable({ onAdd }: PantryTableProps) {
           onClick={() => setActiveTab("ingredients")}
           className={`px-8 py-2 text-sm font-medium transition-colors ${
             activeTab === "ingredients"
-              ? "bg-white text-gray-900 rounded-xl h-8 mt-1 mb-1 ml-1 mr-1 "
+              ? "bg-white text-gray-900 rounded-xl h-8 mt-1 mb-1 ml-1 "
               : "text-gray-600 hover:bg-gray-50 hover:cursor-pointer"
-          } ${activeTab === "all" ? "rounded-lg" : ""}`}
+          }`}
         >
           Ingredients ({ingredientCount})
         </button>
@@ -165,108 +241,139 @@ export default function PantryTable({ onAdd }: PantryTableProps) {
               </th>
             </tr>
           </thead>
+
           <tbody className="divide-y divide-gray-100">
-            {filteredItems.map((item) => (
-              <tr key={item.id} className="hover:bg-gray-50 transition">
-                {editingId === item.id ? (
-                  <>
-                    <td className="py-4 px-6">
-                      <input
-                        type="text"
-                        value={editForm?.name || ""}
-                        onChange={(e) =>
-                          editForm &&
-                          setEditForm({ ...editForm, name: e.target.value })
-                        }
-                        className="w-full px-2 py-1 border border-gray-300 rounded"
-                      />
-                    </td>
-                    <td className="py-4 px-6">
-                      <input
-                        type="text"
-                        value={editForm?.quantity || ""}
-                        onChange={(e) =>
-                          editForm &&
-                          setEditForm({ ...editForm, quantity: e.target.value })
-                        }
-                        className="w-full px-2 py-1 border border-gray-300 rounded"
-                      />
-                    </td>
-                    <td className="py-4 px-6">
-                      <input
-                        type="text"
-                        value={editForm?.expiry || ""}
-                        onChange={(e) =>
-                          editForm &&
-                          setEditForm({ ...editForm, expiry: e.target.value })
-                        }
-                        className="w-full px-2 py-1 border border-gray-300 rounded"
-                      />
-                    </td>
-                    <td className="py-4 px-6">
-                      <select
-                        value={editForm?.status || "fresh"}
-                        onChange={(e) =>
-                          editForm &&
-                          setEditForm({ ...editForm, status: e.target.value })
-                        }
-                        className="w-full px-2 py-1 border border-gray-300 rounded"
-                      >
-                        <option value="fresh">Fresh</option>
-                        <option value="use-soon">Use Soon</option>
-                        <option value="expiring-soon">Expiring Soon</option>
-                      </select>
-                    </td>
-                    <td className="py-4 px-6 text-right">
-                      <button
-                        onClick={handleSave}
-                        className="text-green-600 hover:text-green-700 font-medium mr-3"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={handleCancel}
-                        className="text-gray-600 hover:text-gray-700 font-medium"
-                      >
-                        Cancel
-                      </button>
-                    </td>
-                  </>
-                ) : (
-                  <>
-                    <td className="py-4 px-6 font-medium text-gray-900">
-                      {item.name}
-                    </td>
-                    <td className="py-4 px-6 text-gray-600">{item.quantity}</td>
-                    <td className="py-4 px-6 text-gray-600">{item.expiry}</td>
-                    <td className="py-4 px-6">
-                      <span
-                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
-                          item.status
-                        )}`}
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
-                        {getStatusText(item.status)}
-                      </span>
-                    </td>
-                    <td className="py-4 px-6 text-right">
-                      <button
-                        onClick={() => handleEdit(item)}
-                        className="text-gray-600 hover:text-blue-600 transition mr-3 hover:cursor-pointer"
-                      >
-                        <Pencil size={18} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(item.id)}
-                        className="text-gray-600 hover:text-red-600 transition hover:cursor-pointer"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </td>
-                  </>
-                )}
-              </tr>
-            ))}
+            {filtered.map((item) => {
+              const expiryString = item.expiry
+                ? new Date(item.expiry).toLocaleDateString()
+                : "—";
+
+              return (
+                <tr key={item.id} className="hover:bg-gray-50 transition">
+                  {editingId === item.id ? (
+                    <>
+                      <td className="py-4 px-6">
+                        <input
+                          type="text"
+                          value={editForm?.name || ""}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm!, name: e.target.value })
+                          }
+                          className="w-full px-2 py-1 border border-gray-300 rounded"
+                        />
+                      </td>
+
+                      <td className="py-4 px-6">
+                        <input
+                          type="text"
+                          value={editForm?.quantity || ""}
+                          onChange={(e) =>
+                            setEditForm({
+                              ...editForm!,
+                              quantity: e.target.value,
+                            })
+                          }
+                          className="w-full px-2 py-1 border border-gray-300 rounded"
+                        />
+                      </td>
+
+                      <td className="py-4 px-6">
+                        <input
+                          type="date"
+                          value={
+                            editForm?.expiry
+                              ? new Date(editForm.expiry)
+                                  .toISOString()
+                                  .split("T")[0]
+                              : ""
+                          }
+                          onChange={(e) =>
+                            setEditForm({
+                              ...editForm!,
+                              expiry: e.target.value,
+                            })
+                          }
+                          className="w-full px-2 py-1 border border-gray-300 rounded"
+                        />
+                      </td>
+
+                      <td className="py-4 px-6">
+                        <select
+                          value={editForm?.status || "fresh"}
+                          onChange={(e) =>
+                            setEditForm({
+                              ...editForm!,
+                              status: e.target.value,
+                            })
+                          }
+                          className="w-full px-2 py-1 border border-gray-300 rounded"
+                        >
+                          <option value="fresh">Fresh</option>
+                          <option value="use-soon">Use Soon</option>
+                          <option value="expiring-soon">Expiring Soon</option>
+                        </select>
+                      </td>
+
+                      <td className="py-4 px-6 text-right">
+                        <button
+                          onClick={handleSave}
+                          className="text-green-600 hover:text-green-700 font-medium mr-3"
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={() => setEditingId(null)}
+                          className="text-gray-600 hover:text-gray-700 font-medium"
+                        >
+                          Cancel
+                        </button>
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td className="py-4 px-6 font-medium text-gray-900">
+                        {item.name}
+                      </td>
+
+                      <td className="py-4 px-6 text-gray-600">
+                        {item.quantity}
+                      </td>
+
+                      <td className="py-4 px-6 text-gray-600">
+                        {expiryString}
+                      </td>
+
+                      <td className="py-4 px-6">
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
+                            item.expiryStatus || item.status
+                          )}`}
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
+                          {getStatusText(item.expiryStatus || item.status)}
+                        </span>
+                      </td>
+
+                      <td className="py-4 px-6 text-right">
+                        <button
+                          onClick={() => handleEdit(item)}
+                          className="text-gray-600 hover:text-blue-600 mr-3"
+                        >
+                          <Pencil size={18} />
+                        </button>
+
+                        <button
+                          onClick={() => handleDelete(item.id)}
+                          className="text-gray-600 hover:text-red-600"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </td>
+                    </>
+                  )}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
