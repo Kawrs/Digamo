@@ -101,11 +101,6 @@ export default function SearchingIngredients({
     return "bg-gray-100 text-gray-700";
   };
 
-  const formatDate = (expiry: any) => {
-    if (!expiry) return "No Date";
-    if (expiry.toDate) return expiry.toDate().toLocaleDateString(); // Firestore Timestamp
-    return new Date(expiry).toLocaleDateString(); // String
-  };
   const handleConfirmClick = () => {
     const selectedNames = items
     .filter((item) => selectedIds.has(item.id))
@@ -170,7 +165,7 @@ export default function SearchingIngredients({
                 {/* Right Side: Date + Status */}
                 <div className="flex flex-col items-end gap-2 text-right">
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Exp: {formatDate(item.expiry)}
+                    Exp: (item.expiry)
                   </p>
                   <div
                     className={`px-3 py-1 text-xs font-bold rounded-full ${getStatusColor(
