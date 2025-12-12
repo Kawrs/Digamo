@@ -47,10 +47,10 @@ export default function Login() {
       setTimeout(() => {
         router.push("/homePage");
       }, 500);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Google login error:", error);
-      console.error("Error code:", error.code);
-      setErrorMsg(error.message || "Failed to sign in with Google");
+      console.error("Error code:", error);
+      setErrorMsg("Failed to sign in with Google");
     } finally {
       setGoogleLoading(false);
     }

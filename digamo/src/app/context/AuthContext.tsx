@@ -51,21 +51,21 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       console.log("Result:", result);
       console.log("User:", result.user);
       console.log("User email:", result.user.email);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("=== signInWithPopup ERROR ===");
       console.error("Error object:", error);
-      console.error("Error code:", error.code);
-      console.error("Error message:", error.message);
+      console.error("Error code:", error);
+      console.error("Error message:", error);
 
-      if (error.code === "auth/popup-blocked") {
+      if (error === "auth/popup-blocked") {
         throw new Error(
           "Popup was blocked. Please allow popups for this site."
         );
       }
-      if (error.code === "auth/popup-closed-by-user") {
+      if (error === "auth/popup-closed-by-user") {
         throw new Error("Popup was closed before completing sign in.");
       }
-      if (error.code === "auth/cancelled-popup-request") {
+      if (error === "auth/cancelled-popup-request") {
         throw new Error("Another popup is already open.");
       }
       throw error;
