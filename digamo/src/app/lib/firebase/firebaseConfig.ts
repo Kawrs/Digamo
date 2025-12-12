@@ -1,8 +1,8 @@
-// src/app/lib/firebase/firebaseClient.ts
-import { getApp, getApps, initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getAnalytics, isSupported } from 'firebase/analytics';
+// lib/firebase/firebaseConfig.ts
+import { getApp, getApps, initializeApp, FirebaseApp } from 'firebase/app';
+import { getAuth, Auth } from 'firebase/auth';
+import { getFirestore, Firestore } from 'firebase/firestore';
+import { getAnalytics, Analytics, isSupported } from 'firebase/analytics';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || '',
@@ -14,42 +14,39 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || '',
 };
 
-// Only initialize Firebase on client-side and when config is available
-let app: ReturnType<typeof initializeApp> | null = null;
-let auth: ReturnType<typeof getAuth> | null = null;
-let db: ReturnType<typeof getFirestore> | null = null;
-let analytics: ReturnType<typeof getAnalytics> | undefined;
+// After the firebaseConfig object
+console.log('=== Firebase Config Check ===');
+console.log('API Key exists:', !!firebaseConfig.apiKey);
+console.log('Auth Domain:', firebaseConfig.authDomain);
+console.log('Project ID:', firebaseConfig.projectId);
+console.log('App ID exists:', !!firebaseConfig.appId);
 
-const initFirebase = () => {
-  // Skip initialization during SSR or build
-  if (typeof window === 'undefined') return;
-  
-  // Check if required config exists
-  if (!firebaseConfig.apiKey || !firebaseConfig.projectId || !firebaseConfig.appId) {
-    // Don't throw during build - just return
-    return;
-  }
-
-  try {
-    app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    db = getFirestore(app);
-    
-    isSupported().then(ok => { 
-      if (ok && app) analytics = getAnalytics(app); 
-    });
-  } catch (error) {
-    // Silently fail during build, log in development
-    if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
-      console.error('Firebase initialization error:', error);
-    }
-  }
-};
-
-// Initialize on client-side only
-if (typeof window !== 'undefined') {
-  initFirebase();
+// Initialize Firebase app with explicit type
+let app: FirebaseApp;
+try {
+  app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+} catch (error) {
+  console.error('Firebase initialization error:', error);
+  // Fallback: try to initialize with a new app
+  app = initializeApp(firebaseConfig);
 }
 
-// Export with null checks
-export { app, auth, db, analytics };
+// Initialize and export auth (always available, not nullable)
+export const auth: Auth = getAuth(app);
+
+// Initialize and export firestore (always available, not nullable)
+export const db: Firestore = getFirestore(app);
+
+// Analytics (optional, only in browser)
+let analytics: Analytics | undefined;
+if (typeof window !== 'undefined') {
+  isSupported().then(ok => {
+    if (ok) {
+      analytics = getAnalytics(app);
+    }
+  }).catch(err => {
+    console.error('Analytics initialization error:', err);
+  });
+}
+
+export { app, analytics };
