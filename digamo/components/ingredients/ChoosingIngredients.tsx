@@ -3,7 +3,7 @@ import SearchingIngredients from "components/ingredients/SearchingIngredients";
 import { useEffect, useState } from "react";
 import { db, auth } from "@/app/lib/firebase/firebaseConfig";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import {X, Check, Loader2} from "lucide-react";
+import { X, Check, Loader2 } from "lucide-react";
 
 type ChoosingIngredientsProps = {
   isOpen: boolean;
@@ -19,9 +19,8 @@ export default function ChoosingIngredients({
   onClose,
   onConfirm,
   children,
-  initialSelectedNames
+  initialSelectedNames,
 }: ChoosingIngredientsProps) {
-
   if (!isOpen) return null;
 
   return (
@@ -31,8 +30,7 @@ export default function ChoosingIngredients({
         onClick={onClose}
       />
 
-
-      <div className="bg-white dark:bg-black p-6 rounded-lg shadow-lg relative max-w-md w-full">
+      <div className="bg-white dark:bg-black p-6 rounded-lg shadow-lg relative max-w-md w-full h-[60%] flex flex-col">
         <h2 className="text-2xl font-bold mb-4  dark:text-white text-gray-900">
           Choose Ingredients
         </h2>
@@ -47,8 +45,8 @@ export default function ChoosingIngredients({
         <SearchingIngredients
           onCancel={onClose}
           onConfirm={(items) => {
-          onConfirm(items); // Pass data up to SearchBar
-          onClose(); 
+            onConfirm(items); // Pass data up to SearchBar
+            onClose();
           }}
           initialSelectedNames={initialSelectedNames}
         />
