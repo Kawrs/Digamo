@@ -4,6 +4,18 @@ import React, { useState } from "react";
 import HeaderHome from "components/home-page/HeaderHome";
 import Card from "components/my-Pantry/Card";
 import PantryInventory from "components/my-Pantry/PantryInventory";
+import {
+  PantryItem,
+  ExpiryStatus,
+  PantryCategory,
+} from "../../../types/gemini";
+
+interface PantryPageProps {
+  pantryItems: PantryItem[];
+  addPantryItem: (item: Omit<PantryItem, "id" | "expiryStatus">) => void;
+  updatePantryItem: (item: PantryItem) => void;
+  deletePantryItem: (id: string) => void;
+}
 
 export default function PantryPage() {
   const [stats, setStats] = useState({total: 0,ingredients: 0,expiringSoon: 0,});
@@ -15,6 +27,16 @@ export default function PantryPage() {
       bg-homepage-bg bg-cover bg-center bg-no-repeat
       dark:bg-gradient-to-l dark:from-[#f5db83]/70 dark:to-[#B8D4C8]/80
     ">
+
+
+const PantryPage: React.FC<PantryPageProps> = ({
+  pantryItems,
+  addPantryItem,
+  updatePantryItem,
+  deletePantryItem,
+}) => {
+  return (
+    <div className="min-h-screen w-screen flex flex-col overflow-x-hidden relative bg-gradient-to-l from-[#f5db83] to-[#B8D4C8] bg-homepage-bg bg-cover bg-center bg-no-repeat dark:bg-graident-to-l dark:from-[#f5db83]/70 dark:to-[#B8D4C8]/80 ">
       <HeaderHome />
 
       <div className="w-full px-6 flex justify-center mt-25">

@@ -209,7 +209,8 @@ export default function PantryTable({
             activeTab === "all"
               ? "bg-white text-gray-900 rounded-xl h-8 mt-1 mb-1 ml-1 mr-1"
               : "text-gray-600 hover:bg-gray-50 hover:cursor-pointer"
-          }`}
+          } 
+    ${activeTab === "ingredients" ? "rounded-l-md" : ""}`}
         >
           All Items
         </button>
@@ -218,9 +219,9 @@ export default function PantryTable({
           onClick={() => setActiveTab("ingredients")}
           className={`px-8 py-2 text-sm font-medium transition-colors ${
             activeTab === "ingredients"
-              ? "bg-white text-gray-900 rounded-xl h-8 mt-1 mb-1 ml-1 "
+              ? "bg-white text-gray-900 rounded-xl h-8 mt-1 mb-1 ml-1 mr-1 "
               : "text-gray-600 hover:bg-gray-50 hover:cursor-pointer"
-          }`}
+          } ${activeTab === "all" ? "rounded-lg" : ""}`}
         >
           Ingredients ({ingredientCount})
         </button>

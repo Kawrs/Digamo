@@ -1,4 +1,4 @@
-"use cliennt";
+"use client";
 
 import React, { useState } from "react";
 import Table from "./Table";
@@ -40,10 +40,10 @@ export default function PantryInventory({ onStatsChange }: PantryInventoryProps)
                 <p className="text-md text-gray-800 font-medium">Condiments</p>
               </div>
             </button>
-
             <button className="profile cursor-pointer" onClick={handleAddClick}>
-              <div className="rounded-lg group bg-[#030213] dark:bg-white hover:bg-coral dark:text-orange w-32 h-10 flex items-center justify-center gap-2">
-                <Plus size={18} className="text-white dark:text-black" />
+              <div className="rounded-lg group bg-[#030213] dark:bg-white hover:bg-coral  dark:text-orange w-32 h-10 flex items-center justify-center gap-2">
+                <Plus size={18} className="text-white dark:text-black " />
+
                 <p className="text-md text-white dark:text-black font-medium">
                   Add Item
                 </p>

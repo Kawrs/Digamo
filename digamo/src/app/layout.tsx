@@ -5,6 +5,7 @@ import { Montserrat } from "next/font/google";
 import { Cormorant_Garamond } from "next/font/google";
 import { Quattrocento } from "next/font/google";
 import "./globals.css";
+import { AuthContextProvider } from "./context/AuthContext";
 import type { Viewport } from "next";
 
 const geistSans = Geist({
@@ -61,7 +62,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${montagu.variable} ${montserrat.variable} ${quattrocento.variable} antialiased`}
       >
-        {children}
+        <AuthContextProvider>{children}</AuthContextProvider>
       </body>
     </html>
   );
