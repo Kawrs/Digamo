@@ -305,20 +305,14 @@ export default function PantryTable({
                       </td>
 
                       <td className="py-4 px-6">
-                        <select
-                          value={editForm?.status || "fresh"}
-                          onChange={(e) =>
-                            setEditForm({
-                              ...editForm!,
-                              status: e.target.value,
-                            })
-                          }
-                          className="w-full px-2 py-1 border border-gray-300 rounded"
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
+                            item.expiryStatus || item.status
+                          )}`}
                         >
-                          <option value="fresh">Fresh</option>
-                          <option value="use-soon">Use Soon</option>
-                          <option value="expiring-soon">Expiring Soon</option>
-                        </select>
+                          <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
+                          {getStatusText(item.expiryStatus || item.status)}
+                        </span>
                       </td>
 
                       <td className="py-4 px-6 text-right">
