@@ -24,10 +24,11 @@ export enum MealType {
 export interface PantryItem {
   id: string;
   name: string;
-  quantity: string; // e.g., "500g", "2 cups", "6 pieces"
-  expiryDate: Date;
-  category: PantryCategory;
-  expiryStatus: ExpiryStatus; // Derived property
+  quantity: string;      // "500g"
+  expiry: string | Date;        // e.g. "10/20/2025"
+  status: string;        // "fresh", "use-soon"
+  isIngredient: boolean;
+  expiryStatus: ExpiryStatus;  // computed by util
 }
 
 // Removed RecipeNutritionInfo interface as per request.

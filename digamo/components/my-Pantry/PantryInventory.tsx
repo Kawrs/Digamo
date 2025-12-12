@@ -5,15 +5,21 @@ import Table from "./Table";
 import styles from "./PantryInventory.module.css";
 import { Plus, Sparkles } from "lucide-react";
 
-export default function PantryInventory() {
+interface PantryInventoryProps {
+  onStatsChange?: (stats: {
+    total: number;
+    ingredients: number;
+    expiringSoon: number;
+  }) => void;
+}
+
+export default function PantryInventory({ onStatsChange }: PantryInventoryProps) {
   const [addItemFunction, setAddItemFunction] = useState<(() => void) | null>(
     null
   );
 
   const handleAddClick = () => {
-    if (addItemFunction) {
-      addItemFunction();
-    }
+    if (addItemFunction) addItemFunction();
   };
 
   return (
@@ -26,6 +32,7 @@ export default function PantryInventory() {
               Manage your ingredients and condiments with expiry tracking
             </p>
           </div>
+
           <nav className="absolute top-4 right-4 hidden md:flex items-center">
             <button className="profile cursor-pointer">
               <div className="rounded-lg bg-white w-40 h-10 border border-gray-200 mr-2 flex items-center justify-center gap-2">
@@ -44,7 +51,7 @@ export default function PantryInventory() {
             </button>
           </nav>
 
-          <Table onAdd={setAddItemFunction} />
+          <Table onAdd={setAddItemFunction} onStatsChange={onStatsChange} />
         </div>
       </div>
     </div>
