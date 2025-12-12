@@ -34,15 +34,22 @@ export const generateRecipesFromIngredients = async (
 
     // 2. Construct Prompt (Matches your working style)
     const prompt = `
-      As Digamo, an AI-powered recipe generator, create ${count} unique, practical, and family-friendly recipes.
-      You MUST use these ingredients provided by the user: [${ingredientsList}].
-      You can assume the user has basic staples (salt, oil, soy sauce, water, garlic, onion).
-      
-      For each recipe, ensure specific measurements are provided and keep prep/cook times realistic (15-45 minutes).
-      Output the recipes in a JSON array format as defined by the RecipeResponseSchema.
-      DO NOT include nutrition information.
+      As Digamo, an expert Filipino Home Cook (Lutong Bahay) AI, create ${count} unique, practical, and family-friendly recipes.
 
-      User's Ingredients: ${ingredientsList}
+      STRICT CUISINE GUIDELINES:
+      1. **Primary Goal:** Generate authentic Filipino dishes (e.g., Adobo, Sinigang, Gisa, Sarciado style).
+      2. **Foreign Limit:** You are allowed to suggest a MAXIMUM of ONE non-Filipino (international) dish. 
+      3. **Preference:** If possible, provide ALL Filipino recipes. Only suggest a foreign dish if the ingredients make it absolutely necessary.
+
+      INGREDIENT RULES:
+      1. You MUST use the provided ingredients: [${ingredientsList}].
+      2. You can assume the user has standard Filipino pantry staples: **Cooking Oil, Salt, Pepper, Soy Sauce, Vinegar (Suka), Fish Sauce (Patis), Garlic, Onion, and Water**.
+      
+      OUTPUT REQUIREMENTS:
+      - Ensure specific measurements are provided.
+      - Keep prep/cook times realistic (15-45 minutes).
+      - Output strictly as a JSON array matching the RecipeResponseSchema.
+      - DO NOT include nutrition information.
     `;
 
     // 3. Call AI (Using exact config from your working code)
