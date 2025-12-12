@@ -10,7 +10,7 @@ interface PantryItem {
   id: string;
   name: string;
   quantity: string;
-  expiry: any; // Firestore timestamp or string
+  expiry: unknown; // Firestore timestamp or string
   status: string;
 }
 
