@@ -10,11 +10,11 @@ export default function SearchBar() {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const myInput = useRef<HTMLInputElement | null>(null);
   const searchParams = useSearchParams();
   const [firstClick, setFirstClick] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [naaValue, setNaaValue] = useState(false);
+  const [currentIngredients, setCurrentIngredients] = useState<string[]>([])
 
   //kani siya kay para inig change pages dli mawala ang sulod sa search bar after clicking the send button or pressing enter
   useEffect(() => {
@@ -24,14 +24,41 @@ export default function SearchBar() {
     }
   }, [searchParams]);
 
-  const handleKeyDown = (event: {
-    key: string;
-    preventDefault: () => void;
-  }) => {
+   const handleSearch = () => {
+    const inputValue = inputRef.current?.value ?? "";
+    
+    // Check if empty
+    if (inputValue.trim() === "") {
+      // Optional: Open modal if empty to encourage selection
+      parseAndOpenModal(); 
+      return;
+    }
+
+    // 🚀 Navigate to Recipe Page
+    router.push(`/searchingPage?q=${encodeURIComponent(inputValue)}`);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      buttonRef.current?.click();
+      // Safe click handling
+      if (buttonRef.current) {
+        buttonRef.current.click();
+      }
       checkInput();
+    }
+  };
+
+  const parseAndOpenModal = () => {
+    if (inputRef.current) {
+      const val = inputRef.current.value;
+      // Split "Chicken, Rice" into ["Chicken", "Rice"]
+      const parts = val.split(",")
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0);
+      
+      setCurrentIngredients(parts); // Set state before reopening
+      setModalOpen(true);
     }
   };
 
@@ -51,15 +78,13 @@ export default function SearchBar() {
   };
 
   const handleInputClick = () => {
-    const { isEmpty } = checkInput();
+    parseAndOpenModal();
+  };
 
-    if (firstClick || isEmpty) {
-      //mu open ang modal if first click or input is empty
-      //first click kay para ma avoid nga mag open pirmi ang modal every time i click ang input box
-
-      //needed pasad ni nga if naa nabay na choose atleast one ingredient aron makaproceed na sa search or input
-      setModalOpen(true);
-      setFirstClick(false);
+  const handleIngredientsSelected = (ingredients: string[]) => {
+    if (inputRef.current) {
+      inputRef.current.value = ingredients.join(", ");
+      inputRef.current.focus();
     }
   };
 
@@ -68,6 +93,8 @@ export default function SearchBar() {
       <ChoosingIngredients
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
+        onConfirm={handleIngredientsSelected}
+        initialSelectedNames={currentIngredients} 
         className="inset-0 bg-opacity-50 backdrop-blur-sm w-full"
       ></ChoosingIngredients>
 
@@ -88,11 +115,12 @@ export default function SearchBar() {
             className="block w-full rounded-full p-3 ps-9 bg-neutral-secondary-medium border border-default-medium border-coral text-heading text-sm rounded-base focus:ring-coral shadow-xs placeholder:text-body appearance-none lg:focus:ring-1 focus:outline-none focus:border-coral"
             placeholder="Generate recipes here..."
             required
+            autoComplete="off"
           />
           <button
             type="button"
-            // ref={buttonRef}
-            onClick={checkInput}
+            ref={buttonRef}
+            onClick={handleSearch}
             className="absolute end-1.5 bottom-1.5 font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none cursor-pointer"
           >
             <ArrowCircleUpIcon className="focus:outline-none text-gray-600 dark:text-white" />

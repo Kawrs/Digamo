@@ -22,29 +22,31 @@ const processGeminiRecipe = (geminiOutput: GeminiRecipeOutput, pantryItems: Pant
   };
 };
 
-export const generateRecipes = async (
-  pantryItems: PantryItem[],
+export const generateRecipesFromIngredients = async (
+  ingredients: string[], // Accepts simple string list from SearchBar
   count: number = 3
 ): Promise<Recipe[]> => {
   try {
     const ai = getGeminiInstance();
-    const pantryList = pantryItems.map(item => { const expiry = new Date(item.expiry).toLocaleDateString();
-      return `${item.name} (${item.quantity}, expires ${expiry})`;
-    })
-  .join(',');
+    
+    // 1. Format the list for the prompt
+    const ingredientsList = ingredients.join(", ");
 
+    // 2. Construct Prompt (Matches your working style)
     const prompt = `
       As Digamo, an AI-powered recipe generator, create ${count} unique, practical, and family-friendly recipes.
-      Prioritize using ingredients from the user's pantry, especially those expiring soon.
+      You MUST use these ingredients provided by the user: [${ingredientsList}].
+      You can assume the user has basic staples (salt, oil, soy sauce, water, garlic, onion).
+      
       For each recipe, ensure specific measurements are provided and keep prep/cook times realistic (15-45 minutes).
       Output the recipes in a JSON array format as defined by the RecipeResponseSchema.
       DO NOT include nutrition information.
 
-      User's Pantry: ${pantryList}
-      Dietary restrictions/preferences: None specified.
-      `;
+      User's Ingredients: ${ingredientsList}
+    `;
 
-    const response: GenerateContentResponse = await ai.models.generateContent({
+    // 3. Call AI (Using exact config from your working code)
+    const response = await ai.models.generateContent({
       model: GEMINI_MODEL,
       contents: [{ parts: [{ text: prompt }] }],
       config: {
@@ -56,15 +58,44 @@ export const generateRecipes = async (
       },
     });
 
-    const text = response.text;
+    // 4. Handle Response Text
+    // Note: Depending on your SDK version, this might be response.text() or response.response.text()
+    const text = response.text ?? "";
+    
     if (!text) {
       throw new Error("Gemini API returned no text response for recipes.");
     }
+
+    // 5. Parse JSON
     const geminiRecipes: GeminiRecipeOutput[] = JSON.parse(text);
-    return geminiRecipes.map(gr => processGeminiRecipe(gr, pantryItems));
+
+    // 6. Process/Map Results
+    // We cannot use 'processGeminiRecipe' here because that expects PantryItem[] objects.
+    // We implement a string-based matching logic here instead.
+    return geminiRecipes.map((gr) => {
+      // Logic to find which ingredients from the recipe match the user's input
+      const matched = gr.ingredients.filter((recipeIng) =>
+        ingredients.some((userIng) =>
+          recipeIng.toLowerCase().includes(userIng.toLowerCase().trim())
+        )
+      );
+
+      const missing = gr.ingredients.filter((recipeIng) =>
+        !ingredients.some((userIng) =>
+          recipeIng.toLowerCase().includes(userIng.toLowerCase().trim())
+        )
+      );
+
+      return {
+        ...gr,
+        id: crypto.randomUUID(), // Generate a temporary ID
+        matchedIngredients: matched,
+        missingIngredients: missing,
+      };
+    });
 
   } catch (error) {
-    console.error("Error generating recipes:", error);
+    console.error("Error generating search recipes:", error);
     throw error;
   }
 };
