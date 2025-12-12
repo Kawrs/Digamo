@@ -1,7 +1,13 @@
 import { db, auth } from "./firebaseConfig";
 import { doc, setDoc, deleteDoc, getDocs, collection } from "firebase/firestore";
 
-export async function addFavorite(recipe: any) {
+type Recipe = {
+  id: string;
+  name: string;
+  description?: string;
+};
+
+export async function addFavorite(recipe: Recipe) {
   const user = auth.currentUser;
   if (!user) return;
 
