@@ -46,8 +46,9 @@ export default function PantryTable({
     });
   }, []);
 
-  const pantryCollection =
-    userId ? collection(db, "users", userId, "pantry") : null;
+  const pantryCollection = userId
+    ? collection(db, "users", userId, "pantry")
+    : null;
 
   // Load items
   async function loadItems() {
@@ -89,11 +90,10 @@ export default function PantryTable({
         const total = data.length;
         const ingredients = data.filter((i) => i.isIngredient).length;
         const expiringSoon = data.filter((i) => {
-          const s =
-            (i.expiryStatus || i.status || "")
-              .toString()
-              .replace(/_/g, "-")
-              .toLowerCase();
+          const s = (i.expiryStatus || i.status || "")
+            .toString()
+            .replace(/_/g, "-")
+            .toLowerCase();
           return s === "expiring-soon";
         }).length;
 
