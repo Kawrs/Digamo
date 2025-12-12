@@ -1,4 +1,4 @@
-"use client";
+"use cliennt";
 
 import React, { useState } from "react";
 import Table from "./Table";

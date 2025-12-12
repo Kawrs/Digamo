@@ -58,23 +58,33 @@ export default function PantryTable({
       const snapshot = await getDocs(q);
 
       const data = snapshot.docs.map((snap) => {
-        const d = snap.data() as any;
+        const d = snap.data() as {
+          name: string;
+          quantity: string;
+          expiry: string | Date | { toDate: () => Date };
+          status?: string;
+          expiryStatus?: string;
+          isIngredient?: boolean;
+          userId: string;
+        };
 
         return {
           id: snap.id,
           name: d.name,
           quantity: d.quantity,
-          expiry: d.expiry?.toDate ? d.expiry.toDate() : d.expiry,
+          expiry:
+            typeof d.expiry === "object" && "toDate" in d.expiry
+              ? d.expiry.toDate()
+              : d.expiry,
           status: d.status,
           expiryStatus: d.expiryStatus,
           isIngredient: d.isIngredient ?? false,
           userId: d.userId,
-        };
-      }) as PantryItem[];
+        } as PantryItem;
+      });
 
       setItems(data);
 
-      // Stats update
       if (onStatsChange) {
         const total = data.length;
         const ingredients = data.filter((i) => i.isIngredient).length;
@@ -129,8 +139,6 @@ export default function PantryTable({
 
     try {
       const ref = doc(db, "users", userId, "pantry", String(editForm.id));
-
-      // Convert expiry to Date for status calc
       const expiryDate = new Date(editForm.expiry);
 
       await updateDoc(ref, {
@@ -148,7 +156,6 @@ export default function PantryTable({
     }
   };
 
-  // Delete item
   const handleDelete = async (id: string | number) => {
     if (!userId) return;
 
@@ -161,14 +168,13 @@ export default function PantryTable({
     }
   };
 
-  // Add item
   const handleAddItem = async () => {
     if (!userId) return;
 
     const newItem = {
       name: "New Item",
       quantity: "0",
-      expiry: new Date().toISOString().split("T")[0], // YYYY-MM-DD
+      expiry: new Date().toISOString().split("T")[0],
       status: "fresh",
       isIngredient: activeTab === "ingredients",
       expiryStatus: calculateExpiryStatus(new Date()),
