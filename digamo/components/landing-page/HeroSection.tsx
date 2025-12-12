@@ -33,8 +33,17 @@ function HeroSection() {
       </div>
 
       <div className="character flex-1 flex items-center justify-center lg:justify-end w-full px-6 sm:px-8 md:px-12 lg:px-16">
-        <div className="mt-40">
+        <div className="mt-40 ">
           <Scene />
+          <hr
+            style={{
+              height: "3px",
+              border: "none",
+              width: "71%",
+              margin: "auto",
+              background: "linear-gradient(to right, #FFA500, #FF7F50)",
+            }}
+          />
         </div>
       </div>
     </div>
