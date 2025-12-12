@@ -6,11 +6,7 @@ import Card from "components/my-Pantry/Card";
 import PantryInventory from "components/my-Pantry/PantryInventory";
 
 export default function PantryPage() {
-  const [stats, setStats] = useState({
-    total: 0,
-    ingredients: 0,
-    expiringSoon: 0,
-  });
+  const [stats, setStats] = useState({total: 0,ingredients: 0,expiringSoon: 0,});
 
   return (
     <div className="
