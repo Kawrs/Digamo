@@ -121,20 +121,23 @@ export default function PantryTable({ onAdd }: PantryTableProps) {
       <div className="max-w-full h-10 mx-auto grid grid-cols-2 gap-0 bg-gray-100/70 rounded-lg overflow-hidden mt-7">
         <button
           onClick={() => setActiveTab("all")}
-          className={`px-8 py-3 text-sm font-medium transition-colors ${
+          className={`px-8 py-3 text-sm font-medium transition-colors flex items-center justify-center 
+          ${
             activeTab === "all"
               ? "bg-white text-gray-900 rounded-xl h-8 mt-1 mb-1 ml-1 mr-1"
-              : "text-gray-600 hover:bg-gray-50 hover: cursor-pointer"
-          } ${activeTab === "ingredients" ? "rounded-l-md" : ""}`}
+              : "text-gray-600 hover:bg-gray-50 hover:cursor-pointer"
+          } 
+    ${activeTab === "ingredients" ? "rounded-l-md" : ""}`}
         >
           All Items
         </button>
+
         <button
           onClick={() => setActiveTab("ingredients")}
           className={`px-8 py-2 text-sm font-medium transition-colors ${
             activeTab === "ingredients"
               ? "bg-white text-gray-900 rounded-xl h-8 mt-1 mb-1 ml-1 mr-1 "
-              : "text-gray-600 hover:bg-gray-50 hover: cursor-pointer"
+              : "text-gray-600 hover:bg-gray-50 hover:cursor-pointer"
           } ${activeTab === "all" ? "rounded-lg" : ""}`}
         >
           Ingredients ({ingredientCount})

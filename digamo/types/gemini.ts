@@ -25,7 +25,7 @@ export interface PantryItem {
   id: string;
   name: string;
   quantity: string; // e.g., "500g", "2 cups", "6 pieces"
-  expiryDate: Date;
+  expiry: Date;
   category: PantryCategory;
   expiryStatus: ExpiryStatus; // Derived property
 }
