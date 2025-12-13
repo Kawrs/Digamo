@@ -120,7 +120,7 @@ function HeaderHome() {
                 <p>{userEmail}</p>
               </div>
             </li>
-            <li>
+            {/* <li>
               <Link href="#">
                 <div className="flex px-8 flex-row space-x-2 items-center justify-center">
                   <PasswordIcon />
@@ -129,7 +129,7 @@ function HeaderHome() {
                   </p>
                 </div>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/auth/login">
                 <div className="flex px-8 flex-row space-x-2 items-center justify-center">
@@ -187,7 +187,7 @@ function HeaderHome() {
                   <p>{userEmail}</p>
                 </div>
               </li>
-              <li>
+              {/* <li>
                 <Link href="#">
                   <div className="flex px-8 flex-row space-x-2 items-center justify-center">
                     <PasswordIcon />
@@ -196,7 +196,7 @@ function HeaderHome() {
                     </p>
                   </div>
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/auth/login">
                   <div className="flex px-8 flex-row space-x-2 items-center justify-center">
