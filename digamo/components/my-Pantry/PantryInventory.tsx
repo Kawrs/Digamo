@@ -57,9 +57,8 @@ export default function PantryInventory({
 
           <Table onAdd={setAddItemFunction} onStatsChange={onStatsChange} />
         </div>
-      </div>
-      <button className="profile cursor-pointer" onClick={handleAddClick}>
-              <div className="rounded-lg group bg-[#030213] dark:bg-white hover:bg-coral  dark:text-orange w-32 h-10 flex items-center justify-center gap-2">
+         <button className="profile cursor-pointer" onClick={handleAddClick}>
+              <div className="rounded-lg group bg-[#030213] dark:bg-white hover:bg-coral  dark:text-orange w-32 h-10 items-center justify-center gap-2">
                 <Plus size={18} className="text-white dark:text-black " />
 
                 <p className="text-md text-white dark:text-black font-medium">
@@ -67,6 +66,8 @@ export default function PantryInventory({
                 </p>
               </div>
             </button>
+      </div>
+    
     </div>
   );
 }
