@@ -20,11 +20,11 @@ export default function NavButtons() {
       icon: "streamline-flex:shuffle-solid",
       page: "/randomizer",
     },
-    {
-      title: "Favorites",
-      icon: "ant-design:heart-filled",
-      page: "/favoriteRecipePage",
-    },
+    // {
+    //   title: "Favorites",
+    //   icon: "ant-design:heart-filled",
+    //   page: "/favoriteRecipePage",
+    // },
   ];
   return (
     <div className="navButton flex flex-col sm:flex-row gap-4">
