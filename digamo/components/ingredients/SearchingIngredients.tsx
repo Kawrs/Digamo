@@ -54,25 +54,25 @@ export default function SearchingIngredients({
           id: doc.id,
           ...doc.data(),
         })) as PantryItem[];
-        
+
         setItems(fetchedItems);
 
         if (initialSelectedNames.length > 0) {
           const idsToSelect = new Set<string>();
-          
+
           fetchedItems.forEach((item) => {
             // Case-insensitive match (e.g., "egg" matches "Egg")
             const isMatch = initialSelectedNames.some(
-              (name) => name.toLowerCase().trim() === item.name.toLowerCase().trim()
+              (name) =>
+                name.toLowerCase().trim() === item.name.toLowerCase().trim()
             );
             if (isMatch) {
               idsToSelect.add(item.id);
             }
           });
-          
+
           setSelectedIds(idsToSelect);
         }
-
       } catch (error) {
         console.error("Error fetching pantry:", error);
       } finally {
@@ -92,7 +92,7 @@ export default function SearchingIngredients({
     }
     setSelectedIds(newSet);
   };
-  
+
   const getStatusColor = (status: string) => {
     const s = (status || "").toLowerCase().replace(/_/g, "-");
     if (s === "fresh") return "bg-green-100 text-green-700";
@@ -103,8 +103,8 @@ export default function SearchingIngredients({
 
   const handleConfirmClick = () => {
     const selectedNames = items
-    .filter((item) => selectedIds.has(item.id))
-    .map((item) => item.name);
+      .filter((item) => selectedIds.has(item.id))
+      .map((item) => item.name);
     onConfirm(selectedNames);
   };
 
@@ -113,7 +113,7 @@ export default function SearchingIngredients({
   );
 
   return (
-    <div className="flex gap-4 flex-col w-full">
+    <div className="flex flex-col h-full w-full gap-4">
       {/* searchbar ni dri */}
       <input
         type="text"
@@ -124,11 +124,10 @@ export default function SearchingIngredients({
       />
 
       {/* ang ubos kay sa lista with title and checkbox */}
-     <h1 className="font-semibold text-gray-700 dark:text-gray-300">
+      <h1 className="font-semibold text-gray-700 dark:text-gray-300">
         Pantry Items &#40;{selectedIds.size}/{filteredItems.length}&#41;
       </h1>
 
-      
       <div className="flex flex-col gap-3 max-h-[50vh] overflow-y-auto pr-2">
         {loading ? (
           <div className="text-center py-4">Loading pantry...</div>
@@ -142,7 +141,9 @@ export default function SearchingIngredients({
                 key={item.id}
                 onClick={() => handleCheckboxChange(item.id)} // Allow clicking anywhere on the card
                 className={`py-3 px-4 bg-white dark:bg-black border-2 rounded-lg flex flex-row gap-4 justify-between items-center cursor-pointer transition-all hover:bg-gray-50 dark:hover:bg-gray-900 ${
-                  isChecked ? "border-amber-400 bg-amber-50/50" : "border-gray-200"
+                  isChecked
+                    ? "border-amber-400 bg-amber-50/50"
+                    : "border-gray-200"
                 }`}
               >
                 {/* Left Side: Checkbox + Info */}
@@ -153,12 +154,14 @@ export default function SearchingIngredients({
                     onChange={() => handleCheckboxChange(item.id)}
                     className="cursor-pointer w-5 h-5 text-amber-500 rounded focus:ring-amber-500"
                   />
-                  
+
                   <div className="flex flex-col dark:text-white">
                     <label className="font-bold text-lg cursor-pointer">
                       {item.name}
                     </label>
-                    <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+                    <p className="text-sm text-gray-500">
+                      Qty: {item.quantity}
+                    </p>
                   </div>
                 </div>
 
@@ -182,16 +185,17 @@ export default function SearchingIngredients({
       </div>
 
       {/* buttons ang ubos for confirm and cancel */}
-      <div className="right-0 px-9 flex flex-row gap-4 justify-end">
+      <div className="mt-auto px-9 flex flex-row gap-4 justify-end">
         <button
           className="text-orange border-2 border-gold px-3 rounded-sm cursor-pointer hover:text-orange/80"
           onClick={() => onCancel()}
         >
           Cancel
         </button>
-        <button className=" bg-gold px-3 rounded-sm text-white cursor-pointer hover:bg-gold/80"
+        <button
+          className=" bg-gold px-3 rounded-sm text-white cursor-pointer hover:bg-gold/80"
           onClick={handleConfirmClick}
-          >
+        >
           Confirm
         </button>
       </div>
